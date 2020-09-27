@@ -24,8 +24,6 @@ Pre-training has become an essential part for NLP tasks and has led to remarkabl
 
 Table of Contents
 =================
-  * [Features](https://github.com/P01son6415/dbiir/wiki#Features)
-  * [Requirements](https://github.com/P01son6415/dbiir/wiki#Requirements)
   * [Quickstart](https://github.com/P01son6415/dbiir/wiki#Quickstart)
   * [Datasets](https://github.com/P01son6415/dbiir/wiki#Datasets)
   * [Modelzoo](https://github.com/P01son6415/dbiir/wiki#Modelzoo)
