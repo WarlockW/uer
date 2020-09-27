@@ -1,0 +1,7 @@
++ [Home](https://github.com/dbiir/UER-py/wiki)
+  - [Quickstart](https://github.com/dbiir/UER-py/wiki/Quickstart)
+  - [Datasets](https://github.com/dbiir/UER-py/wiki/Datasets)
+  - [Modelzoo](https://github.com/dbiir/UER-py/wiki/Modelzoo)
+  - [Instructions](https://github.com/dbiir/UER-py/wiki/Instructions)
+  - [Competition solutions](https://github.com/dbiir/UER-py/wiki/Competition-solutions)
+  - [Experiments](https://github.com/dbiir/UER-py/wiki/Experiments)
