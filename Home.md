@@ -24,13 +24,12 @@ Pre-training has become an essential part for NLP tasks and has led to remarkabl
 
 Table of Contents
 =================
-  * [Quickstart](https://github.com/P01son6415/dbiir/wiki#Quickstart)
-  * [Datasets](https://github.com/P01son6415/dbiir/wiki#Datasets)
-  * [Modelzoo](https://github.com/P01son6415/dbiir/wiki#Modelzoo)
-  * [Instructions](https://github.com/P01son6415/dbiir/wiki#Instructions)
-  * [Competition solutions](https://github.com/P01son6415/dbiir/wiki#Competition-solutions)
-  * [Experiments](#Experiments)
-
+  * [Quickstart](https://github.com/dbiir/UER-py/wiki/Quickstart)
+  * [Datasets](https://github.com/dbiir/UER-py/wiki/Datasets)
+  * [Modelzoo](https://github.com/dbiir/UER-py/wiki/Modelzoo)
+  * [Instructions](https://github.com/dbiir/UER-py/wiki/Instructions)
+  * [Competition solutions](https://github.com/dbiir/UER-py/wiki/Competition-solutions)
+  * [Experiments](https://github.com/dbiir/UER-py/wiki/Experiments)
 
 <br/>
 
