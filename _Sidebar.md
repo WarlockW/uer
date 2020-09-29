@@ -1,6 +1,6 @@
 + [Home](https://github.com/dbiir/UER-py/wiki)
   - [Features](https://github.com/dbiir/UER-py/#features)
-  - [Requirements](https://github.com/dbiir/UER-py/#requirments)
+  - [Requirements](https://github.com/dbiir/UER-py/#requirements)
   - [Quickstart](https://github.com/dbiir/UER-py/#quickstart)
   - [Datasets](https://github.com/dbiir/UER-py/wiki/Datasets)
   - [Modelzoo](https://github.com/dbiir/UER-py/wiki/Modelzoo)
