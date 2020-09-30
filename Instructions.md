@@ -1,38 +1,3 @@
-## Instructions
-### UER-py's framework
-UER-py is organized as follows：
-```
-UER-py/
-    |--uer/
-    |    |--encoders/: contains encoders such as RNN, CNN, Attention, CNN-RNN, BERT
-    |    |--targets/: contains targets such as language modeling, masked language modeling, sentence prediction
-    |    |--layers/: contains frequently-used NN layers, such as embedding layer, normalization layer
-    |    |--models/: contains model.py, which combines embedding, encoder, and target modules
-    |    |--utils/: contains frequently-used utilities
-    |    |--model_builder.py
-    |    |--model_loader.py
-    |    |--model_saver.py
-    |    |--trainer.py
-    |
-    |--corpora/: contains corpora for pre-training
-    |--datasets/: contains downstream tasks
-    |--models/: contains pre-trained models, vocabularies, and configuration files
-    |--scripts/: contains useful scripts for pre-training models
-    |--inference/：contains inference scripts for downstream tasks
-    |
-    |--preprocess.py
-    |--pretrain.py
-    |--run_classifier.py
-    |--run_cmrc.py
-    |--run_ner.py
-    |--run_dbqa.py
-    |--run_c3.py
-    |--run_mt_classifier.py
-    |--README.md
-```
-
-The code is well-organized. Users can use and extend upon it with little efforts.
-
 ### Preprocess the data
 ```
 usage: preprocess.py [-h] --corpus_path CORPUS_PATH [--vocab_path VOCAB_PATH]
@@ -48,27 +13,30 @@ usage: preprocess.py [-h] --corpus_path CORPUS_PATH [--vocab_path VOCAB_PATH]
                      [--span_geo_prob SPAN_GEO_PROB]
                      [--span_max_length SPAN_MAX_LENGTH]
 ```
+Users have to preprocess the corpus before pre-training. <br> 
 The example of pre-processing on a single machine：
 ```
 python3 preprocess.py --corpus_path corpora/book_review_bert.txt --vocab_path models/google_zh_vocab.txt --dataset_path dataset.pt\
                       --processes_num 8 --target bert
 ```
-If multiple machines are available, users can run preprocess.py on one machine and copy the dataset.pt to other machines. 
+If multiple machines are available, users can run *preprocess.py* on one machine and copy the *dataset.pt* to other machines. 
 
-We need to specify model's target in pre-processing stage since different targets require different data formats. Currently, UER-py consists of the following target modules:
-- lm_target.py: language model
-- mlm_target.py: masked language model (cloze test)
-- cls_target.py: classification
-- bilm_target.py: bi-directional language model
-- bert_target.py: masked language model + next sentence prediction
-- albert_target.py: masked language model + sentence order prediction
+We need to specify model's target (*--target*) in pre-processing stage since different targets require different data formats. Currently, UER-py consists of the following target modules:
+- lm: language model
+- mlm: masked language model (cloze test)
+- cls: classification
+- bilm: bi-directional language model
+- bert: masked language model + next sentence prediction
+- albert: masked language model + sentence order prediction
 
-*--preprocesses_num n* denotes that n processes are used for pre-processing. More processes can speed up the preprocess stage but lead to more memory consumption. <br>
+*--processes_num n* denotes that n processes are used for pre-processing. More processes can speed up the preprocess stage but lead to more memory consumption. <br>
 *--dynamic_masking* denotes that the words are masked during the pre-training stage, which is used in RoBERTa. <br>
 *--full_sentences* allows a sample to include contents from multiple documents, which is used in RoBERTa. <br>
 *--span_masking* denotes that masking consecutive words, which is used in SpanBERT. If dynamic masking is used, we should specify *--span_masking* in pre-training stage, otherwise we should specify *--span_masking* in pre-processing stage. <br>
 *--docs_buffer_size* specifies the buffer size in memory in pre-processing stage. <br>
-Sequence length is specified in pre-processing stage by *--seq_length* . The default value is 128.
+Sequence length is specified in pre-processing stage by *--seq_length* . The default value is 128. <br>
+Vocabulary and tokenizer are also specified in pre-processing stage. More details are discussed in *Tokenization and vocabulary* section.
+<br>
 
 ### Pretrain the model
 ```
@@ -95,18 +63,18 @@ usage: pretrain.py [-h] [--dataset_path DATASET_PATH]
                    [--gpu_ranks GPU_RANKS [GPU_RANKS ...]]
                    [--master_ip MASTER_IP] [--backend {nccl,gloo}]
 ```
+It is required to explicitly specify model's encoder and target. UER-py consists of the following encoder modules:
+- lstm: long short-term memory (LSTM)
+- gru: gated recurrent units (GRU)
+- bilstm: bi-LSTM (different from *--encoder lstm* with *--bidirectional* , see [the issue](https://github.com/pytorch/pytorch/issues/4930) for more details)
+- gatedcnn: gated convolutional networks (GatedCNN)
+- bert: the Transformer with fully-visible mask (used in BERT)
+- gpt: the Transformer with causal mask (used in GPT)
 
+The target should be coincident with the target in pre-processing stage. Users can try different combinations of encoders and targets by *--encoder* and *--target* .
+*--config_path* denotes the path of the configuration file, which specifies the hyper-parameters of the pre-training model. We have put the commonly-used configuration files in *models* folder. Users should choose the proper one according to encoder they use. <br>
 *--instances_buffer_size* specifies the buffer size in memory in pre-training stage. <br>
 *--tie_weights* denotes the word embedding and softmax weights are tied. <br>
-It is recommended to explicitly specify model's encoder and target. UER-py consists of the following encoder modules:
-- rnn_encoder.py: contains (bi-)LSTM and (bi-)GRU
-- birnn_encoder.py: contains bi-LSTM and bi-GRU (different from rnn_encoder.py with --bidirectional, see [the issue](https://github.com/pytorch/pytorch/issues/4930) for more details)
-- cnn_encoder.py: contains CNN and gatedCNN
-- gpt_encoder.py: contains GPT encoder
-- bert_encoder.py: contains BERT encoder
-
-The target should be coincident with the target in pre-processing stage. Users can try different combinations of encoders and targets by *--encoder* and *--target*.
-*--config_path* denotes the path of the configuration file, which specifies the hyper-parameters of the pre-training model. We have put the commonly-used configuration files in *models* folder. Users should choose the proper one according to encoder they use.
 
 There are two strategies for parameter initialization of pre-training: 1）random initialization; 2）loading a pre-trained model.
 #### Random initialization
@@ -707,7 +675,7 @@ python3  inference/run_c3_infer.py --load_model_path models/multichoice_model.bi
                                    --factorized_embedding_parameterization --parameter_sharing --encoder bert
 ```
 
-### Tokenization and Vocabulary
+### Tokenization and vocabulary
 UER-py supports multiple tokenization strategies. The most commonly used strategy is BertTokenizer (which is also the default strategy). There are two ways to use BertTokenizer: the first is to specify the vocabulary path through *--vocab_path* and then use BERT's original tokenization strategy to segment sentences according to the vocabulary; the second is to specify the sentencepiece model path by *--spm_model_path* . We import sentencepiece, load the sentencepiece model, and segment the sentence. If user specifies *--spm_model_path*, sentencepiece is used for tokenization. Otherwise, user must specify *--vocab_path* and BERT's original tokenization strategy is used for tokenization. <br>
 In addition, the project also provides CharTokenizer and SpaceTokenizer. CharTokenizer tokenizes the text by character. If the text is all Chinese character, CharTokenizer and BertTokenizer are equivalent. CharTokenizer is simple and is faster than BertTokenizer. SpaceTokenizer separates the text by space. One can preprocess the text in advance (such as word segmentation), separate the text by space, and then use SpaceTokenizer. If user specifies *--spm_model_path*, sentencepiece is used for tokenization. Otherwise, user must specify *--vocab_path* and BERT's original tokenization strategy is used for tokenization. For CharTokenizer and SpaceTokenizer, if user specifies *--spm_model_path*, then the vocabulary in sentencepiece model is used. Otherwise, user must specify the vocabulary through *--vocab_path*.
 
