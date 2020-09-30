@@ -1,3 +1,12 @@
+Table of Contents for Instructions
+=================
+* [Preprocess the data](#preprocess-the-data)
+* [Pretrain the model](#pretrain-the-model)
+* [Pretrain models with different encoders and targets](#pretrain-models-with-different-encoders-and-targets)
+* [Finetune on downstream tasks](#finetune-on-downstream-tasks)
+* [Tokenization and vocabulary](#tokenization-and-vocabulary)
+* [Scripts](#scripts)
+
 ### Preprocess the data
 ```
 usage: preprocess.py [-h] --corpus_path CORPUS_PATH [--vocab_path VOCAB_PATH]
@@ -84,7 +93,7 @@ python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_voca
                     --encoder bert --target bert
 ```
 The input of pre-training is specified by *--dataset_path* .
-The example of pre-training on single GPU (the id of GPU is 3)：
+The example of pre-training on single GPU (the ID of GPU is 3)：
 ```
 python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt --output_model_path models/output_model.bin --gpu_ranks 3 \
                     --encoder bert --target bert
@@ -105,7 +114,7 @@ CUDA_VISIBLE_DEVICES=1,2,3,5 python3 pretrain.py --dataset_path dataset.pt --voc
 ```
 *--world_size* is set to 4 since only 4 GPUs are used. The IDs of 4 processes (and GPUs) is 0, 1, 2, and 3, which are specified by *--gpu_ranks* .
 
-The example of pre-training on two machines, each has 8 GPUs (16 GPUs in total).
+The example of pre-training on two machines: each machine has 8 GPUs (16 GPUs in total).
 We run *pretrain.py* on two machines (Node-0 and Node-1) respectively. *--master_ip* specifies the ip:port of the master mode, which contains process (and GPU) of ID 0.
 ```
 Node-0 : python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt \
@@ -115,16 +124,16 @@ Node-0 : python3 pretrain.py --dataset_path dataset.pt --vocab_path models/googl
 Node-1 : python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt \
                              --output_model_path models/output_model.bin --encoder bert --target bert --world_size 16 --gpu_ranks 8 9 10 11 12 13 14 15 \
                              --total_steps 100000 \
-                             --master_ip tcp://9.73.138.133:12345          
+                             --master_ip tcp://9.73.138.133:12345
 ```
 The IP of Node-0 is 9.73.138.133 . <br>
 *--total_steps* specifies the training steps. <br>
 *--save_checkpoint_steps* specifies how often to save the model checkpoint. We don't need to specify *--save_checkpoint_steps* in Node-1 since only master node saves the pre-trained model. <br>
 *--report_steps* specifies how often to report the pre-training information. We don't need to specify *--report_steps* in Node-1 since the information only appears in master node. <br>
 Notice that when specifying *--master_ip* one can not select the port that occupied by other programs. <br>
-For random initialization, pre-training usually requires larger learning rate. We recommend to use *--learning_rate 1e-4*. The default value is *2e-5* .
+For random initialization, pre-training usually requires larger learning rate. We recommend to use *--learning_rate 1e-4* . The default value is *2e-5* .
 
-#### Loading a pre-trained model
+#### Load the pre-trained model
 We recommend to load a pre-trained model. We can specify the pre-trained model by *--pretrained_model_path* .
 The example of pre-training on CPU and single GPU:
 ```
@@ -141,7 +150,7 @@ python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_voca
                     --output_model_path models/output_model.bin --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7 \
                     --encoder bert --target bert 
 ```
-The example of pre-training on two machines, each has 8 GPUs (16 GPUs in total):
+The example of pre-training on two machines: each machine has 8 GPUs (16 GPUs in total):
 ```
 Node-0 : python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt \
                              --pretrained_model_path models/google_zh_model.bin \
@@ -152,7 +161,7 @@ Node-1 : python3 pretrain.py --dataset_path dataset.pt --vocab_path models/googl
                              --output_model_path models/output_model.bin --world_size 16 --gpu_ranks 8 9 10 11 12 13 14 15 \
                              --master_ip tcp://9.73.138.133:12345 --encoder bert --target bert  
 ```
-The example of pre-training on three machines, each has 8 GPUs (24 GPUs in total):
+The example of pre-training on three machines: each machine has 8 GPUs (24 GPUs in total):
 ```
 Node-0: python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt \
                             --pretrained_model_path models/google_zh_model.bin \
@@ -168,8 +177,8 @@ Node-2: python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google
                             --master_ip tcp://9.73.138.133:12345 --encoder bert --target bert
 ```
 
-#### Pre-training model size
-In general, large model can achieve better results but lead to more resource consumption. We can specify the pre-trained model size by *--config_path*. Commonly-used configuration files are included in *models* folder. For example, we provide 4 configuration files for BERT model. They are *bert_large_config.json*, *bert_base_config.json*, *bert_small_config.json*, *bert_tiny_config.json*. We provide different pre-trained models according to different configuration files. See model zoo for more details.
+#### Pretraining model size
+In general, large model can achieve better results but lead to more resource consumption. We can specify the pre-trained model size by *--config_path* . Commonly-used configuration files are included in *models* folder. For example, we provide 4 configuration files for BERT model. They are *bert_large_config.json* , *bert_base_config.json* , *bert_small_config.json* , and *bert_tiny_config.json* . We provide different pre-trained models according to different configuration files. See model zoo for more details.
 The example of doing incremental pre-training upon BERT-large model:
 ```
 python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt \
@@ -215,7 +224,7 @@ python3 pretrain.py --dataset_path rmrb_word_dataset.pt --vocab_path models/rmrb
                     --encoder bert --target bert
 ```
 
-### Pre-training models with different encoders and targets
+### Pretrain models with different encoders and targets
 UER-py allows users to combine different components (e.g. embeddings, encoders, and targets). Here are some examples of trying different combinations.
 
 #### RoBERTa
@@ -257,7 +266,7 @@ The corpus format of ALBERT is the identical with BERT. <br>
 *--target albert* denotes that using ALBERT target, which consists of mlm and sop targets. <br>
 *--factorized_embedding_parameterization* denotes that using factorized embedding parameterization to untie the embedding size from the hidden layer size. <br>
 *--parameter_sharing* denotes that sharing all parameters (including feed-forward and attention parameters) across layers. <br>
-we provide 4 configuration files for ALBERT model in *models* folder, albert_base_config.json, albert_large_config.json, albert_xlarge_config.json, albert_xxlarge_config.json. <br>
+we provide 4 configuration files for ALBERT model in *models* folder, albert_base_config.json , albert_large_config.json , albert_xlarge_config.json , albert_xxlarge_config.json . <br>
 The example of doing incremental pre-training upon Google's ALBERT pre-trained models of different sizes (See model zoo for pre-trained weights):
 ```
 python3 preprocess.py --corpus_path corpora/book_review_bert.txt --vocab_path models/google_zh_vocab.txt \
@@ -355,7 +364,7 @@ python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_voca
 ```
 
 
-### Fine-tune on downstream tasks
+### Finetune on downstream tasks
 Currently, UER-py supports the many downstream tasks, including text classification, pair classification, document-based question answering, sequence labeling, machine reading comprehension, etc. The encoder used for downstream task should be coincident with the pre-trained model.
 
 #### Classification
