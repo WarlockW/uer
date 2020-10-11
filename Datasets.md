@@ -5,12 +5,11 @@ __Classification__:
 <table>
 <tr align="center"><td> Dataset <td> Link
 <tr align="center"><td> TNEWS <td> https://share.weiyun.com/maExfIeO
-titles
 <tr align="center"><td> CSL <td> https://share.weiyun.com/AZgofTPd
 <tr align="center"><td> CMNLI <td> https://share.weiyun.com/hn3kTeKm 
 <tr align="center"><td> AFQMC <td> https://share.weiyun.com/CdlEKMON
 <tr align="center"><td> IFLYTEK <td> https://share.weiyun.com/ldiLjnZJ
-<tr align="center"><td> CLUEWSC2020 <td>
+<tr align="center"><td> CLUEWSC2020 <td> https://share.weiyun.com/RLL1ShBi
 </table>
 
 __Machine reading comprehension__:
