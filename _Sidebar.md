@@ -8,6 +8,7 @@
   - [Competition solutions](https://github.com/dbiir/UER-py/wiki/Competition-solutions)
     + [CLUE](https://github.com/dbiir/UER-py/wiki/Competition-solutions)
       + [Classification](https://github.com/dbiir/UER-py/wiki/Competition-solutions)
-      + [Reading Comprehension](https://github.com/dbiir/UER-py/wiki/Competition-solutions)
+      + [MRC](https://github.com/dbiir/UER-py/wiki/Competition-solutions)
+      + [NER](https://github.com/dbiir/UER-py/wiki/Competition-solutions)
     + [SMP-EWECT](https://github.com/dbiir/UER-py/wiki/Competition-solutions)
   - [Experiments](https://github.com/dbiir/UER-py/wiki/Experiments)
