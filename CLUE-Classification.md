@@ -67,12 +67,12 @@ The example of fine-tuning and doing inference on CSL dataset:
 python3 run_classifier.py --pretrained_model_path models/mixed_corpus_bert_large_model.bin --vocab_path models/google_zh_vocab.txt --config_path models/bert_large_config.json \
                           --train_path datasets/csl/train.tsv --dev_path datasets/csl/dev.tsv \
                           --output_model_path models/csl_classifier_model.bin \
-                          --epochs_num 3 --batch_size 32 --seq_length 256 --encoder bert
+                          --epochs_num 3 --batch_size 32 --seq_length 384 --encoder bert
 
 python3 inference/run_classifier_infer.py --load_model_path models/csl_classifier_model.bin --vocab_path models/google_zh_vocab.txt --config_path models/bert_large_config.json \
                                           --test_path datasets/csl/test_nolabel.tsv \
                                           --prediction_path datasets/csl/prediction.tsv --labels_num 2 \
-                                          --seq_length 256 --encoder bert
+                                          --seq_length 384 --encoder bert
 ```
 
 ### CLUEWSC2020：
