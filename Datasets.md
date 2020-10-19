@@ -20,6 +20,12 @@ __Machine reading comprehension__:
 <tr align="center"><td> ChID <td> https://share.weiyun.com/Mix4q2ns
 </table>
 
+__Named entity recognition__:
+<table>
+<tr align="center"><td> Dataset <td> Link
+<tr align="center"><td> CLUENER2020 <td> https://share.weiyun.com/smSMtLkn
+</table>
+
 <br/>
 
 ## Baidu ERNIE
