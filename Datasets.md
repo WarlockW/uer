@@ -35,7 +35,7 @@ ERNIE provides 5 Chinese datasets in its first version and use them to test ERNI
 <tr align="center"><td> Dataset <td> Link 
 <tr align="center"><td> ChnSentiCorp <td> in the project
 <tr align="center"><td> LCQMC <td> https://share.weiyun.com/5Fmf2SZ
-<tr align="center"><td> XNLI <td> https://share.weiyun.com/5hQUfx8
+<tr align="center"><td> XNLI <td> https://share.weiyun.com/mcd8EApl
 <tr align="center"><td> MSRA-NER <td> in the project
 <tr align="center"><td> NLPCC-DBQA <td> https://share.weiyun.com/5HJMbih
 </table>
