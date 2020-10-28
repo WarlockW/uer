@@ -642,7 +642,7 @@ usage: run_c3.py [-h] [--pretrained_model_path PRETRAINED_MODEL_PATH]
                  [--epochs_num EPOCHS_NUM] [--report_steps REPORT_STEPS]
                  [--seed SEED]
 ```
-The example of using *run_cmrc.py* for multiple choice task:
+The example of using *run_c3.py* for multiple choice task:
 ```
 python3 run_c3.py --pretrained_model_path models/google_zh_model.bin --vocab_path models/google_zh_vocab.txt \
                   --train_path datasets/c3/train.json --dev_path datasets/c3/dev.json \
