@@ -314,6 +314,17 @@ python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_voca
 The corpus format of GPT is the identical with RoBERTa. We can pre-training GPT through *--encoder gpt* and *--target lm*.
 GPT can use the configuration file of BERT.
 
+#### GPT-2
+The example of pre-processing and pre-training for GPT-2:
+```
+python3 preprocess.py --corpus_path corpora/book_review.txt --vocab_path models/google_zh_vocab.txt \
+                      --dataset_path dataset.pt --processes_num 8 --target lm
+python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt --output_model_path models/output_model.bin \
+                    --config_path models/bert_base_config.json --learning_rate 1e-4 \
+                    --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7 --tie_weight --embedding gpt --encoder gpt2 --target lm
+```
+The corpus format of GPT-2 is the identical with GPT and RoBERTa. Notice that the encoder of GPT-2 is different from the encoder of GPT. The layer normalization is moved to the input of each sub-block and an additional layer normalization is added after the final self-attention block.
+
 #### ELMo
 The example of pre-processing and pre-training for ELMo:
 ```
