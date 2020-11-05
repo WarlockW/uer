@@ -715,8 +715,8 @@ This section firstly summarizes tool scripts and their functions, and then provi
 <tr align="center"><td> convert_bert_from_huggingface_to_uer.py <td> convert the BERT of Huggingface format (PyTorch) to UER format
 <tr align="center"><td> diff_vocab.py <td> Compare two vocabularies
 <tr align="center"><td> dynamic_vocab_adapter.py <td> Change the pre-trained model according to the vocabulary. It can save memory in fine-tuning stage since task-specific vocabulary is much smaller than general-domain vocabulary 
-<tr align="center"><td> extract_embedding.py <td> extract the embedding of the pre-trained model
-<tr align="center"><td> extract_feature.py <td> extract the hidden states of the last of the pre-trained model
+<tr align="center"><td> extract_embeddings.py <td> extract the embedding of the pre-trained model
+<tr align="center"><td> extract_features.py <td> extract the hidden states of the last of the pre-trained model
 <tr align="center"><td> topn_words_indep.py <td> Finding nearest neighbours with context-independent word embedding
 <tr align="center"><td> topn_words_dep.py <td> Finding nearest neighbours with context-dependent word embedding
 </table>
@@ -743,24 +743,24 @@ python3 scripts/cloze_test.py --input_path datasets/cloze_input.txt --pretrained
 ```
 
 ### Feature extractor
-extract_feature.py extracts hidden states of the last encoder layer.
+extract_features.py extracts hidden states of the last encoder layer.
 ```
-usage: extract_feature.py [-h] --input_path INPUT_PATH --pretrained_model_path
-                          PRETRAINED_MODEL_PATH --vocab_path VOCAB_PATH
-                          --output_path OUTPUT_PATH [--seq_length SEQ_LENGTH]
-                          [--batch_size BATCH_SIZE]
-                          [--config_path CONFIG_PATH]
-                          [--embedding {bert,word}]
-                          [--encoder {bert,lstm,gru,cnn,gatedcnn,attn,rcnn,crnn,gpt}]
-                          [--bidirectional] [--subword_type {none,char}]
-                          [--sub_vocab_path SUB_VOCAB_PATH]
-                          [--subencoder {avg,lstm,gru,cnn}]
-                          [--sub_layers_num SUB_LAYERS_NUM]
-                          [--tokenizer {bert,char,space}]
+usage: extract_features.py [-h] --input_path INPUT_PATH --pretrained_model_path
+                         PRETRAINED_MODEL_PATH --vocab_path VOCAB_PATH
+                         --output_path OUTPUT_PATH [--seq_length SEQ_LENGTH]
+                         [--spm_model_path SPM_MODEL_PATH]
+                         [--batch_size BATCH_SIZE]
+                         [--config_path CONFIG_PATH]
+                         [--embedding {bert,word}]
+                         [--encoder {bert,lstm,gru,cnn,gatedcnn,attn,rcnn,crnn,gpt,gpt2}]
+                         [--bidirectional] [--parameter_sharing] 
+                         [--factorized_embedding_parameterization]
+                         [--tie_weights]
+                         [--tokenizer {bert,char,space}]
 ```
-The example of using extract_feature.py：
+The example of using extract_features.py：
 ```
-python3 scripts/extract_feature.py --input_path datasets/cloze_input.txt --vocab_path models/google_zh_vocab.txt \
+python3 scripts/extract_features.py --input_path datasets/cloze_input.txt --vocab_path models/google_zh_vocab.txt \
                                    --pretrained_model_path models/google_zh_model.bin --output_path feature_output.pt
 ```
 
