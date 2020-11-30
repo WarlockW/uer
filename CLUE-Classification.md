@@ -103,3 +103,26 @@ python3 inference/run_classifier_infer.py --load_model_path models/tnews_classif
                                           --prediction_path datasets/tnews/prediction.tsv --labels_num 15 \
                                           --seq_length 128 --encoder bert
 ```
+
+### OCNLI
+We firstly do multi-task learning. We select XNLI and CMNLI as auxiliary tasks:
+```
+python3 run_mt_classifier.py --pretrained_model_path models/mixed_corpus_bert_large_model.bin --vocab_path models/google_zh_vocab.txt --config_path models/bert_large_config.json \
+                             --dataset_path_list datasets/ocnli/ datasets/cmnli/ datasets/xnli/ \
+                             --output_model_path models/ocnli_multitask_classifier_model.bin \
+                             --epochs_num 1 --batch_size 64 --encoder bert
+```
+Then we load *ocnli_multitask_classifier_model.bin* and fine-tune it on OCNLI:
+```
+python3 run_classifier.py --pretrained_model_path models/ocnli_multitask_classifier_model.bin --vocab_path models/google_zh_vocab.txt --config_path models/bert_large_config.json \
+                          --train_path datasets/ocnli/train.tsv --dev_path datasets/ocnli/dev.tsv \
+                          --output_model_path models/ocnli_classifier_model.bin \
+                          --epochs_num 1 --batch_size 64 --encoder bert
+```
+Then we do inference with *ocnli_classifier_model.bin*:
+```
+python3 inference/run_classifier_infer.py --load_model_path models/ocnli_classifier_model.bin --vocab_path models/google_zh_vocab.txt --config_path models/bert_large_config.json \
+                                          --test_path datasets/ocnli/test_nolabel.tsv \
+                                          --prediction_path datasets/ocnli/prediction.tsv --labels_num 3 \
+                                          --seq_length 128 --encoder bert
+```
