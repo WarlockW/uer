@@ -20,12 +20,12 @@ python3 run_chid.py --pretrained_model_path models/mixed_corpus_bert_large_model
                     --config_path models/bert_large_config.json \                    
                     --train_path datasets/chid/train.json --train_answer_path datasets/chid/train_answer.json \
                     --dev_path datasets/chid/dev.json --dev_answer_path datasets/chid/dev_answer.json \
-                    --batch_size 32 --seq_length 256 --epochs_num 8 --report_steps 1000 --encoder bert 
+                    --batch_size 32 --seq_length 64 --max_choices_num 10 --epochs_num 8 --report_steps 1000 --encoder bert 
 
 python3 inference/run_chid_infer.py --load_model_path models/multichoice_model.bin --vocab_path models/google_zh_vocab.txt \
                                     --config_path models/bert_large_config.json --test_path datasets/chid/test.json \
                                     --prediction_path datasets/chid/prediction.json \
-                                    --seq_length 256 --max_choices_num 10 --encoder bert
+                                    --seq_length 64 --max_choices_num 10 --encoder bert
 ```
 
 ### C3
