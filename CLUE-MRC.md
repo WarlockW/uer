@@ -17,7 +17,7 @@ python3  inference/run_cmrc_infer.py --load_model_path models/cmrc_model.bin --v
 The example of fine-tuning and doing inference on ChID dataset with [*mixed_corpus_bert_xlarge_model.bin*](https://share.weiyun.com/J9rj9WRB):
 ```
 python3 run_chid.py --pretrained_model_path models/mixed_corpus_bert_xlarge_model.bin --vocab_path models/google_zh_vocab.txt \
-                    --config_path models/bert_xlarge_config.json \                    
+                    --config_path models/bert_xlarge_config.json \
                     --train_path datasets/chid/train.json --train_answer_path datasets/chid/train_answer.json \
                     --dev_path datasets/chid/dev.json --dev_answer_path datasets/chid/dev_answer.json \
                     --batch_size 16 --seq_length 64 --max_choices_num 10 --epochs_num 3 --report_steps 1000 --encoder bert 
