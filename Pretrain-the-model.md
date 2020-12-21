@@ -1,4 +1,3 @@
-### Pretrain the model
 ```
 usage: pretrain.py [-h] [--dataset_path DATASET_PATH]
                    [--vocab_path VOCAB_PATH] [--spm_model_path SPM_MODEL_PATH]
