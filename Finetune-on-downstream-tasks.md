@@ -1,4 +1,3 @@
-### Finetune on downstream tasks
 Currently, UER-py supports the many downstream tasks, including text classification, pair classification, document-based question answering, sequence labeling, machine reading comprehension, etc. The encoder used for downstream task should be coincident with the pre-trained model.
 
 #### Classification
