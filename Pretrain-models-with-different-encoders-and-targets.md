@@ -1,4 +1,3 @@
-- ### Pretrain models with different encoders and targets
 UER-py allows users to combine different components (e.g. embeddings, encoders, and targets). Here are some examples of trying different combinations.
 
 #### RoBERTa
