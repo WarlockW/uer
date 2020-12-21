@@ -1,4 +1,3 @@
-### Preprocess the data
 ```
 usage: preprocess.py [-h] --corpus_path CORPUS_PATH [--vocab_path VOCAB_PATH]
                      [--spm_model_path SPM_MODEL_PATH]
