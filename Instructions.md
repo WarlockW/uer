@@ -1,4 +1,4 @@
-## Preprocess the data
+## [Preprocess the data](https://github.com/dbiir/UER-py/wiki/Preprocess-the-data)
 ```
 usage: preprocess.py [-h] --corpus_path CORPUS_PATH [--vocab_path VOCAB_PATH]
                      [--spm_model_path SPM_MODEL_PATH]
@@ -38,7 +38,7 @@ Sequence length is specified in pre-processing stage by *--seq_length* . The def
 Vocabulary and tokenizer are also specified in pre-processing stage. More details are discussed in *Tokenization and vocabulary* section.
 <br><br>
 
-## Pretrain the model
+## [Pretrain the model](https://github.com/dbiir/UER-py/wiki/Pretrain-the-model)
 ```
 usage: pretrain.py [-h] [--dataset_path DATASET_PATH]
                    [--vocab_path VOCAB_PATH] [--spm_model_path SPM_MODEL_PATH]
@@ -221,7 +221,7 @@ python3 pretrain.py --dataset_path rmrb_word_dataset.pt --vocab_path models/rmrb
 ```
 <br>
 
-## Pretrain models with different encoders and targets
+## [Pretrain models with different encoders and targets](https://github.com/dbiir/UER-py/wiki/Pretrain-models-with-different-encoders-and-targets)
 UER-py allows users to combine different components (e.g. embeddings, encoders, and targets). Here are some examples of trying different combinations.
 
 #### RoBERTa
@@ -380,7 +380,7 @@ python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_voca
 ```
 <br>
 
-## Finetune on downstream tasks
+## [Finetune on downstream tasks](https://github.com/dbiir/UER-py/wiki/Finetune-on-downstream-tasks)
 Currently, UER-py supports the many downstream tasks, including text classification, pair classification, document-based question answering, sequence labeling, machine reading comprehension, etc. The encoder used for downstream task should be coincident with the pre-trained model.
 
 #### Classification
@@ -720,7 +720,7 @@ python3  inference/run_c3_infer.py --load_model_path models/multichoice_model.bi
 ```
 <br>
 
-## Tokenization and vocabulary
+## [Tokenization and vocabulary](https://github.com/dbiir/UER-py/wiki/Tokenization-and-vocabulary)
 UER-py supports multiple tokenization strategies. The most commonly used strategy is BertTokenizer (which is also the default strategy). There are two ways to use BertTokenizer: the first is to specify the vocabulary path through *--vocab_path* and then use BERT's original tokenization strategy to segment sentences according to the vocabulary; the second is to specify the sentencepiece model path by *--spm_model_path* . We import sentencepiece, load the sentencepiece model, and segment the sentence. If user specifies *--spm_model_path*, sentencepiece is used for tokenization. Otherwise, user must specify *--vocab_path* and BERT's original tokenization strategy is used for tokenization. <br>
 In addition, the project also provides CharTokenizer and SpaceTokenizer. CharTokenizer tokenizes the text by character. If the text is all Chinese character, CharTokenizer and BertTokenizer are equivalent. CharTokenizer is simple and is faster than BertTokenizer. SpaceTokenizer separates the text by space. One can preprocess the text in advance (such as word segmentation), separate the text by space, and then use SpaceTokenizer. If user specifies *--spm_model_path*, sentencepiece is used for tokenization. Otherwise, user must specify *--vocab_path* and BERT's original tokenization strategy is used for tokenization. For CharTokenizer and SpaceTokenizer, if user specifies *--spm_model_path*, then the vocabulary in sentencepiece model is used. Otherwise, user must specify the vocabulary through *--vocab_path*.
 
@@ -730,7 +730,7 @@ The pre-processing, pre-training, and fine-tuning stages all need vocabulary, wh
 
 <br/>
 
-## Scripts
+## [Scripts](https://github.com/dbiir/UER-py/wiki/Scripts)
 UER-py provides abundant tool scripts for pre-training models.
 This section firstly summarizes tool scripts and their functions, and then provides using examples of some scripts.
 
@@ -754,7 +754,7 @@ This section firstly summarizes tool scripts and their functions, and then provi
 </table>
 
 
-### Cloze test
+#### Cloze test
 cloze_test.py predicts masked words. Top n words are returned.
 ```
 usage: cloze_test.py [-h] [--pretrained_model_path PRETRAINED_MODEL_PATH]
@@ -774,7 +774,7 @@ python3 scripts/cloze_test.py --input_path datasets/cloze_input.txt --pretrained
 
 ```
 
-### Feature extractor
+#### Feature extractor
 extract_features.py extracts hidden states of the last encoder layer.
 ```
 usage: extract_features.py [-h] --input_path INPUT_PATH --pretrained_model_path
@@ -796,7 +796,7 @@ python3 scripts/extract_features.py --input_path datasets/cloze_input.txt --voca
                                    --pretrained_model_path models/google_zh_model.bin --output_path feature_output.pt
 ```
 
-### Finding nearest neighbours
+#### Finding nearest neighbours
 Pre-trained models can learn high-quality word embeddings. Traditional word embeddings such as word2vec and GloVe assign each word a fixed vector (context-independent word embedding). However, polysemy is a pervasive phenomenon in human language, and the meanings of a polysemous word depend on the context. To this end, we use a the hidden state in pre-trained models to represent a word. It is noticeable that Google BERT is a character-based model. To obtain real word embedding (not character embedding), Users should download our [word-based BERT model](https://share.weiyun.com/5s4HVMi) and [vocabulary](https://share.weiyun.com/5NWYbYn).
 The example of using scripts/topn_words_indep.py to find nearest neighbours for context-independent word embedding (character-based and word-based models)：
 ```
@@ -832,7 +832,7 @@ sentn wordn
 ```
 Sentence and word are splitted by \t. 
 
-### Text generator
+#### Text generator
 We could use *generate.py* to generate text. Given a few words or sentences, *generate.py* can continue writing. The example of using *generate.py*:
 ```
 python3 scripts/generate.py --pretrained_model_path models/gpt_model.bin --vocab_path models/google_zh_vocab.txt 
