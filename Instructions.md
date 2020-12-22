@@ -1,16 +1,19 @@
-- ### [Preprocess the data](https://github.com/dbiir/UER-py/wiki/Preprocess-the-data)
+UER-py supports a wide range of pre-training models and downstream tasks. This section shows the comprehensive use-cases when using the UER-py. 
 
 
-- ### [Pretrain the model](https://github.com/dbiir/UER-py/wiki/Pretrain-the-model)
+- #### [Preprocess the data](https://github.com/dbiir/UER-py/wiki/Preprocess-the-data)
 
 
-- ### [Pretrain models with different encoders and targets](https://github.com/dbiir/UER-py/wiki/Pretrain-models-with-different-encoders-and-targets)
+- #### [Pretrain the model](https://github.com/dbiir/UER-py/wiki/Pretrain-the-model)
 
 
-- ### [Finetune on downstream tasks](https://github.com/dbiir/UER-py/wiki/Finetune-on-downstream-tasks)
+- #### [Pretrain models with different encoders and targets](https://github.com/dbiir/UER-py/wiki/Pretrain-models-with-different-encoders-and-targets)
 
 
-- ### [Tokenization and vocabulary](https://github.com/dbiir/UER-py/wiki/Tokenization-and-vocabulary)
+- #### [Finetune on downstream tasks](https://github.com/dbiir/UER-py/wiki/Finetune-on-downstream-tasks)
 
 
-- ### [Scripts](https://github.com/dbiir/UER-py/wiki/Scripts)
+- #### [Tokenization and vocabulary](https://github.com/dbiir/UER-py/wiki/Tokenization-and-vocabulary)
+
+
+- #### [Scripts](https://github.com/dbiir/UER-py/wiki/Scripts)
