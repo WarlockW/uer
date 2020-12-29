@@ -35,7 +35,7 @@ python3 run_classifier.py --pretrained_model_path models/google_zh_model.bin --v
 ```
 The example of using *inference/run_classifier_infer.py* to do inference:
 ```
-python3 inference/run_classifier_infer.py --load_model_path models/classifier_model.bin --vocab_path models/google_zh_vocab.txt \
+python3 inference/run_classifier_infer.py --load_model_path models/finetuned_model.bin --vocab_path models/google_zh_vocab.txt \
                                           --test_path datasets/douban_book_review/test_nolabel.tsv \
                                           --prediction_path datasets/douban_book_review/prediction.tsv --labels_num 2 \
                                           --seq_length 128 --output_logits --output_prob \
@@ -64,7 +64,7 @@ python3 run_classifier.py --pretrained_model_path models/google_zh_albert_base_m
 The performance of ALBERT is sensitive to hyper-parameter settings. <br>
 The example of doing inference for ALBERT:
 ```
-python3 inference/run_classifier_infer.py --load_model_path models/classifier_model.bin --vocab_path models/google_zh_vocab.txt \
+python3 inference/run_classifier_infer.py --load_model_path models/finetuned_model.bin --vocab_path models/google_zh_vocab.txt \
                                           --config_path models/albert_base_config.json \
                                           --test_path datasets/douban_book_review/test_nolabel.tsv \
                                           --prediction_path datasets/douban_book_review/prediction.tsv --labels_num 2 \
