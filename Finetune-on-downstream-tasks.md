@@ -166,7 +166,7 @@ python3 run_dbqa.py --pretrained_model_path models/google_zh_albert_base_model.b
 ```
 The example of doing inference for ALBERT:
 ```
-python3 inference/run_classifier_infer.py --load_model_path models/dbqa_model.bin --vocab_path models/google_zh_vocab.txt \
+python3 inference/run_classifier_infer.py --load_model_path models/finetuned_model.bin --vocab_path models/google_zh_vocab.txt \
                                           --config_path models/albert_base_config.json \
                                           --test_path datasets/nlpcc-dbqa/test_nolabel.tsv \
                                           --prediction_path datasets/nlpcc-dbqa/prediction.tsv --labels_num 2 \
@@ -200,7 +200,7 @@ python3 run_ner.py --pretrained_model_path models/google_zh_model.bin --vocab_pa
 ```
 The example of doing inference:
 ```
-python3 inference/run_ner_infer.py --load_model_path models/ner_model.bin --vocab_path models/google_zh_vocab.txt \
+python3 inference/run_ner_infer.py --load_model_path models/finetuned_model.bin --vocab_path models/google_zh_vocab.txt \
                                           --test_path datasets/msra_ner/test_nolabel.tsv \
                                           --prediction_path datasets/msra_ner/prediction.tsv \
                                           --label2id_path datasets/msra_ner/label2id.json \
@@ -217,7 +217,7 @@ python3 run_ner.py --pretrained_model_path models/google_zh_albert_base_model.bi
 ```
 The example of doing inference for ALBERT:
 ```
-python3 inference/run_ner_infer.py --load_model_path models/ner_model.bin --vocab_path models/google_zh_vocab.txt \
+python3 inference/run_ner_infer.py --load_model_path models/finetuned_model.bin --vocab_path models/google_zh_vocab.txt \
                                           --config_path models/albert_base_config.json \
                                           --test_path datasets/msra_ner/test_nolabel.tsv \
                                           --prediction_path datasets/msra_ner/prediction.tsv \
@@ -254,7 +254,7 @@ The *train.json* and *dev.json* are of squad-style. Train set and development se
 
 The example of doing inference:
 ```
-python3  inference/run_cmrc_infer.py --load_model_path models/cmrc_model.bin --vocab_path models/google_zh_vocab.txt \
+python3  inference/run_cmrc_infer.py --load_model_path models/finetuned_model.bin --vocab_path models/google_zh_vocab.txt \
                                      --test_path datasets/cmrc2018/test.json \
                                      --prediction_path datasets/cmrc2018/prediction.json \
                                      --embedding word_pos_seg --encoder transformer --mask fully_visible
@@ -271,7 +271,7 @@ python3 run_cmrc.py --pretrained_model_path models/google_zh_albert_xxlarge_mode
 ```
 The example of doing inference for ALBERT:
 ```
-python3 inference/run_cmrc_infer.py --load_model_path models/cmrc_model.bin --vocab_path models/google_zh_vocab.txt \
+python3 inference/run_cmrc_infer.py --load_model_path models/finetuned_model.bin --vocab_path models/google_zh_vocab.txt \
                                      --config_path models/albert_xxlarge_config.json \
                                      --test_path datasets/cmrc2018/test.json \
                                      --prediction_path datasets/cmrc2018/prediction.json \
@@ -311,7 +311,7 @@ The question in C3 dataset contains at most 4 candidate answers. *--max_choices_
 
 The example of doing inference:
 ```
-python3 inference/run_c3_infer.py --load_model_path models/multichoice_model.bin --vocab_path models/google_zh_vocab.txt \
+python3 inference/run_c3_infer.py --load_model_path models/finetuned_model.bin --vocab_path models/google_zh_vocab.txt \
                                   --test_path datasets/c3/test.json \
                                   --prediction_path datasets/c3/prediction.json --max_choices_num 4 \
                                   --embedding word_pos_seg --encoder transformer --mask fully_visible
@@ -328,7 +328,7 @@ python3 run_c3.py --pretrained_model_path models/google_zh_albert_xlarge_model.b
 
 The example of doing inference for ALBERT-large:
 ```
-python3  inference/run_c3_infer.py --load_model_path models/multichoice_model.bin --vocab_path models/google_zh_vocab.txt \
+python3  inference/run_c3_infer.py --load_model_path models/finetuned_model.bin --vocab_path models/google_zh_vocab.txt \
                                    --config_path models/albert_xlarge_config.json \
                                    --test_path datasets/c3/test.json \
                                    --prediction_path datasets/c3/prediction.json --max_choices_num 4 \
