@@ -110,7 +110,8 @@ python3 preprocess.py --corpus_path corpora/book_review.txt --vocab_path models/
 python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt --output_model_path models/output_model.bin \
                     --config_path models/bert_base_config.json --learning_rate 1e-4 \
                     --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7 --tie_weight \
-                    --embedding word_pos --encoder transformer --mask causal --layernorm_positioning pre --target lm
+                    --embedding word_pos --remove_embedding_layernorm \
+                    --encoder transformer --mask causal --layernorm_positioning pre --target lm
 ```
 The corpus format of GPT-2 is the identical with GPT and RoBERTa. Notice that the encoder of GPT-2 is different from the encoder of GPT. The layer normalization is moved to the input of each sub-block and an additional layer normalization is added after the final self-attention block.
 
