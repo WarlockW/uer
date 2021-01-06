@@ -1,3 +1,4 @@
+[**English**](https://github.com/dbiir/UER-py/wiki/Datasets) | [**中文**](https://github.com/dbiir/UER-py/wiki/Datasets_ZH)
 ## CLUE benchmark
 [CLUE](https://www.cluebenchmarks.com/) is a Chinese Language Understanding Evaluation benchmark which contains classification and machine reading comprehension tasks. The datasets in CLUE are in JSON format. For classification datasets, we convert the JSON format to TSV format so that UER can load them directly. For machine reading comprehension, the original format is retained and the dataset pre-processing is included in the project.
 
@@ -39,17 +40,4 @@ ERNIE provides 5 Chinese datasets in its first version and use them to test ERNI
 <tr align="center"><td> XNLI <td> https://share.weiyun.com/mcd8EApl
 <tr align="center"><td> MSRA-NER <td> in the project
 <tr align="center"><td> NLPCC-DBQA <td> https://share.weiyun.com/5HJMbih
-</table>
-
-<br/>
-
-## More datasets
-We collected a range of datasets of multiple sources. Douban book review is from [BNU](https://embedding.github.io/evaluation/); Online shopping review is annotated by ourself; THUCNews is from [text-classification-cnn-rnn project](https://github.com/gaussic/text-classification-cnn-rnn); Sina Weibo review is from [ChineseNlpCorpus project](https://github.com/SophonPlus/ChineseNlpCorpus)
-
-<table>
-<tr align="center"><td> Dataset <td> Link
-<tr align="center"><td> Douban book review <td> in the project
-<tr align="center"><td> Online shopping review <td> https://share.weiyun.com/5xxYiig
-<tr align="center"><td> Sina Weibo <td> https://share.weiyun.com/5lEsv0w
-<tr align="center"><td> THUCNews <td> https://share.weiyun.com/5jPpgBr
 </table>
