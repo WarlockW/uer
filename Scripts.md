@@ -1,28 +1,25 @@
-UER-py provides abundant tool scripts for pre-training models.
-This section firstly summarizes tool scripts and their functions, and then provides using examples of some scripts.
-
+UER-py 为预训练模型提供了丰富的脚本。这里首先列举项目包括的脚本以及它们的功能，然后详细介绍几个脚本的使用方式。
 <table>
-<tr align="center"><th> Script <th> Function description
-<tr align="center"><td> average_model.py <td> Take the average of pre-trained models. A frequently-used ensemble strategy for deep learning models 
-<tr align="center"><td> build_vocab.py <td> Build vocabulary (multi-processing supported)
-<tr align="center"><td> check_model.py <td> Check the model (single GPU or multiple GPUs)
-
-<tr align="center"><td> cloze_test.py <td> Randomly mask a word and predict it, top n words are returned
-<tr align="center"><td> convert_bert_from_uer_to_google.py <td> convert the BERT of UER format to Google format (TF)
-<tr align="center"><td> convert_bert_from_uer_to_huggingface.py <td> convert the BERT of UER format to Huggingface format (PyTorch)
-<tr align="center"><td> convert_bert_from_google_to_uer.py <td> convert the BERT of Google format (TF) to UER format
-<tr align="center"><td> convert_bert_from_huggingface_to_uer.py <td> convert the BERT of Huggingface format (PyTorch) to UER format
-<tr align="center"><td> diff_vocab.py <td> Compare two vocabularies
-<tr align="center"><td> dynamic_vocab_adapter.py <td> Change the pre-trained model according to the vocabulary. It can save memory in fine-tuning stage since task-specific vocabulary is much smaller than general-domain vocabulary 
-<tr align="center"><td> extract_embeddings.py <td> extract the embedding of the pre-trained model
-<tr align="center"><td> extract_features.py <td> extract the hidden states of the last of the pre-trained model
-<tr align="center"><td> topn_words_indep.py <td> Finding nearest neighbours with context-independent word embedding
-<tr align="center"><td> topn_words_dep.py <td> Finding nearest neighbours with context-dependent word embedding
+<tr align="center"><th> 脚本名 <th> 功能描述
+<tr align="center"><td> average_model.py <td> 对多个模型的参数取平均，比如对不同训练步数的模型参数取平均，增加模型的鲁棒性
+<tr align="center"><td> build_vocab.py <td> 根据给定的语料和分词器构造词典
+<tr align="center"><td> check_model.py <td> 查看模型是多GPU版本，还是单GPU版本，测试加载单GPU版本模型是否成功
+<tr align="center"><td> cloze_test.py <td> 随机遮住单词并进行预测，返回前n个预测结果
+<tr align="center"><td> convert_bert_from_uer_to_google.py <td> 将本项目的预训练BERT模型转到Google官方的格式
+<tr align="center"><td> convert_bert_from_uer_to_huggingface.py <td> 将本项目的预训练BERT模型转到Huggingface的格式
+<tr align="center"><td> convert_bert_from_google_to_uer.py <td> 将Google官方预训练BERT模型的格式转到本项目的格式
+<tr align="center"><td> convert_bert_from_huggingface_to_uer.py <td> 将Huggingface预训练BERT模型的格式转到本项目的格式
+<tr align="center"><td> convert_albert_from_brightmart_to_uer.py <td> 将brightmart的预训练AlBERT模型转到本项目的格式
+<tr align="center"><td> diff_vocab.py <td> 比较两个词典的重合度
+<tr align="center"><td> dynamic_vocab_adapter.py <td> 根据词典调整模型，使模型和词典配套
+<tr align="center"><td> extract_embeddings.py <td> 抽取预训练模型的embedding层
+<tr align="center"><td> extract_features.py <td> 抽取预训练模型的最后一层隐层表示
+<tr align="center"><td> topn_words_dep.py <td> 上下文相关的以词搜词，根据最后一层的隐层表示进行最近邻检索，详细的检索原理在下面进行介绍
+<tr align="center"><td> topn_words_indep.py <td> 上下文无关的以词搜词，根据embedding层词向量进行最近邻检索
 </table>
 
-
-#### Cloze test
-cloze_test.py predicts masked words. Top n words are returned.
+#### 完形填空
+*cloze_test.py* 基于MLM任务，对遮住的词进行预测，返回前topn最有可能的词。可以在cloze_test.py的基础上进行数据增强等操作
 ```
 usage: cloze_test.py [-h] [--pretrained_model_path PRETRAINED_MODEL_PATH]
                 [--vocab_path VOCAB_PATH] [--input_path INPUT_PATH]
@@ -34,15 +31,15 @@ usage: cloze_test.py [-h] [--pretrained_model_path PRETRAINED_MODEL_PATH]
                 [--subencoder_type {avg,lstm,gru,cnn}]
                 [--tokenizer {bert,char,word,space}] [--topn TOPN]
 ```
-The example of using cloze_test.py：
+*cloze_test.py* 使用示例：
 ```
 python3 scripts/cloze_test.py --input_path datasets/cloze_input.txt --pretrained_model_path models/google_zh_model.bin \
                               --vocab_path models/google_zh_vocab.txt --output_path output.txt
 
 ```
 
-#### Feature extractor
-extract_features.py extracts hidden states of the last encoder layer.
+#### 特征抽取
+extract_features.py 输出每个位置编码层最后一层的向量。
 ```
 usage: extract_features.py [-h] --input_path INPUT_PATH --pretrained_model_path
                          PRETRAINED_MODEL_PATH --vocab_path VOCAB_PATH
@@ -57,30 +54,28 @@ usage: extract_features.py [-h] --input_path INPUT_PATH --pretrained_model_path
                          [--tie_weights]
                          [--tokenizer {bert,char,space}]
 ```
-The example of using extract_features.py：
+*extract_features.py* 使用示例：
 ```
 python3 scripts/extract_features.py --input_path datasets/cloze_input.txt --vocab_path models/google_zh_vocab.txt \
                                    --pretrained_model_path models/google_zh_model.bin --output_path feature_output.pt
 ```
 
-#### Finding nearest neighbours
-Pre-trained models can learn high-quality word embeddings. Traditional word embeddings such as word2vec and GloVe assign each word a fixed vector (context-independent word embedding). However, polysemy is a pervasive phenomenon in human language, and the meanings of a polysemous word depend on the context. To this end, we use a the hidden state in pre-trained models to represent a word. It is noticeable that Google BERT is a character-based model. To obtain real word embedding (not character embedding), Users should download our [word-based BERT model](https://share.weiyun.com/5s4HVMi) and [vocabulary](https://share.weiyun.com/5NWYbYn).
-The example of using scripts/topn_words_indep.py to find nearest neighbours for context-independent word embedding (character-based and word-based models)：
+#### 以词搜词
+预训练模型能够产生高质量的词向量。传统的词向量（比如word2vec和GloVe）给定一个单词固定的向量（上下文无关向量）。然而，一词多义是人类语言中的常见现象。一个单词意思依赖于其上下文。因此，我们可以使用预训练模型的隐层去表示一个单词。值得注意的是原始的Google中文预训练模型是基于字的。如果需要真正的词向量而不是字向量，用户需要下载[基于词的BERT模型](https://share.weiyun.com/5s4HVMi)和[词典](https://share.weiyun.com/5NWYbYn)。下面给出上下文无关词向量以词搜词scripts/topn_words_indep.py示例（基于字和基于词）：
 ```
 python3 scripts/topn_words_indep.py --pretrained_model_path models/google_zh_model.bin --vocab_path models/google_zh_vocab.txt \
                                     --cand_vocab_path models/google_zh_vocab.txt --target_words_path target_words.txt
 python3 scripts/topn_words_indep.py --pretrained_model_path models/bert_wiki_word_model.bin --vocab_path models/wiki_word_vocab.txt \
                                     --cand_vocab_path models/wiki_word_vocab.txt --target_words_path target_words.txt
 ```
-Context-independent word embedding is obtained by model's embedding layer.
-The format of the target_words.txt is as follows:
+上下文无关词向量来自于模型的embedding层，target_words.txt的格式如下所示：
 ```
 word-1
 word-2
 ...
 word-n
 ```
-The example of using scripts/topn_words_dep.py to find nearest neighbours for context-dependent word embedding (character-based and word-based models)：
+下面给出上下文相关词向量以词搜词scripts/topn_words_dep.py示例（基于字和基于词）：
 ```
 python3 scripts/topn_words_dep.py --pretrained_model_path models/google_zh_model.bin --vocab_path models/google_zh_vocab.txt \
                                   --cand_vocab_path models/google_zh_vocab.txt --sent_path target_words_with_sentences.txt --config_path models/bert_base_config.json \
@@ -89,21 +84,21 @@ python3 scripts/topn_words_dep.py --pretrained_model_path models/bert_wiki_word_
                                   --cand_vocab_path models/wiki_word_vocab.txt --sent_path target_words_with_sentences.txt --config_path models/bert_base_config.json \
                                   --batch_size 256 --seq_length 32 --tokenizer space
 ```
-We substitute the target word with other words in the vocabulary and feed the sentences into the pretrained model. Hidden state is used as the context-dependent embedding of a word. Users should do word segmentation manually and use space tokenizer if word-based model is used. The format of 
-target_words_with_sentences.txt is as follows:
+我们把目标词替换成词典中其它的词，将序列送入网络。网络的隐层可以看作是上下文相关的词向量。注意到如果用户用基于词的模型，需要对target_words_with_sentences.txt文件的句子进行分词。这个文件的格式如下：
 ```
 sent1 word1
 sent1 word1
 ...
 sentn wordn
 ```
-Sentence and word are splitted by \t. 
+句子与单词之间使用\t分割
 
-#### Text generator
-We could use *generate.py* to generate text. Given a few words or sentences, *generate.py* can continue writing. The example of using *generate.py*:
+#### 文本生成
+我们可以使用 *generate.py* 来生成文本，给定一些词句，使用*generate.py* 可以进行续写。
+ *generate.py* 使用示例：
 ```
 python3 scripts/generate.py --pretrained_model_path models/gpt_model.bin --vocab_path models/google_zh_vocab.txt 
                             --input_path story_beginning.txt --output_path story_full.txt --config_path models/bert_base_config.json 
                             --encoder gpt --target lm --seq_length 128  
 ```
-where *story_beginning* contains the beginning of a text. One can use any models pre-trained with LM target, such as [GPT trained on mixed large corpus](https://share.weiyun.com/51nTP8V). By now we only provide a vanilla version of generator. More mechanisms will be added for better performance and efficiency.
+*story_beginning* 包含了文本的开头，*--pretrained_model_path* 可以使用经过LM目标预先训练的任何模型，例如[在混合大型语料库上训练的GPT]（https://share.weiyun.com/51nTP8V）。到目前为止，我们仅提供普通版本的文本生成器，我们之后将添加更多机制以提高性能和效率。
