@@ -101,4 +101,4 @@ python3 scripts/generate.py --pretrained_model_path models/gpt_model.bin --vocab
                             --input_path story_beginning.txt --output_path story_full.txt --config_path models/bert_base_config.json 
                             --encoder gpt --target lm --seq_length 128  
 ```
-*story_beginning* 包含了文本的开头，*--pretrained_model_path* 可以使用经过LM目标预先训练的任何模型，例如[在混合大型语料库上训练的GPT]（https://share.weiyun.com/51nTP8V）。到目前为止，我们仅提供普通版本的文本生成器，我们之后将添加更多机制以提高性能和效率。
+*story_beginning* 包含了文本的开头，*--pretrained_model_path* 可以使用经过LM目标预先训练的任何模型，例如 [在混合大型语料库上训练的GPT](https://share.weiyun.com/51nTP8V)。到目前为止，我们仅提供普通版本的文本生成器，我们之后将添加更多机制以提高性能和效率。
