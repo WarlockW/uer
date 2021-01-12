@@ -1,7 +1,7 @@
 [**English**](https://github.com/dbiir/UER-py/wiki/Datasets) | [**中文**](https://github.com/dbiir/UER-py/wiki/下游任务数据集)
 
 ## CLUE benchmark
-[CLUE](https://www.cluebenchmarks.com/) is a Chinese Language Understanding Evaluation benchmark which contains classification, sequence labeling, and machine reading comprehension tasks. The datasets in CLUE are in JSON format. For classification and sequence labeling datasets, we convert the JSON format to TSV format so that UER can load them directly. For machine reading comprehension, the original format is retained and the dataset pre-processing is included in the project.
+[CLUE](https://www.cluebenchmarks.com/) is a Chinese Language Understanding Evaluation benchmark which contains classification, named entity recognition, and machine reading comprehension tasks. The datasets in CLUE are in JSON format. For classification and named entity recognition datasets, we convert the JSON format to TSV format so that UER can load them directly. For machine reading comprehension, the original format is retained and the dataset pre-processing is included in the project.
 
 __Classification__:
 <table>
