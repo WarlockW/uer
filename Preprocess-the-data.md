@@ -18,7 +18,9 @@ The example of pre-processing on a single machine：
 python3 preprocess.py --corpus_path corpora/book_review_bert.txt --vocab_path models/google_zh_vocab.txt --dataset_path dataset.pt \
                       --processes_num 8 --target bert
 ```
-If multiple machines are available, users can run *preprocess.py* on one machine and copy the *dataset.pt* to other machines. 
+If multiple machines are available, users can run *preprocess.py* on one machine and copy the *dataset.pt* to other machines. <br>
+The output of pre-processing stage is *dataset.pt* (*--dataset_path*), which is the input of *pretrain.py* .
+
 
 We need to specify model's target (*--target*) in pre-processing stage since different targets require different data formats. Currently, UER-py consists of the following target modules:
 - lm: language model
@@ -27,6 +29,8 @@ We need to specify model's target (*--target*) in pre-processing stage since dif
 - bilm: bi-directional language model
 - bert: masked language model + next sentence prediction
 - albert: masked language model + sentence order prediction
+
+Notice that we should use the corpus (*--corpus_path*) whose format is in accordance with the target. More examples are found in [Pretrain models with different encoders and targets](https://github.com/dbiir/UER-py/wiki/Pretrain-models-with-different-encoders-and-targets)
 
 *--processes_num n* denotes that n processes are used for pre-processing. More processes can speed up the preprocess stage but lead to more memory consumption. <br>
 *--dynamic_masking* denotes that the words are masked during the pre-training stage, which is used in RoBERTa. <br>
