@@ -1,3 +1,5 @@
+[**English**](https://github.com/dbiir/UER-py/wiki/Modelzoo) | [**中文**](https://github.com/dbiir/UER-py/wiki/模型仓库)
+
 With the help of UER, we pre-trained models with different corpora, encoders, and targets. All pre-trained models can be loaded by UER directly. More pre-trained models will be released in the near future. Unless otherwise noted, Chinese pre-trained models use *models/google_zh_vocab.txt* as vocabulary, which is used in original BERT project. *models/bert_base_config.json* is used as configuration file in default. Commonly-used vocabulary and configuration files are included in *models* folder and users do not need to download them.
 
 Pre-trained Chinese models from Google (in UER format):
