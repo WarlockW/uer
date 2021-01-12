@@ -1,3 +1,4 @@
+[**English**](https://github.com/dbiir/UER-py/wiki/Competition solutions) | [**中文**](https://github.com/dbiir/UER-py/wiki/竞赛方案)
 UER-py has been used in winning solutions of many NLP competitions. In this section, we provide some examples of using UER-py to achieve SOTA results on NLP competitions.
 
 - Chinese Language Understanding Evaluation benchmark, CLUE
