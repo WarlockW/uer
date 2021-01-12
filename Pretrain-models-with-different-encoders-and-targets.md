@@ -99,7 +99,7 @@ python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_voca
                     --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7 \
                     --embedding word_pos --encoder transformer --mask causal --target lm
 ```
-The corpus format of GPT is the identical with RoBERTa. We can pre-training GPT through *--encoder gpt* and *--target lm*.
+The corpus format of GPT is the identical with RoBERTa. We can pre-training GPT through *--embedding word_pos --encoder transformer --mask causal --target lm* .
 GPT can use the configuration file of BERT.
 
 #### GPT-2
@@ -113,7 +113,7 @@ python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_voca
                     --embedding word_pos --remove_embedding_layernorm \
                     --encoder transformer --mask causal --layernorm_positioning pre --target lm
 ```
-The corpus format of GPT-2 is the identical with GPT and RoBERTa. Notice that the encoder of GPT-2 is different from the encoder of GPT. The layer normalization is moved to the input of each sub-block and an additional layer normalization is added after the final self-attention block.
+The corpus format of GPT-2 is the identical with GPT and RoBERTa. Notice that the encoder of GPT-2 is different from the encoder of GPT. The layer normalization is moved to the input of each sub-block (*--layernorm_positioning pre*) and an additional layer normalization is added after the final block. The layer normalization after embedding layer should be removed (*--remove_embedding_layernorm*).
 
 #### ELMo
 The example of pre-processing and pre-training for ELMo:
@@ -124,8 +124,8 @@ python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_voca
                     --config_path models/birnn_config.json --learning_rate 5e-4 \
                     --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7 --embedding word --encoder bilstm --target bilm
 ```
-The corpus format of ELMo is the identical with GPT. We can pre-training ELMo through *--embedding word*, *--encoder bilstm*, and *--target bilm*. <br>
-*--embedding word* denotes using traditional word embedding. LSTM does not require position embedding.
+The corpus format of ELMo is identical with GPT. We can pre-training ELMo through *--embedding word*, *--encoder bilstm*, and *--target bilm*. <br>
+*--embedding word* denotes using traditional word embedding. LSTM does not require position embedding. In addition, layernorm is not commonly used in traditional RNN related models. So we can use *--remove_embedding_layernorm* . Nevertheless, it doesn't matter if layernorm is added.
 
 #### More combinations
 The example of using LSTM encoder and LM target for pre-training:
