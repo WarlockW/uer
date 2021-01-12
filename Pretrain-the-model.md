@@ -31,13 +31,12 @@ sage: pretrain.py [-h] [--dataset_path DATASET_PATH]
                    [--gpu_ranks GPU_RANKS [GPU_RANKS ...]]
                    [--master_ip MASTER_IP] [--backend {nccl,gloo}]
 ```
-It is required to explicitly specify model's encoder and target. UER-py consists of the following encoder modules:
-- lstm: long short-term memory (LSTM)
-- gru: gated recurrent units (GRU)
+It is recommended to explicitly specify model's embedding (*--embedding*), encoder (*--encoder*), and target (*--target*). UER-py consists of the following encoder modules:
+- lstm: LSTM
+- gru: GRU
 - bilstm: bi-LSTM (different from *--encoder lstm* with *--bidirectional* , see [the issue](https://github.com/pytorch/pytorch/issues/4930) for more details)
-- gatedcnn: gated convolutional networks (GatedCNN)
-- bert: the Transformer with fully-visible mask (used in BERT)
-- gpt: the Transformer with causal mask (used in GPT)
+- gatedcnn: GatedCNN
+- transformer: BERT (*--encoder transformer --mask fully_visible*); GPT (*--encoder transformer --mask causal*); GPT-2 (*--encoder transformer --mask causal --layernorm_positioning pre*)
 
 The target should be coincident with the target in pre-processing stage. Users can try different combinations of encoders and targets by *--encoder* and *--target* .
 *--config_path* denotes the path of the configuration file, which specifies the hyper-parameters of the pre-training model. We have put the commonly-used configuration files in *models* folder. Users should choose the proper one according to encoder they use. <br>
