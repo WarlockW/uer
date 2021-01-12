@@ -38,4 +38,4 @@ Notice that we should use the corpus (*--corpus_path*) whose format is in accord
 *--span_masking* denotes that masking consecutive words, which is used in SpanBERT. If dynamic masking is used, we should specify *--span_masking* in pre-training stage, otherwise we should specify *--span_masking* in pre-processing stage. <br>
 *--docs_buffer_size* specifies the buffer size in memory in pre-processing stage. <br>
 Sequence length is specified in pre-processing stage by *--seq_length* . The default value is 128. <br>
-Vocabulary and tokenizer are also specified in pre-processing stage. More details are discussed in *Tokenization and vocabulary* section.
+Vocabulary and tokenizer are also specified in pre-processing stage. More details are discussed in [Tokenization and vocabulary](https://github.com/dbiir/UER-py/wiki/Tokenization-and-vocabulary) section.
