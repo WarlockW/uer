@@ -41,6 +41,8 @@ It is recommended to explicitly specify model's embedding (*--embedding*), encod
 The target should be coincident with the target in pre-processing stage. Users can try different combinations of encoders and targets by *--encoder* and *--target* .
 *--config_path* denotes the path of the configuration file, which specifies the hyper-parameters of the pre-training model. We have put the commonly-used configuration files in *models* folder. Users should choose the proper one according to encoder they use. <br>
 *--instances_buffer_size* specifies the buffer size in memory in pre-training stage. <br>
+*--remove_embedding_layernorm* removes the layernorm layer behind the embedding layer. <br>
+*--layernorm_positioning* denotes the pre-layernorm is used. This option can be used with *--remove_embedding_layernorm* together to specify the configuration of layernorm to reproduce the models such as GPT-2. <br>
 *--tie_weights* denotes the word embedding and softmax weights are tied. <br>
 
 There are two strategies for parameter initialization of pre-training: 1）random initialization; 2）loading a pre-trained model.
