@@ -1,7 +1,7 @@
-这里是对[CLUE 机器阅读理解评测基准](https://cluebenchmarks.com/rc.html)解决方案的简短总结：
+以下是我们[CLUE阅读理解](https://cluebenchmarks.com/rc.html)解决方案的简要介绍：
 
 ### CMRC2018
-利用[*mixed_corpus_bert_large_model.bin*](https://share.weiyun.com/5G90sMJ)在CMRC2018数据集上做微调和预测的示例：
+利用[*mixed_corpus_bert_large_model.bin*](https://share.weiyun.com/5G90sMJ)在CMRC2018数据集上做微调和预测示例：
 ```
 python3 run_cmrc.py --pretrained_model_path models/mixed_corpus_bert_large_model.bin --vocab_path models/google_zh_vocab.txt \
                     --config_path models/bert_large_config.json \
@@ -15,7 +15,7 @@ python3 inference/run_cmrc_infer.py --load_model_path models/cmrc_model.bin --vo
 ```
 
 ### ChID
-利用[*mixed_corpus_bert_large_model.bin*](https://share.weiyun.com/5G90sMJ)在ChID数据集上做微调和预测的示例：
+利用[*mixed_corpus_bert_large_model.bin*](https://share.weiyun.com/5G90sMJ)在ChID数据集上做微调和预测示例：
 ```
 python3 run_chid.py --pretrained_model_path models/mixed_corpus_bert_large_model.bin --vocab_path models/google_zh_vocab.txt \
                     --config_path models/bert_large_config.json \
@@ -31,9 +31,10 @@ python3 inference/run_chid_infer.py --load_model_path models/multichoice_model.b
                                     --seq_length 64 --max_choices_num 10 \
                                     --embedding word_pos_seg --encoder transformer --mask fully_visible
 ```
+注意到需要在推理阶段使用函数 *postprocess_chid_predictions* 对预测结果进行后处理。这能显著提升模型在ChID数据集上的表现。
 
 ### C3
-利用[*mixed_corpus_bert_large_model.bin*](https://share.weiyun.com/5G90sMJ)在C3数据集上做微调和预测的示例：
+利用[*mixed_corpus_bert_large_model.bin*](https://share.weiyun.com/5G90sMJ)在C3数据集上做微调和预测示例：
 ```
 python3 run_c3.py --pretrained_model_path models/mixed_corpus_bert_large_model.bin --vocab_path models/google_zh_vocab.txt \
                   --config_path models/bert_large_config.json \
