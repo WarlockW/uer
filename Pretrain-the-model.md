@@ -170,7 +170,7 @@ Suppose that the training corpus is news data from People's Daily. First we do s
 ```
 python3 scripts/build_vocab.py --corpus_path corpora/rmrb_seg_bert.txt --vocab_path models/rmrb_word_vocab.txt --tokenizer space --min_count 50
 ```
-Then we adapt the pre-trained model *wiki_bert_word_model.bin* . Embedding layer and output layer before softmax are adapted according to the difference between the old vocabulary and the new vocabulary. New embeddings are randomly initialized:
+Then we adapt the pre-trained model *wiki_bert_word_model.bin* . Embedding layer and output layer before softmax are adapted according to the difference between the old vocabulary and the new vocabulary. New embeddings are randomly initialized. The adapted model is compatible with the new vocabulary:
 ```
 python3 scripts/dynamic_vocab_adapter.py --old_model_path models/wiki_bert_word_model.bin --old_vocab_path models/wiki_word_vocab.txt \
                                          --new_vocab_path models/rmrb_word_vocab.txt --new_model_path models/rmrb_bert_word_model.bin
