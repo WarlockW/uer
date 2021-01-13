@@ -31,6 +31,7 @@ python3 inference/run_chid_infer.py --load_model_path models/multichoice_model.b
                                     --seq_length 64 --max_choices_num 10 \
                                     --embedding word_pos_seg --encoder transformer --mask fully_visible
 ```
+Notice that *postprocess_chid_predictions* function is used at inference stage which is important for the performance on ChID dataset.
 
 ### C3
 The example of fine-tuning and doing inference on C3 dataset with [*mixed_corpus_bert_large_model.bin*](https://share.weiyun.com/5G90sMJ):
