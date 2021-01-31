@@ -99,7 +99,7 @@ python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_voca
                     --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7 \
                     --embedding word_pos --encoder transformer --mask causal --target lm
 ```
-The corpus format of GPT is the identical with RoBERTa. We can pre-training GPT through *--embedding word_pos --encoder transformer --mask causal --target lm* .
+The corpus format of GPT is the identical with RoBERTa. We can pre-train GPT through *--embedding word_pos --encoder transformer --mask causal --target lm* .
 GPT can use the configuration file of BERT.
 
 #### GPT-2
@@ -124,8 +124,22 @@ python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_voca
                     --config_path models/birnn_config.json --learning_rate 5e-4 \
                     --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7 --embedding word --encoder bilstm --target bilm
 ```
-The corpus format of ELMo is identical with GPT. We can pre-training ELMo through *--embedding word*, *--encoder bilstm*, and *--target bilm*. <br>
+The corpus format of ELMo is identical with GPT. We can pre-train ELMo through *--embedding word*, *--encoder bilstm*, and *--target bilm*. <br>
 *--embedding word* denotes using traditional word embedding. LSTM does not require position embedding. In addition, layernorm is not commonly used in traditional RNN related models. So we can use *--remove_embedding_layernorm* . Nevertheless, it doesn't matter if layernorm is added.
+
+#### T5
+T5 proposes to use seq2seq model to unify NLU and NLG tasks. With extensive experiments, T5 recommend to use encoder-decoder architecture and BERT-style objective function (the model predicts the masked words). The example of using T5 for pre-training:
+```
+python3 preprocess.py --corpus_path corpora/book_review.txt --vocab_path models/google_zh_vocab.txt \
+                      --dataset_path dataset.pt --processes_num 8 --target t5
+python3 pretrain.py --dataset_path bookreview_t5_dataset.pt --vocab_path models/google_zh_vocab.txt --output_model_path models/output_model.bin \
+                    --config_path models/t5_small_config.json \
+                    --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7 \
+                    --embedding word --tgt_embedding word --relative_position_embedding --remove_embedding_layernorm_bias \
+                    --encoder transformer --decoder transformer --remove_transformer_bias --feed_forward gated \
+                    --target t5 --learning_rate 1e-3
+```
+The corpus format of T5 is identical with GPT. *--relative_position_embedding* denotes using relative position embedding. *--remove_embedding_layernorm_bias* and *--remove_transformer_bias* denotes that bias is removed. *--feed_forward* denotes the type of feed-forward layer. Since T5 uses encoder-decoder architecture, we have to specify *--encoder* and *--decoder*.
 
 #### More combinations
 The example of using LSTM encoder and LM target for pre-training:
@@ -155,4 +169,31 @@ python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_voca
                     --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7 --total_steps 20000 --save_checkpoint_steps 5000 \
                     --embedding word --encoder gatedcnn --target lm
 ```
+
+The example of using machine translation for pre-training (the objective is the same with CoVe but the Transformer encoder and decoder are used):
+```
+python3 preprocess.py --corpus_path corpora/iwslt_15_zh_en.tsv \
+                      --vocab_path models/google_zh_vocab.txt --tgt_vocab_path models/google_uncased_en_vocab.txt \
+                      --dataset_path dataset.pt --seq_length 64 --tgt_seq_length 64 --processes_num 8 --target seq2seq
+python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt --tgt_vocab_path models/google_uncased_en_vocab.txt \
+                    --output_model_path output_model.bin --config_path models/bert_base_config.json \
+                    --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7 --learning_rate 1e-4 \
+                    --report_steps 1000 --total_steps 50000 --save_checkpoint_steps 10000 \
+                    --embedding word_sinusoidalpos --tgt_embedding word_sinusoidalpos \
+                    --encoder transformer --mask fully_visible --decoder transformer \
+                    --target seq2seq
+```
+[*iwslt_15_zh_en.tsv*](https://share.weiyun.com/hIKCDpf6) is a Chinese-English parallel corpus. The source and target sequences are separated by \t , which is the corpus format of *--target seq2seq* . The pre-trained encoder can be used for downstream tasks.
+
+The example of using prefix LM for pre-training (which is used in UniLM):
+```
+python3 preprocess.py --corpus_path corpora/csl_title_abstract.txt --vocab_path models/google_zh_vocab.txt \
+                      --dataset_path dataset.pt --seq_length 256 --processes_num 8 --target prefixlm
+python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt \
+                    --output_model_path output_model.bin --config_path models/bert_base_config.json \
+                    --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7 --learning_rate 1e-4 \
+                    --total_steps 5000 --save_checkpoint_steps 100 \
+                    --embedding word_pos_seg --encoder transformer --mask causal_with_prefix --target prefixlm
+```
+[*csl_title_abstract.txt*](https://share.weiyun.com/hIKCDpf6) is a Chinese scientific literature corpus. The title and abstract sequences are separated by \t , which is the corpus format of *--target prefixlm* . We can pre-train prefix LM model through *--mask causal_with_prefix* and *--target prefixlm*. Notice that the model use the segment information to determine which part is prefix. Therefore we have to use *--embedding word_pos_seg*.
 <br>
