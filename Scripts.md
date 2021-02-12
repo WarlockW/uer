@@ -19,29 +19,7 @@ UER-py 为预训练模型提供了丰富的脚本。这里首先列举项目包�
 </table>
 
 #### 完形填空
-*cloze_test.py* 基于MLM任务，对遮住的词进行预测，返回topn最有可能的词。可以在cloze_test.py的基础上进行数据增强等操作。
-```
-usage: cloze_test.py [-h] [--load_model_path LOAD_MODEL_PATH]
-                     [--vocab_path VOCAB_PATH]
-                     [--spm_model_path SPM_MODEL_PATH] --test_path TEST_PATH
-                     --prediction_path PREDICTION_PATH
-                     [--config_path CONFIG_PATH]
-                     [--embedding {word,word_pos,word_pos_seg,word_sinusoidalpos}]
-                     [--max_seq_length MAX_SEQ_LENGTH]
-                     [--relative_position_embedding]
-                     [--remove_embedding_layernorm]
-                     [--remove_embedding_layernorm_bias]
-                     [--encoder {transformer,rnn,lstm,gru,birnn,bilstm,bigru,gatedcnn}]
-                     [--mask {fully_visible,causal,causal_with_prefix}]
-                     [--layernorm_positioning {pre,post}]
-                     [--feed_forward {dense,gated}]
-                     [--remove_transformer_bias] [--bidirectional]
-                     [--factorized_embedding_parameterization]
-                     [--parameter_sharing] [--batch_size BATCH_SIZE]
-                     [--seq_length SEQ_LENGTH] [--target {bert,mlm,albert}]
-                     [--tokenizer {bert,char,space}] [--topn TOPN]
-```
-*cloze_test.py* 使用示例：
+*cloze_test.py* 基于MLM任务，对遮住的词进行预测，返回topn最有可能的词。可以在cloze_test.py的基础上进行数据增强等操作。*cloze_test.py* 使用示例：
 ```
 python3 scripts/cloze_test.py --load_model_path models/google_zh_model.bin --vocab_path models/google_zh_vocab.txt \
                               --config_path models/bert_base_config.json \
