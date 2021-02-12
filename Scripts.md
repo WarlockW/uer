@@ -46,7 +46,6 @@ usage: cloze_test.py [-h] [--load_model_path LOAD_MODEL_PATH]
 python3 scripts/cloze_test.py --load_model_path models/google_zh_model.bin --vocab_path models/google_zh_vocab.txt \
                               --config_path models/bert_base_config.json \
                               --test_path datasets/tencent_profile.txt --prediction_path output.txt
-
 ```
 
 #### 特征抽取
