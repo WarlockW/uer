@@ -33,6 +33,7 @@ The example of pre-processing and pre-training for ALBERT:
 ```
 python3 preprocess.py --corpus_path corpora/book_review_bert.txt --vocab_path models/google_zh_vocab.txt \
                       --dataset_path dataset.pt --processes_num 8 --target albert
+
 python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt \
                     --output_model_path models/output_model.bin \
                     --config_path models/albert/base_config.json \
