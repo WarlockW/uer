@@ -6,6 +6,7 @@ The example of pre-processing and pre-training for RoBERTa:
 python3 preprocess.py --corpus_path corpora/book_review.txt --vocab_path models/google_zh_vocab.txt \
                       --dataset_path dataset.pt --processes_num 8 \
                       --dynamic_masking --target mlm
+
 python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt \
                     --output_model_path models/output_model.bin \
                     --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7 --learning_rate 1e-4 \
@@ -19,6 +20,7 @@ RoBERTa can load BERT models for incremental pre-training (and vice versa). The 
 python3 preprocess.py --corpus_path corpora/book_review.txt --vocab_path models/google_zh_vocab.txt \
                       --dataset_path dataset.pt --processes_num 8 \
                       --dynamic_masking --target mlm
+
 python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt \
                     --pretrained_model_path models/google_zh_model.bin \
                     --output_model_path models/output_model.bin \
@@ -33,7 +35,7 @@ python3 preprocess.py --corpus_path corpora/book_review_bert.txt --vocab_path mo
                       --dataset_path dataset.pt --processes_num 8 --target albert
 python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt \
                     --output_model_path models/output_model.bin \
-                    --config_path models/albert_base_config.json \
+                    --config_path models/albert/base_config.json \
                     --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7 --learning_rate 1e-4 \
                     --factorized_embedding_parameterization --parameter_sharing \
                     --embedding word_pos_seg --encoder transformer --mask fully_visible --target albert
@@ -42,22 +44,24 @@ The corpus format of ALBERT is the identical with BERT. <br>
 *--target albert* denotes that using ALBERT target, which consists of mlm and sop targets. <br>
 *--factorized_embedding_parameterization* denotes that using factorized embedding parameterization to untie the embedding size from the hidden layer size. <br>
 *--parameter_sharing* denotes that sharing all parameters (including feed-forward and attention parameters) across layers. <br>
-we provide 4 configuration files for ALBERT model in *models* folder, albert_base_config.json , albert_large_config.json , albert_xlarge_config.json , albert_xxlarge_config.json . <br>
+we provide 4 configuration files for ALBERT model in *models/albert* folder, *albert_base_config.json* , *albert_large_config.json* , *albert_xlarge_config.json* , *albert_xxlarge_config.json* . <br>
 The example of doing incremental pre-training upon Google's ALBERT pre-trained models of different sizes (See model zoo for pre-trained weights):
 ```
 python3 preprocess.py --corpus_path corpora/book_review_bert.txt --vocab_path models/google_zh_vocab.txt \
                       --dataset_path dataset.pt --processes_num 8 --target albert 
+
 python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt \
                     --pretrained_model_path models/google_zh_albert_base_model.bin \
                     --output_model_path models/output_model.bin \
-                    --config_path models/albert_base_config.json \
+                    --config_path models/albert/base_config.json \
                     --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7 --learning_rate 2e-5 \
                     --factorized_embedding_parameterization --parameter_sharing \
                     --embedding word_pos_seg --encoder transformer --mask fully_visible --target albert
+
 python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt \
                     --pretrained_model_path models/google_zh_albert_xxlarge_model.bin \
                     --output_model_path models/output_model.bin \
-                    --config_path models/albert_xxlarge_config.json \
+                    --config_path models/albert/xxlarge_config.json \
                     --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7 --learning_rate 2e-5 \
                     --factorized_embedding_parameterization --parameter_sharing \
                     --embedding word_pos_seg --encoder transformer --mask fully_visible --target albert
@@ -70,6 +74,7 @@ The example of pre-processing and pre-training for SpanBERT (static masking):
 python3 preprocess.py --corpus_path corpora/book_review.txt --vocab_path models/google_zh_vocab.txt \
                       --dataset_path dataset.pt --processes_num 8 --target mlm --dup_factor 20 \
                       --span_masking --span_geo_prob 0.3 --span_max_length 5 --target mlm
+
 python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt \
                     --output_model_path models/output_model.bin \
                     --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7  --learning_rate 1e-4 \
@@ -81,6 +86,7 @@ The example of pre-processing and pre-training for SpanBERT (dynamic masking):
 python3 preprocess.py --corpus_path corpora/book_review.txt --vocab_path models/google_zh_vocab.txt \
                       --dataset_path dataset.pt --processes_num 8 \
                       --dynamic_masking --target mlm
+
 python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt \
                     --output_model_path models/output_model.bin \
                     --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7  --learning_rate 1e-4 \
@@ -94,8 +100,9 @@ The example of pre-processing and pre-training for GPT:
 ```
 python3 preprocess.py --corpus_path corpora/book_review.txt --vocab_path models/google_zh_vocab.txt \
                       --dataset_path dataset.pt --processes_num 8 --target lm
+
 python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt --output_model_path models/output_model.bin \
-                    --config_path models/bert_base_config.json --learning_rate 1e-4 \
+                    --config_path models/gpt2/config.json --learning_rate 1e-4 \
                     --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7 \
                     --embedding word_pos --encoder transformer --mask causal --target lm
 ```
