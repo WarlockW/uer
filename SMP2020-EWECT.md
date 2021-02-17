@@ -4,7 +4,7 @@ We randomly select some pre-trained models and fine-tune upon them. K-fold cross
 CUDA_VISIBLE_DEVICES=0,1 python3 run_classifier_cv.py --pretrained_model_path models/reviews_bert_large_model.bin \
                                                       --vocab_path models/google_zh_vocab.txt \
                                                       --output_model_path models/ewect_usual_classifier_model_0.bin \
-                                                      --config_path models/bert_large_config.json \
+                                                      --config_path models/bert/large_config.json \
                                                       --train_path datasets/smp2020-ewect/usual/train.tsv \
                                                       --train_features_path datasets/smp2020-ewect/usual/train_features_0.npy \
                                                       --folds_num 5 --epochs_num 3 --batch_size 64 --seed 17 \
@@ -13,7 +13,7 @@ CUDA_VISIBLE_DEVICES=0,1 python3 run_classifier_cv.py --pretrained_model_path mo
 CUDA_VISIBLE_DEVICES=0,1,2,3 python3 run_classifier_cv.py --pretrained_model_path models/mixed_corpus_bert_large_model.bin \
                                                           --vocab_path models/google_zh_vocab.txt \
                                                           --output_model_path models/ewect_usual_classifier_model_1.bin \
-                                                          --config_path models/bert_large_config.json \
+                                                          --config_path models/bert/large_config.json \
                                                           --train_path datasets/smp2020-ewect/usual/train.tsv \
                                                           --train_features_path datasets/smp2020-ewect/usual/train_features_1.npy \
                                                           --folds_num 5 --epochs_num 3 --batch_size 64 --seq_length 160 \
@@ -22,7 +22,7 @@ CUDA_VISIBLE_DEVICES=0,1,2,3 python3 run_classifier_cv.py --pretrained_model_pat
 CUDA_VISIBLE_DEVICES=0 python3 run_classifier_cv.py --pretrained_model_path models/mixed_corpus_gpt_base_model.bin \
                                                     --vocab_path models/google_zh_vocab.txt \
                                                     --output_model_path models/ewect_usual_classifier_model_2.bin \
-                                                    --config_path models/bert_base_config.json \
+                                                    --config_path models/bert/base_config.json \
                                                     --train_path datasets/smp2020-ewect/usual/train.tsv \
                                                     --train_features_path datasets/smp2020-ewect/usual/train_features_2.npy \
                                                     --folds_num 5 --epochs_num 3 --batch_size 32 --seq_length 100 \
