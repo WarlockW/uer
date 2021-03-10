@@ -79,7 +79,8 @@ python3 preprocess.py --corpus_path corpora/book_review.txt --vocab_path models/
 python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt \
                     --output_model_path models/output_model.bin \
                     --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7  --learning_rate 1e-4 \
-                    --total_steps 10000 --save_checkpoint 5000 --encoder bert --target mlm
+                    --total_steps 10000 --save_checkpoint 5000 \
+                    --embedding word_pos_seg --encoder transformer --mask fully_visible --target mlm
 ```
 *--dup_factor* specifies the number of times to duplicate the input data (with different masks). The default value is 5 .
 The example of pre-processing and pre-training for SpanBERT (dynamic masking):
