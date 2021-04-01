@@ -1,7 +1,5 @@
 [**English**](https://github.com/dbiir/UER-py/wiki/Modelzoo) | [**中文**](https://github.com/dbiir/UER-py/wiki/预训练模型仓库)
 
-借助UER，我们使用不同的语料、编码器和目标任务进行了预训练。以下所有的预训练模型都是UER格式的，可以由UER直接加载。未来会发布更多的预训练模型。除非另有说明，否则中文预训练模型使用 *models/google_zh_vocab.txt* 作为词典（原始Google BERT项目中的中文词典）以及BERT tokenizer作为分词器。*models/bert/base_config.json* 为默认的配置文件；常用的词典和配置文件包含在 *models* 文件夹中，用户无需下载。此外，我们通过 *scripts/convert_xxx_from_uer_to_huggingface.py* 将UER预训练的模型转换为Huggingface Transformers支持的格式，并上传到了[Huggingface模型仓库（uer用户）](https://huggingface.co/uer)。下面介绍这些预训练模型权重，给出它们的下载链接，以及说明它们的使用方式。注意到，受限于篇幅，我们将预训练权重的细节描述放到了相应的Huggingface模型仓库中。在介绍具体预训练模型权重的时候，我们会给出其对应的Huggingface模型仓库链接。
-
 With the help of UER, we pre-trained models with different corpora, encoders, and targets. All pre-trained weights introduced in this section are in UER format and can be loaded by UER directly. More pre-trained weights will be released in the near future. Unless otherwise noted, Chinese pre-trained models use BERT tokenizer and *models/google_zh_vocab.txt* as vocabulary (which is used in original BERT project). *models/bert/base_config.json* is used as configuration file in default. Commonly-used vocabulary and configuration files are included in *models/* folder and users do not need to download them. In addition, We use *scripts/convert_xxx_from_uer_to_huggingface.py* to convert pre-trained weights into format that Huggingface Transformers supports, and upload them to [Huggingface model hub (uer)](https://huggingface.co/uer). In the rest of the section, we provide download links of pre-trained weights and the right ways of using them. Notice that, for space constraint, more details of a pre-trained weight are discussed in corresponding Huggingface model hub. We will provide the link of Huggingface model hub when we introduce the pre-trained weight. 
 
 ## Chinese RoBERTa Pre-trained Weights
@@ -9,7 +7,7 @@ This is the set of 24 Chinese RoBERTa weights. CLUECorpusSmall is used as traini
 
 The pre-trained Chinese weight links of different layers (L) and hidden sizes (H):
 
-|层数/隐层维度|           H=128           |           H=256           |            H=512            |            H=768            |
+|          |           H=128           |           H=256           |            H=512            |            H=768            |
 | -------- | :-----------------------: | :-----------------------: | :-------------------------: | :-------------------------: |
 | **L=2**  | [**2/128 (Tiny)**][2_128] |      [2/256][2_256]       |       [2/512][2_512]        |       [2/768][2_768]        |
 | **L=4**  |      [4/128][4_128]       | [**4/256 (Mini)**][4_256] | [**4/512 (Small)**][4_512]  |       [4/768][4_768]        |
