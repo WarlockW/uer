@@ -34,6 +34,8 @@ python3 run_classifier_grid.py --pretrained_model_path models/cluecorpussmall_ro
 ```
 We can reproduce the experimental results reported [here](https://huggingface.co/uer/chinese_roberta_L-2_H-128) through above grid search script.
 
+## Chinese word-based RoBERTa Pre-trained Weights
+
 
 Pre-trained Chinese models from Google (in UER format):
 <table>
@@ -71,3 +73,28 @@ Models pre-trained by UER:
 MixedCorpus contains baidubaike, Wikizh, WebQA, RenMinRiBao, literature, and reviews.
 
 <br/>
+
+[2_128]:https://share.weiyun.com/5mXkEvxN
+[2_256]:https://share.weiyun.com/TLn5VpSW
+[2_512]:https://share.weiyun.com/nYtFjDBL
+[2_768]:https://share.weiyun.com/sHMGMv4c
+[4_128]:https://share.weiyun.com/0SlDbnSM
+[4_256]:https://share.weiyun.com/0eNSFKw9
+[4_512]:https://share.weiyun.com/SEJ0MStj
+[4_768]:https://share.weiyun.com/jk42uruV  
+[6_128]:https://share.weiyun.com/tWeXueMJ
+[6_256]:https://share.weiyun.com/1Ku03xFM
+[6_512]:https://share.weiyun.com/WEvmJUOD
+[6_768]:https://share.weiyun.com/m5AMthBU
+[8_128]:https://share.weiyun.com/r0M1pJsV
+[8_256]:https://share.weiyun.com/xk1SN8V9
+[8_512]:https://share.weiyun.com/vpnaZ5jp
+[8_768]:https://share.weiyun.com/NT67VIap
+[10_128]:https://share.weiyun.com/dPKrelIL
+[10_256]:https://share.weiyun.com/dbn2bG0t
+[10_512]:https://share.weiyun.com/q8yIZWje
+[10_768]:https://share.weiyun.com/dz4sgiCx
+[12_128]:https://share.weiyun.com/93UYnnSC
+[12_256]:https://share.weiyun.com/czAR5KNu
+[12_512]:https://share.weiyun.com/gv4zARxk
+[12_768]:https://share.weiyun.com/2rEWrSQz
