@@ -36,6 +36,36 @@ We can reproduce the experimental results reported [here](https://huggingface.co
 
 ## Chinese word-based RoBERTa Pre-trained Weights
 
+This is the set of 5 Chinese word-based RoBERTa weights. CLUECorpusSmall is used as training corpus. Configuration files are in *models/bert/* folder. Google sentencepiece is used as tokenizer tool and *models/cluecorpussmall_spm.model* is used as sentencepiece model. Most Chinese pre-trained weights are based on Chinese character. Compared with character-based models, word-based models are faster (because of shorter sequence length) and have better performance according to our experimental results. More details of these pre-trained weights are discussed [here](https://huggingface.co/uer/roberta-tiny-word-chinese-cluecorpussmall)
+
+The pre-trained Chinese weight links of different sizes:
+
+|           Link           |
+| :-----------------------:|
+| [**L=2/H=128 (Tiny)**][word_tiny] |
+| [**L=4/H=256 (Mini)**][word_mini] |
+| [**L=4/H=512 (Small)**][word_small] |
+| [**L=8/H=512 (Medium)**][word_medium] |
+| [**L=12/H=768 (Base)**][word_base] |
+
+We download word-based Tiny weight through the above link and put it in *models/* folder. Then we fine-tune the word-based Tiny model on downstream classification dataset:
+```
+python3 run_classifier.py --pretrained_model_path models/cluecorpussmall_word_roberta_tiny_seq512_model.bin \
+                          --spm_model_path models/cluecorpussmall_spm.model --config_path models/bert/tiny_config.json \
+                          --train_path datasets/douban_book_review/train.tsv --dev_path datasets/douban_book_review/dev.tsv --test_path datasets/douban_book_review/test.tsv \
+                          --learning_rate 3e-4 --batch_size 64 --epochs_num 8 --embedding word_pos_seg --encoder transformer --mask fully_visible
+```
+
+The example of using grid search to find best hyper-parameters for word-based model:
+```
+python3 run_classifier_grid.py --pretrained_model_path models/cluecorpussmall_word_roberta_tiny_seq512_model.bin \
+                               --spm_model_path models/cluecorpussmall_spm.model --config_path models/bert/tiny_config.json \
+                               --train_path datasets/douban_book_review/train.tsv --dev_path datasets/douban_book_review/dev.tsv \
+                               --learning_rate_list 3e-5 1e-4 3e-4 --batch_size_list 32 64 --epochs_num_list 3 5 8 \
+                               --embedding word_pos_seg --encoder transformer --mask fully_visible
+```
+We can reproduce the experimental results reported [here](https://huggingface.co/uer/roberta-tiny-word-chinese-cluecorpussmall) through above grid search script.
+
 
 Pre-trained Chinese models from Google (in UER format):
 <table>
