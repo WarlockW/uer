@@ -162,9 +162,9 @@ Models pre-trained by UER:
 <tr align="center"><td> Weibo+BertEncoder(large)+MlmTarget <td> https://share.weiyun.com/CFKyMkp3 <td> The training corpus is Weibo. The configuration file is bert_large_config.json
 <tr align="center"><td> Reviews+BertEncoder+MlmTarget <td> https://share.weiyun.com/tBgaSx77 <td> The training corpus is reviews.
 <tr align="center"><td> Reviews+BertEncoder(large)+MlmTarget <td> https://share.weiyun.com/hn7kp9bs <td> The training corpus is reviews. The configuration file is bert_large_config.json
-<tr align="center"><td> MixedCorpus+BertEncoder(xlarge)+MlmTarget <td> https://share.weiyun.com/5G90sMJ <td> Pre-trained on mixed large Chinese corpus. The configuration file is bert_large_config.json
 <tr align="center"><td> MixedCorpus+BertEncoder(xlarge)+MlmTarget <td> https://share.weiyun.com/J9rj9WRB <td> Pre-trained on mixed large Chinese corpus. The configuration file is bert_xlarge_config.json
-<tr align="center"><td> MixedCorpus+BertEncoder(large)+BertTarget(WWM) <td> https://share.weiyun.com/UsI0OSeR <td> Pre-trained on mixed large Chinese corpus. The configuration file is bert_xlarge_config.json
+<tr align="center"><td> MixedCorpus+BertEncoder(xlarge)+BertTarget(WWM) <td> https://share.weiyun.com/UsI0OSeR <td> Pre-trained on mixed large Chinese corpus. The configuration file is bert_xlarge_config.json
+<tr align="center"><td> MixedCorpus+BertEncoder(large)+MlmTarget <td> https://share.weiyun.com/5G90sMJ <td> Pre-trained on mixed large Chinese corpus. The configuration file is bert_large_config.json
 <tr align="center"><td> MixedCorpus+BertEncoder(base)+BertTarget <td> https://share.weiyun.com/5QOzPqq <td> Pre-trained on mixed large Chinese corpus. The configuration file is bert_base_config.json
 <tr align="center"><td> MixedCorpus+BertEncoder(small)+BertTarget <td> https://share.weiyun.com/fhcUanfy <td> Pre-trained on mixed large Chinese corpus. The configuration file is bert_small_config.json
 <tr align="center"><td> MixedCorpus+BertEncoder(tiny)+BertTarget <td> https://share.weiyun.com/yXx0lfUg <td> Pre-trained on mixed large Chinese corpus. The configuration file is bert_tiny_config.json
