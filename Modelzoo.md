@@ -16,7 +16,7 @@ The pre-trained Chinese weight links of different layers (L) and hidden sizes (H
 | **L=10** |     [10/128][10_128]      |     [10/256][10_256]      |      [10/512][10_512]       |      [10/768][10_768]       |
 | **L=12** |     [12/128][12_128]      |     [12/256][12_256]      |      [12/512][12_512]       | [**12/768 (Base)**][12_768] |
 
-We download Tiny weight through the above link and put it in *models/* folder. We can either conduct further pre-training upon it:
+Take the Tiny weight as an example, we download the Tiny weight through the above link and put it in *models/* folder. We can either conduct further pre-training upon it:
 ```
 python3 preprocess.py --corpus_path corpora/book_review.txt --vocab_path models/google_zh_vocab.txt --dataset_path dataset.pt \
                       --processes_num 8 --target mlm
@@ -46,7 +46,6 @@ python3 run_classifier_grid.py --pretrained_model_path models/cluecorpussmall_ro
 We can reproduce the experimental results reported [here](https://huggingface.co/uer/chinese_roberta_L-2_H-128) through above grid search script.
 
 ## Chinese word-based RoBERTa Pre-trained Weights
-
 This is the set of 5 Chinese word-based RoBERTa weights. CLUECorpusSmall is used as training corpus. Configuration files are in *models/bert/* folder. Google sentencepiece is used as tokenizer tool and *models/cluecorpussmall_spm.model* is used as sentencepiece model. Most Chinese pre-trained weights are based on Chinese character. Compared with character-based models, word-based models are faster (because of shorter sequence length) and have better performance according to our experimental results. More details of these pre-trained weights are discussed [here](https://huggingface.co/uer/roberta-tiny-word-chinese-cluecorpussmall)
 
 The pre-trained Chinese weight links of different sizes:
@@ -59,7 +58,7 @@ The pre-trained Chinese weight links of different sizes:
 | [**L=8/H=512 (Medium)**][word_medium] |
 | [**L=12/H=768 (Base)**][word_base] |
 
-We download word-based Tiny weight through the above link and put it in *models/* folder. We can either conduct further pre-training upon it:
+Take the word-based Tiny weight as an example, we download the word-based Tiny weight through the above link and put it in *models/* folder. We can either conduct further pre-training upon it:
 ```
 python3 preprocess.py --corpus_path corpora/book_review.txt --spm_model_path models/cluecorpussmall_spm.model --dataset_path dataset.pt \
                       --processes_num 8 --target mlm
@@ -88,7 +87,61 @@ python3 run_classifier_grid.py --pretrained_model_path models/cluecorpussmall_wo
 ```
 We can reproduce the experimental results reported [here](https://huggingface.co/uer/roberta-tiny-word-chinese-cluecorpussmall) through above grid search script.
 
+## Chinese GPT-2 Pre-trained Weights
+This is the set of Chinese GPT-2 pre-trained weights. Configuration files are in *models/gpt2/* folder.
 
+The link and detailed description (Huggingface model hub) of different pre-trained GPT-2 weights:
+
+|           模型链接           |           细节描述链接           |
+| :-----------------------:| :-----------------------:|
+| [**CLUECorpusSmall GPT-2**][gpt2_cluecorpussmall] | https://huggingface.co/uer/gpt2-chinese-cluecorpussmall |
+| [**CLUECorpusSmall GPT-2-distil**][gpt2_distil_cluecorpussmall] | https://huggingface.co/uer/gpt2-distil-chinese-cluecorpussmall |
+| [**Poem GPT-2**][gpt2_poem] | https://huggingface.co/uer/gpt2-chinese-poem |
+| [**Couplet GPT-2**][gpt2_couplet] | https://huggingface.co/uer/gpt2-chinese-couplet |
+| [**Lyric GPT-2**][gpt2_lyric] | https://huggingface.co/uer/gpt2-chinese-lyric |
+| [**Ancient GPT-2**][gpt2_ancient] | https://huggingface.co/uer/gpt2-chinese-ancient |
+
+Notice that extended vocabularies (*models/google_zh_poem_vocab.txt* and *models/google_zh_ancient_vocab.txt*) are used in Poem and Ancient GPT-2 models. CLUECorpusSmall GPT-2-distil model uses *models/gpt2/distil_config.json* configuration file. *models/gpt2/config.json* are used for other weights.
+
+Take the CLUECorpusSmall GPT-2-distil weight as an example, we download the CLUECorpusSmall GPT-2-distil weight through the above link and put it in *models/* folder. We can either conduct further pre-training upon it:
+```
+python3 preprocess.py --corpus_path corpora/book_review.txt \
+                      --vocab_path models/google_zh_vocab.txt \
+                      --dataset_path dataset.pt --processes_num 1 \
+                      --seq_length 128 --target lm 
+
+python3 pretrain.py --dataset_path dataset.pt --pretrained_model_path models/cluecorpussmall_gpt2_distil_seq1024_model.bin \
+                    --vocab_path models/google_zh_vocab.txt --config_path models/gpt2/distil_config.json \
+                    --output_model_path models/book_review_gpt2_model.bin \
+                    --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7 \
+                    --total_steps 100000 --save_checkpoint_steps 10000 --report_steps 5000 \
+                    --learning_rate 5e-5 --batch_size 64 \
+                    --embedding word_pos --remove_embedding_layernorm \
+                    --encoder transformer --mask causal --layernorm_positioning pre \
+                    --target lm --tie_weights
+```
+or use it on downstream classification dataset：
+```
+python3 run_classifier.py --pretrained_model_path models/cluecorpussmall_gpt2_distil_seq1024_model.bin \
+                          --vocab_path models/google_zh_vocab.txt --config_path models/gpt2/distil_config.json \
+                          --train_path datasets/douban_book_review/train.tsv --dev_path datasets/douban_book_review/dev.tsv --test_path datasets/douban_book_review/test.tsv \
+                          --learning_rate 3e-5 --batch_size 64 --epochs_num 8 \
+                          --embedding word_pos_seg --remove_embedding_layernorm \
+                          --encoder transformer --mask causal --layernorm_positioning pre
+```
+
+GPT-2 model can be used for text generation. First of all, we create *story_beginning.txt* and enter the beginning of the text. Then we use *scripts/generate_lm.py* to do text generation:
+```
+python3 scripts/generate_lm.py --load_model_path models/cluecorpussmall_gpt2_distil_seq1024_model.bin \
+                               --vocab_path models/google_zh_vocab.txt \
+                               --config_path models/gpt2/distil_config.json --seq_length 128 \
+                               --test_path story_beginning.txt --prediction_path story_full.txt \
+                               --embedding word_pos --remove_embedding_layernorm \
+                               --encoder transformer --mask causal --layernorm_positioning pre \
+                               --target lm --tie_weights
+```
+
+## More pre-trained Weights
 Pre-trained Chinese models from Google (in UER format):
 <table>
 <tr align="center"><th> Pre-trained model <th> Link <th> Description 
@@ -150,3 +203,16 @@ MixedCorpus contains baidubaike, Wikizh, WebQA, RenMinRiBao, literature, and rev
 [12_256]:https://share.weiyun.com/czAR5KNu
 [12_512]:https://share.weiyun.com/gv4zARxk
 [12_768]:https://share.weiyun.com/2rEWrSQz
+
+[word_tiny]:https://share.weiyun.com/6mUaN18A
+[word_mini]:https://share.weiyun.com/og1Km7qM
+[word_small]:https://share.weiyun.com/SqbCfIgp
+[word_medium]:https://share.weiyun.com/yDz44dlS
+[word_base]:https://share.weiyun.com/5OXC8Rzt
+
+[gpt2_cluecorpussmall]:https://share.weiyun.com/0eAlQWRB
+[gpt2_distil_cluecorpussmall]:https://share.weiyun.com/IAvDbjKR
+[gpt2_poem]:https://share.weiyun.com/DKAmuOLU
+[gpt2_couplet]:https://share.weiyun.com/LbMecOGj
+[gpt2_lyric]:https://share.weiyun.com/jBv5weES
+[gpt2_ancient]:https://share.weiyun.com/d3FHbVMx
