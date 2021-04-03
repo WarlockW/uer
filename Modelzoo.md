@@ -16,7 +16,18 @@ The pre-trained Chinese weight links of different layers (L) and hidden sizes (H
 | **L=10** |     [10/128][10_128]      |     [10/256][10_256]      |      [10/512][10_512]       |      [10/768][10_768]       |
 | **L=12** |     [12/128][12_128]      |     [12/256][12_256]      |      [12/512][12_512]       | [**12/768 (Base)**][12_768] |
 
-We download Tiny weight through the above link and put it in *models/* folder. Then we fine-tune the Tiny model on downstream classification dataset:
+We download Tiny weight through the above link and put it in *models/* folder. We can either conduct further pre-training upon it:
+```
+python3 preprocess.py --corpus_path corpora/book_review.txt --vocab_path models/google_zh_vocab.txt --dataset_path dataset.pt \
+                      --processes_num 8 --target mlm
+
+python3 pretrain.py --dataset_path dataset.pt --pretrained_model_path models/cluecorpussmall_roberta_tiny_seq512_model.bin \
+                    --vocab_path models/google_zh_vocab.txt --config_path models/bert/tiny_config.json \
+                    --output_model_path models/output_model.bin --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7 \
+                    --total_steps 5000 --save_checkpoint_steps 2500 --batch_size 64 --embedding word_pos_seg --encoder transformer --mask fully_visible --target mlm
+```
+
+or use it on downstream classification dataset：
 ```
 python3 run_classifier.py --pretrained_model_path models/cluecorpussmall_roberta_tiny_seq512_model.bin \
                           --vocab_path models/google_zh_vocab.txt --config_path models/bert/tiny_config.json \
@@ -48,7 +59,18 @@ The pre-trained Chinese weight links of different sizes:
 | [**L=8/H=512 (Medium)**][word_medium] |
 | [**L=12/H=768 (Base)**][word_base] |
 
-We download word-based Tiny weight through the above link and put it in *models/* folder. Then we fine-tune the word-based Tiny model on downstream classification dataset:
+We download word-based Tiny weight through the above link and put it in *models/* folder. We can either conduct further pre-training upon it:
+```
+python3 preprocess.py --corpus_path corpora/book_review.txt --spm_model_path models/cluecorpussmall_spm.model --dataset_path dataset.pt \
+                      --processes_num 8 --target mlm
+
+python3 pretrain.py --dataset_path dataset.pt --pretrained_model_path models/cluecorpussmall_roberta_tiny_seq512_model.bin \
+                    --spm_model_path models/cluecorpussmall_spm.model --config_path models/bert/tiny_config.json \
+                    --output_model_path models/output_model.bin --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7 \
+                    --total_steps 5000 --save_checkpoint_steps 2500 --batch_size 64 --embedding word_pos_seg --encoder transformer --mask fully_visible --target mlm
+```
+
+or use it on downstream classification dataset：
 ```
 python3 run_classifier.py --pretrained_model_path models/cluecorpussmall_word_roberta_tiny_seq512_model.bin \
                           --spm_model_path models/cluecorpussmall_spm.model --config_path models/bert/tiny_config.json \
