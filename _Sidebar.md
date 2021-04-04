@@ -26,8 +26,8 @@
       - [分类](https://github.com/dbiir/UER-py/wiki/CLUE%E5%88%86%E7%B1%BB)
       - [阅读理解](https://github.com/dbiir/UER-py/wiki/CLUE%E9%98%85%E8%AF%BB%E7%90%86%E8%A7%A3)
       - [命名实体识别](https://github.com/dbiir/UER-py/wiki/CLUE%E5%91%BD%E5%90%8D%E5%AE%9E%E4%BD%93%E8%AF%86%E5%88%AB)
-   + [微博情绪分类技术评测]
+    + 微博情绪分类技术评测
       - [SMP2020-EWECT](https://github.com/dbiir/UER-py/wiki/SMP2020%E5%BE%AE%E5%8D%9A%E6%83%85%E7%BB%AA%E5%88%86%E7%B1%BB%E6%8A%80%E6%9C%AF%E8%AF%84%E6%B5%8B)
-   + [汉语隐含情感分析评测]
+    + 汉语隐含情感分析评测
       - [SMP2019-ECISA](https://github.com/dbiir/UER-py/wiki/%E7%AB%9E%E8%B5%9B%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88)
   - [测评](https://github.com/dbiir/UER-py/wiki/Experiments)
