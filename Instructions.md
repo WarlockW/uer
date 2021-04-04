@@ -9,10 +9,10 @@ UER-py supports a wide range of pre-training models and downstream tasks. This s
 - #### [Pretrain the model](https://github.com/dbiir/UER-py/wiki/Pretrain-the-model)
 
 
-- #### [Pretrain models with different encoders and targets](https://github.com/dbiir/UER-py/wiki/Pretrain-models-with-different-encoders-and-targets)
+- #### [More pretraining models](https://github.com/dbiir/UER-py/wiki/More-pretraining-models)
 
 
-- #### [Finetune on downstream tasks](https://github.com/dbiir/UER-py/wiki/Finetune-on-downstream-tasks)
+- #### [Finetune the tasks](https://github.com/dbiir/UER-py/wiki/Finetune-the-tasks)
 
 
 - #### [Tokenization and vocabulary](https://github.com/dbiir/UER-py/wiki/Tokenization-and-vocabulary)
