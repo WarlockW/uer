@@ -17,7 +17,6 @@
     + [预处理](https://github.com/dbiir/UER-py/wiki/%E9%A2%84%E5%A4%84%E7%90%86)
     + [预训练](https://github.com/dbiir/UER-py/wiki/%E9%A2%84%E8%AE%AD%E7%BB%83)
     + [更多预训练模型](https://github.com/dbiir/UER-py/wiki/%E6%9B%B4%E5%A4%9A%E9%A2%84%E8%AE%AD%E7%BB%83%E6%A8%A1%E5%9E%8B)
-    + [预处理](https://github.com/dbiir/UER-py/wiki/%E9%A2%84%E5%A4%84%E7%90%86)
     + [下游任务微调](https://github.com/dbiir/UER-py/wiki/%E4%B8%8B%E6%B8%B8%E4%BB%BB%E5%8A%A1%E5%BE%AE%E8%B0%83)
     + [分词和词典](https://github.com/dbiir/UER-py/wiki/%E5%88%86%E8%AF%8D%E5%92%8C%E8%AF%8D%E5%85%B8)
     + [预训练相关功能脚本](https://github.com/dbiir/UER-py/wiki/%E9%A2%84%E8%AE%AD%E7%BB%83%E7%9B%B8%E5%85%B3%E5%8A%9F%E8%83%BD%E8%84%9A%E6%9C%AC)
