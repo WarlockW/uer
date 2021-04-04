@@ -142,16 +142,35 @@ The corpus format of ELMo is identical with GPT. We can pre-train ELMo through *
 T5 proposes to use seq2seq model to unify NLU and NLG tasks. With extensive experiments, T5 recommend to use encoder-decoder architecture and BERT-style objective function (the model predicts the masked words). The example of using T5 for pre-training:
 ```
 python3 preprocess.py --corpus_path corpora/book_review.txt --vocab_path models/google_zh_vocab.txt \
-                      --dataset_path dataset.pt --processes_num 8 --target t5
+                      --dataset_path dataset.pt --processes_num 8 --seq_length 128 --dynamic_masking --target t5
 
-python3 pretrain.py --dataset_path bookreview_t5_dataset.pt --vocab_path models/google_zh_vocab.txt --output_model_path models/output_model.bin \
-                    --config_path models/t5/small_config.json \
+python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt --config_path models/t5/small_config.json \
+                    --output_model_path models/output_model.bin \
                     --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7 \
-                    --embedding word --tgt_embedding word --relative_position_embedding --remove_embedding_layernorm_bias \
-                    --encoder transformer --decoder transformer --remove_transformer_bias --feed_forward gated \
-                    --target t5 --learning_rate 1e-3
+                    --learning_rate 1e-3 --batch_size 64 \
+                    --span_masking --span_geo_prob 0.3 --span_max_length 5 \
+                    --embedding word --relative_position_embedding --remove_embedding_layernorm --tgt_embedding word \
+                    --encoder transformer --mask fully_visible --layernorm_positioning pre --decoder transformer \
+                    --target t5 --tie_weights
 ```
-The corpus format of T5 is identical with GPT. *--relative_position_embedding* denotes using relative position embedding. *--remove_embedding_layernorm_bias* and *--remove_transformer_bias* denotes that bias is removed. *--feed_forward* denotes the type of feed-forward layer. Since T5 uses encoder-decoder architecture, we have to specify *--encoder* and *--decoder*.
+The corpus format of T5 is identical with GPT. *--relative_position_embedding* denotes using relative position embedding. *--remove_embedding_layernorm* and *--layernorm_positioning pre* denote that pre-layernorm is used (same with GPT-2). Since T5 uses encoder-decoder architecture, we have to specify *--encoder* and *--decoder*.
+
+#### T5-v1_1
+T5-v1_1 includes several improvements compared to the original T5 model. The example of using T5-v1_1 for pre-training:
+```
+python3 preprocess.py --corpus_path corpora/book_review.txt --vocab_path models/google_zh_vocab.txt \
+                      --dataset_path dataset.pt --processes_num 8 --seq_length 128 --dynamic_masking --target t5
+
+python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt --config_path models/t5-v1_1/small_config.json \
+                    --output_model_path models/output_model.bin \
+                    --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7 \
+                    --learning_rate 1e-3 --batch_size 64 \
+                    --span_masking --span_geo_prob 0.3 --span_max_length 5 \
+                    --embedding word --relative_position_embedding --remove_embedding_layernorm --tgt_embedding word \
+                    --encoder transformer --mask fully_visible --layernorm_positioning pre --feed_forward gated --decoder transformer \
+                    --target t5
+```
+The corpus format of T5-v1_1 is identical with T5. *--feed_forward* denotes the type of feed-forward layer. *--tie_weights* is removed and there is no parameter sharing between embedding and classifier layer. T5-v1_1 and T5 have different configuration files.
 
 #### More combinations
 The example of using LSTM encoder and LM target for pre-training:
