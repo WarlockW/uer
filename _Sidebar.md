@@ -5,7 +5,21 @@
   - [Datasets](https://github.com/dbiir/UER-py/wiki/Datasets)
   - [Modelzoo](https://github.com/dbiir/UER-py/wiki/Modelzoo)
   - [Instructions](https://github.com/dbiir/UER-py/wiki/Instructions)
+    + [Preprocess the data](https://github.com/dbiir/UER-py/wiki/Preprocess-the-data)
+    + [Pretrain the model](https://github.com/dbiir/UER-py/wiki/Pretrain-the-model)
+    + [Pretrain models with different encoders and targets](https://github.com/dbiir/UER-py/wiki/Pretrain-models-with-different-encoders-and-targets)
+    + [Finetune on downstream tasks](https://github.com/dbiir/UER-py/wiki/Finetune-on-downstream-tasks)
+    + [Tokenization and vocabulary](https://github.com/dbiir/UER-py/wiki/Tokenization-and-vocabulary)
+    + [Scripts](https://github.com/dbiir/UER-py/wiki/%E9%A2%84%E8%AE%AD%E7%BB%83%E7%9B%B8%E5%85%B3%E5%8A%9F%E8%83%BD%E8%84%9A%E6%9C%AC)
   - [Competition solutions](https://github.com/dbiir/UER-py/wiki/Competition-solutions)
+    + Chinese Language Understanding Evaluation benchmark, CLUE
+      - [Classification](https://github.com/dbiir/UER-py/wiki/CLUE-Classification)
+      - [Reading comprehension](https://github.com/dbiir/UER-py/wiki/CLUE-MRC)
+      - [Named entity recognition](https://github.com/dbiir/UER-py/wiki/CLUE-NER)
+    + The Evaluation of Weibo Emotion Classification Technology
+      - [SMP2020-EWECT](https://github.com/dbiir/UER-py/wiki/SMP2020-EWECT)
+    + The Evaluation of Chinese Implicit Sentiment Analysis
+      - [SMP2019-ECISA](https://github.com/dbiir/UER-py/wiki/Competition-solutions)
   - [Experiments](https://github.com/dbiir/UER-py/wiki/Experiments)
 + [中文文档](https://github.com/dbiir/UER-py/wiki)
   - [Features](https://github.com/dbiir/UER-py/#features)
