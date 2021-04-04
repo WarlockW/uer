@@ -18,7 +18,6 @@
       - [Named entity recognition](https://github.com/dbiir/UER-py/wiki/CLUE-NER)
     + [SMP2020-EWECT](https://github.com/dbiir/UER-py/wiki/SMP2020-EWECT)
     + [SMP2019-ECISA](https://github.com/dbiir/UER-py/wiki/Competition-solutions)
-
 + [中文文档](https://github.com/dbiir/UER-py/wiki/%E4%B8%AD%E6%96%87%E6%96%87%E6%A1%A3)
   - [项目特色](https://github.com/dbiir/UER-py/wiki/项目特色)
   - [依赖环境](https://github.com/dbiir/UER-py/wiki/依赖环境)
