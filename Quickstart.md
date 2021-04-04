@@ -253,13 +253,3 @@ python3 inference/run_cmrc_infer.py --load_model_path models/cmrc_model.bin --vo
 ```
 
 <br/>
-
-## Datasets
-We collected a range of :arrow_right: [__downstream datasets__](https://github.com/dbiir/UER-py/wiki/Datasets) :arrow_left: and converted them into format that UER can load directly.
-
-<br/>
-
-## Modelzoo
-With the help of UER, we pre-trained models with different corpora, encoders, and targets. All pre-trained models can be loaded by UER directly. More pre-trained models will be released in the future. Detailed introduction of pre-trained models and download links can be found in :arrow_right: [__modelzoo__](https://github.com/dbiir/UER-py/wiki/Modelzoo) :arrow_left: .
-
-<br/>
