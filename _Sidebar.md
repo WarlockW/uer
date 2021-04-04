@@ -1,4 +1,4 @@
-+ [Home](https://github.com/dbiir/UER-py/wiki)
++ [Documents](https://github.com/dbiir/UER-py/wiki)
   - [Features](https://github.com/dbiir/UER-py/#features)
   - [Requirements](https://github.com/dbiir/UER-py/#requirements)
   - [Quickstart](https://github.com/dbiir/UER-py/#quickstart)
@@ -12,9 +12,10 @@
     + [Tokenization and vocabulary](https://github.com/dbiir/UER-py/wiki/Tokenization-and-vocabulary)
     + [Scripts](https://github.com/dbiir/UER-py/wiki/%E9%A2%84%E8%AE%AD%E7%BB%83%E7%9B%B8%E5%85%B3%E5%8A%9F%E8%83%BD%E8%84%9A%E6%9C%AC)
   - [Competition solutions](https://github.com/dbiir/UER-py/wiki/Competition-solutions)
-    + [Classification](https://github.com/dbiir/UER-py/wiki/CLUE-Classification)
-    + [Reading comprehension](https://github.com/dbiir/UER-py/wiki/CLUE-MRC)
-    + [Named entity recognition](https://github.com/dbiir/UER-py/wiki/CLUE-NER)
+    + CLUE
+      - [Classification](https://github.com/dbiir/UER-py/wiki/CLUE-Classification)
+      - [Reading comprehension](https://github.com/dbiir/UER-py/wiki/CLUE-MRC)
+      - [Named entity recognition](https://github.com/dbiir/UER-py/wiki/CLUE-NER)
     + [SMP2020-EWECT](https://github.com/dbiir/UER-py/wiki/SMP2020-EWECT)
     + [SMP2019-ECISA](https://github.com/dbiir/UER-py/wiki/Competition-solutions)
 + [中文文档](https://github.com/dbiir/UER-py/wiki)
@@ -35,8 +36,5 @@
       - [分类](https://github.com/dbiir/UER-py/wiki/CLUE%E5%88%86%E7%B1%BB)
       - [阅读理解](https://github.com/dbiir/UER-py/wiki/CLUE%E9%98%85%E8%AF%BB%E7%90%86%E8%A7%A3)
       - [命名实体识别](https://github.com/dbiir/UER-py/wiki/CLUE%E5%91%BD%E5%90%8D%E5%AE%9E%E4%BD%93%E8%AF%86%E5%88%AB)
-    + 微博情绪分类技术评测
-      - [SMP2020-EWECT](https://github.com/dbiir/UER-py/wiki/SMP2020%E5%BE%AE%E5%8D%9A%E6%83%85%E7%BB%AA%E5%88%86%E7%B1%BB%E6%8A%80%E6%9C%AF%E8%AF%84%E6%B5%8B)
-    + 汉语隐含情感分析评测
-      - [SMP2019-ECISA](https://github.com/dbiir/UER-py/wiki/%E7%AB%9E%E8%B5%9B%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88)
-  - [测评](https://github.com/dbiir/UER-py/wiki/Experiments)
+    + [SMP2020-EWECT](https://github.com/dbiir/UER-py/wiki/SMP2020%E5%BE%AE%E5%8D%9A%E6%83%85%E7%BB%AA%E5%88%86%E7%B1%BB%E6%8A%80%E6%9C%AF%E8%AF%84%E6%B5%8B)
+    + [SMP2019-ECISA](https://github.com/dbiir/UER-py/wiki/%E7%AB%9E%E8%B5%9B%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88)
