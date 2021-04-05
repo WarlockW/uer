@@ -75,7 +75,7 @@ python3 inference/run_classifier_infer.py --load_model_path models/finetuned_mod
 UER-py supports multi-task learning. Embedding and encoder layers are shared by different tasks. <br>
 The example of training two sentiment analysis datasets:
 ```
-python3 run_mt_classifier.py --pretrained_model_path models/google_zh_model.bin --vocab_path models/google_zh_vocab.txt \
+python3 run_classifier_mt.py --pretrained_model_path models/google_zh_model.bin --vocab_path models/google_zh_vocab.txt \
                              --dataset_path_list datasets/douban_book_review/ datasets/chnsenticorp/ \
                              --epochs_num 1 --batch_size 64 --embedding word_pos_seg --encoder transformer --mask fully_visible
 ```
