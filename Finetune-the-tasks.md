@@ -52,7 +52,7 @@ Notice that BERT and RoBERTa have the same encoder. There is no difference betwe
 The example of using ALBERT for classification:
 ```
 python3 run_classifier.py --pretrained_model_path models/google_zh_albert_base_model.bin --vocab_path models/google_zh_vocab.txt \
-                          --config_path models/albert_base_config.json \
+                          --config_path models/albert/base_config.json \
                           --train_path datasets/douban_book_review/train.tsv \
                           --dev_path datasets/douban_book_review/dev.tsv \
                           --test_path datasets/douban_book_review/test.tsv \
@@ -61,11 +61,11 @@ python3 run_classifier.py --pretrained_model_path models/google_zh_albert_base_m
                           --factorized_embedding_parameterization --parameter_sharing \
                           --embedding word_pos_seg --encoder transformer --mask fully_visible
 ```
-The performance of ALBERT is sensitive to hyper-parameter settings. <br>
+The performance of ALBERT is sensitive to hyper-parameter settings. Dropout is turned off in pre-training stage (See *models/albert/base_config.json*). It is recommended to set dropout to 0.1 in configuration file when fine-tuning ALBERT on downstream tasks. <br>
 The example of doing inference for ALBERT:
 ```
 python3 inference/run_classifier_infer.py --load_model_path models/finetuned_model.bin --vocab_path models/google_zh_vocab.txt \
-                                          --config_path models/albert_base_config.json \
+                                          --config_path models/albert/base_config.json \
                                           --test_path datasets/douban_book_review/test_nolabel.tsv \
                                           --prediction_path datasets/douban_book_review/prediction.tsv --labels_num 2 \
                                           --factorized_embedding_parameterization --parameter_sharing \
@@ -156,7 +156,7 @@ python3 inference/run_classifier_infer.py --load_model_path models/dbqa_model.bi
 The example of using ALBERT for DBQA:
 ```
 python3 run_dbqa.py --pretrained_model_path models/google_zh_albert_base_model.bin --vocab_path models/google_zh_vocab.txt \
-                    --config_path models/albert_base_config.json \
+                    --config_path models/albert/base_config.json \
                     --train_path datasets/nlpcc-dbqa/train.tsv \
                     --dev_path datasets/nlpcc-dbqa/dev.tsv \
                     --test datasets/nlpcc-dbqa/test.tsv \
@@ -167,7 +167,7 @@ python3 run_dbqa.py --pretrained_model_path models/google_zh_albert_base_model.b
 The example of doing inference for ALBERT:
 ```
 python3 inference/run_classifier_infer.py --load_model_path models/finetuned_model.bin --vocab_path models/google_zh_vocab.txt \
-                                          --config_path models/albert_base_config.json \
+                                          --config_path models/albert/base_config.json \
                                           --test_path datasets/nlpcc-dbqa/test_nolabel.tsv \
                                           --prediction_path datasets/nlpcc-dbqa/prediction.tsv --labels_num 2 \
                                           --factorized_embedding_parameterization --parameter_sharing \
@@ -209,7 +209,7 @@ python3 inference/run_ner_infer.py --load_model_path models/finetuned_model.bin 
 The example of using ALBERT for NER:
 ```
 python3 run_ner.py --pretrained_model_path models/google_zh_albert_base_model.bin --vocab_path models/google_zh_vocab.txt \
-                   --config_path models/albert_base_config.json \
+                   --config_path models/albert/base_config.json \
                    --train_path datasets/msra_ner/train.tsv --dev_path datasets/msra_ner/dev.tsv --test_path datasets/msra_ner/test.tsv \
                    --label2id_path datasets/msra_ner/label2id.json --epochs_num 5 --batch_size 16 \
                    --learning_rate 1e-4 --factorized_embedding_parameterization --parameter_sharing \
@@ -218,7 +218,7 @@ python3 run_ner.py --pretrained_model_path models/google_zh_albert_base_model.bi
 The example of doing inference for ALBERT:
 ```
 python3 inference/run_ner_infer.py --load_model_path models/finetuned_model.bin --vocab_path models/google_zh_vocab.txt \
-                                          --config_path models/albert_base_config.json \
+                                          --config_path models/albert/base_config.json \
                                           --test_path datasets/msra_ner/test_nolabel.tsv \
                                           --prediction_path datasets/msra_ner/prediction.tsv \
                                           --label2id_path datasets/msra_ner/label2id.json \
@@ -263,7 +263,7 @@ The example of using ALBERT-xxlarge for CMRC:
 ```
 python3 run_cmrc.py --pretrained_model_path models/google_zh_albert_xxlarge_model.bin \
                     --vocab_path models/google_zh_vocab.txt \
-                    --config_path models/albert_xxlarge_config.json \
+                    --config_path models/albert/xxlarge_config.json \
                     --train_path datasets/cmrc2018/train.json --dev_path datasets/cmrc2018/dev.json \
                     --epochs_num 2 --batch_size 8 --seq_length 512 --learning_rate 1e-5 \
                     --factorized_embedding_parameterization --parameter_sharing \
@@ -272,7 +272,7 @@ python3 run_cmrc.py --pretrained_model_path models/google_zh_albert_xxlarge_mode
 The example of doing inference for ALBERT:
 ```
 python3 inference/run_cmrc_infer.py --load_model_path models/finetuned_model.bin --vocab_path models/google_zh_vocab.txt \
-                                     --config_path models/albert_xxlarge_config.json \
+                                     --config_path models/albert/xxlarge_config.json \
                                      --test_path datasets/cmrc2018/test.json \
                                      --prediction_path datasets/cmrc2018/prediction.json \
                                      --factorized_embedding_parameterization --parameter_sharing \
@@ -319,7 +319,7 @@ python3 inference/run_c3_infer.py --load_model_path models/finetuned_model.bin -
 The example of using ALBERT-xlarge for C3:
 ```
 python3 run_c3.py --pretrained_model_path models/google_zh_albert_xlarge_model.bin --vocab_path models/google_zh_vocab.txt \
-                  --config_path models/albert_xlarge_config.json \
+                  --config_path models/albert/xlarge_config.json \
                   --train_path datasets/c3/train.json --dev_path datasets/c3/dev.json \
                   --epochs_num 8 --batch_size 8 --seq_length 512 --max_choices_num 4 \
                   --factorized_embedding_parameterization --parameter_sharing \
@@ -329,7 +329,7 @@ python3 run_c3.py --pretrained_model_path models/google_zh_albert_xlarge_model.b
 The example of doing inference for ALBERT-large:
 ```
 python3  inference/run_c3_infer.py --load_model_path models/finetuned_model.bin --vocab_path models/google_zh_vocab.txt \
-                                   --config_path models/albert_xlarge_config.json \
+                                   --config_path models/albert/xlarge_config.json \
                                    --test_path datasets/c3/test.json \
                                    --prediction_path datasets/c3/prediction.json --max_choices_num 4 \
                                    --factorized_embedding_parameterization --parameter_sharing \
