@@ -3,7 +3,7 @@ Here is a short summary of our solution on [CLUE classification benchmark](https
 ### AFQMC
 We firstly do multi-task learning. We select LCQMC and XNLI as auxiliary tasks:
 ```
-python3 run_mt_classifier.py --pretrained_model_path models/mixed_corpus_bert_large_model.bin --vocab_path models/google_zh_vocab.txt --config_path models/bert_large_config.json \
+python3 run_classifier_mt.py --pretrained_model_path models/mixed_corpus_bert_large_model.bin --vocab_path models/google_zh_vocab.txt --config_path models/bert_large_config.json \
                              --dataset_path_list datasets/afqmc/ datasets/lcqmc/ datasets/xnli/ \
                              --output_model_path models/afqmc_multitask_classifier_model.bin \
                              --epochs_num 1 --batch_size 64 --embedding word_pos_seg --encoder transformer --mask fully_visible
@@ -26,7 +26,7 @@ python3 inference/run_classifier_infer.py --load_model_path models/afqmc_classif
 ### CMNLI
 We firstly do multi-task learning. We select XNLI as auxiliary task:
 ```
-python3 run_mt_classifier.py --pretrained_model_path models/mixed_corpus_bert_large_model.bin --vocab_path models/google_zh_vocab.txt --config_path models/bert_large_config.json \
+python3 run_classifier_mt.py --pretrained_model_path models/mixed_corpus_bert_large_model.bin --vocab_path models/google_zh_vocab.txt --config_path models/bert_large_config.json \
                              --dataset_path_list datasets/cmnli/ datasets/xnli/ \
                              --output_model_path models/cmnli_multitask_classifier_model.bin \
                              --epochs_num 1 --batch_size 64 --embedding word_pos_seg --encoder transformer --mask fully_visible
@@ -107,7 +107,7 @@ python3 inference/run_classifier_infer.py --load_model_path models/tnews_classif
 ### OCNLI
 We firstly do multi-task learning. We select XNLI and CMNLI as auxiliary tasks:
 ```
-python3 run_mt_classifier.py --pretrained_model_path models/mixed_corpus_bert_large_model.bin --vocab_path models/google_zh_vocab.txt --config_path models/bert_large_config.json \
+python3 run_classifier_mt.py --pretrained_model_path models/mixed_corpus_bert_large_model.bin --vocab_path models/google_zh_vocab.txt --config_path models/bert_large_config.json \
                              --dataset_path_list datasets/ocnli/ datasets/cmnli/ datasets/xnli/ \
                              --output_model_path models/ocnli_multitask_classifier_model.bin \
                              --epochs_num 1 --batch_size 64 --embedding word_pos_seg --encoder transformer --mask fully_visible
