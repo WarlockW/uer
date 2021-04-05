@@ -1,4 +1,3 @@
-## Features
 UER-py has the following features:
 - __Reproducibility.__ UER-py has been tested on many datasets and should match the performances of the original pre-training model implementations such as BERT, GPT, ELMo, and T5.
 - __Multi-GPU.__ UER-py supports CPU mode, single GPU mode, and distributed training mode. 
