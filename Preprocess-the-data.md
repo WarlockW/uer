@@ -38,7 +38,7 @@ We need to specify model's target (*--target*) in pre-processing stage since dif
 - prefixlm：prefix language model
 - seq2seq：sequence to sequence
 
-Notice that we should use the corpus (*--corpus_path*) whose format is in accordance with the target. More examples are found in [Pretrain models with different encoders and targets](https://github.com/dbiir/UER-py/wiki/Pretrain-models-with-different-encoders-and-targets).
+Notice that we should use the corpus (*--corpus_path*) whose format is in accordance with the target. More examples are found in [More pretraining models](https://github.com/dbiir/UER-py/wiki/More-pretraining-models).
 
 *--processes_num n* denotes that n processes are used for pre-processing. More processes can speed up the preprocess stage but lead to more memory consumption. <br>
 *--dynamic_masking* denotes that the words are masked during the pre-training stage, which is used in RoBERTa. <br>
