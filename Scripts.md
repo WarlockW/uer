@@ -90,22 +90,21 @@ wordn sentn
 ```
 单词与句子之间使用\t分隔。
 
-#### 模型平均
-*average_models.py* 对多个有相同结构的预训练模型权重取平均。*average_models.py* 使用示例：
+#### Model average
+*average_models.py* takes the average of multiple weights for probably more robust performance. The example of using *average_models.py*：
 ```
 python3 scripts/average_models.py --model_list_path models/book_review_model.bin-4000 models/book_review_model.bin-5000 \
                                   --output_model_path models/book_review_model.bin
 ```
-在预训练阶段，我们训练5000步，每隔1000步存储一次。我们对训练4000步和5000步的预训练模型进行平均。
 
 #### Text generator (language model)
-我们可以使用 *generate_lm.py* 来用语言模型生成文本。给定文本开头，模型根据开头续写。使用 *generate.py* 加载GPT-2模型并进行生成示例：
+We could use *generate_lm.py* to generate text through language model. Given a few words, *generate_lm.py* can continue writing. The example of using *generate_lm.py* to load GPT-2 weight and continue writing:
 ```
 python3 scripts/generate_lm.py --load_model_path models/gpt_model.bin --vocab_path models/google_zh_vocab.txt \
-                               --test_path beginning.txt --prediction_path generated_sentence.txt \
+                               --test_path beginning.txt --prediction_path generated_text.txt \
                                --config_path models/gpt2/distil_config.json --seq_length 128 \
                                --embedding word_pos --remove_embedding_layernorm \
                                --encoder transformer --mask causal --layernorm_positioning pre \
                                --target lm --tie_weight
 ```
-*beginning.txt* 包含了文本的开头。*generated_sentence.txt* 包含了文本的开头以及模型续写的内容。*--load_model_path* 可以使用经过LM目标预先训练的模型。
+where *beginning.txt* contains the beginning of a text and *generated_text.txt* contains the text that the model writes.
