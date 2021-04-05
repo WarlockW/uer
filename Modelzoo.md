@@ -91,7 +91,7 @@ This is the set of Chinese GPT-2 pre-trained weights. Configuration files are in
 
 The link and detailed description (Huggingface model hub) of different pre-trained GPT-2 weights:
 
-|           模型链接           |           细节描述链接           |
+|           Model link           |           Description link          |
 | :-----------------------:| :-----------------------:|
 | [**CLUECorpusSmall GPT-2**][gpt2_cluecorpussmall] | https://huggingface.co/uer/gpt2-chinese-cluecorpussmall |
 | [**CLUECorpusSmall GPT-2-distil**][gpt2_distil_cluecorpussmall] | https://huggingface.co/uer/gpt2-distil-chinese-cluecorpussmall |
