@@ -1,4 +1,3 @@
-## Quickstart
 This section uses several commonly-used examples to demonstrate how to use UER-py. More details are discussed in [Instructions](https://github.com/dbiir/UER-py#instructions). We firstly use BERT model on [Douban book review classification dataset](https://embedding.github.io/evaluation/). We pre-train model on book review corpus and then fine-tune it on classification dataset. There are three input files: book review corpus, book review classification dataset, and vocabulary. All files are encoded in UTF-8 and are included in this project.
 
 The format of the corpus for BERT is as follows：
