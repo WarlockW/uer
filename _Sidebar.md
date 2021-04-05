@@ -18,6 +18,7 @@
       - [Named entity recognition](https://github.com/dbiir/UER-py/wiki/CLUE-NER)
     + [SMP2020-EWECT](https://github.com/dbiir/UER-py/wiki/SMP2020-EWECT)
     + [SMP2019-ECISA](https://github.com/dbiir/UER-py/wiki/Competition-solutions)
+  - [Citation](https://github.com/dbiir/UER-py/wiki/Citation)
 + [主页](https://github.com/dbiir/UER-py/wiki/主页)
   - [项目特色](https://github.com/dbiir/UER-py/wiki/项目特色)
   - [依赖环境](https://github.com/dbiir/UER-py/wiki/依赖环境)
@@ -38,3 +39,4 @@
       - [命名实体识别](https://github.com/dbiir/UER-py/wiki/CLUE命名实体识别)
     + [SMP2020-EWECT](https://github.com/dbiir/UER-py/wiki/SMP2020微博情绪分类技术评测)
     + [SMP2019-ECISA](https://github.com/dbiir/UER-py/wiki/竞赛解决方案)
+  - [引用](https://github.com/dbiir/UER-py/wiki/引用)
