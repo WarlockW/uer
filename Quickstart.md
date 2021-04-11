@@ -1,6 +1,6 @@
 This section uses several commonly-used examples to demonstrate how to use UER-py. More details are discussed in [Instructions](https://github.com/dbiir/UER-py/wiki/instructions). We firstly use BERT model on [Douban book review classification dataset](https://embedding.github.io/evaluation/). We pre-train model on book review corpus and then fine-tune it on classification dataset. There are three input files: book review corpus, book review classification dataset, and vocabulary. All files are encoded in UTF-8 and are included in this project.
 
-The format of the corpus for BERT is as follows：
+The format of the corpus for BERT is as follows (one sentence per line and documents are delimited by empty lines)：
 ```
 doc1-sent1
 doc1-sent2
@@ -31,11 +31,11 @@ python3 preprocess.py --corpus_path corpora/book_review_bert.txt --vocab_path mo
 ```
 Notice that ``six>=1.12.0`` is required.
 
-Pre-processing is time-consuming. Using multiple processes can largely accelerate the pre-processing speed (*--processes_num*). After pre-processing, the raw text is converted to *dataset.pt*, which is the input of *pretrain.py*. Then we download Google's original pre-trained Chinese BERT model [*google_zh_model.bin*](https://share.weiyun.com/A1C49VPb) (in UER's format), and put it in *models* folder. We load the pre-trained Chinese BERT model and train it on book review corpus. Pre-training model is composed of embedding, encoder, and target. To build a pre-training model, we should explicitly specify model's embedding (*--embedding*), encoder (*--encoder* and *--mask*), and target (*--target*). Suppose we have a machine with 8 GPUs.:
+Pre-processing is time-consuming. Using multiple processes can largely accelerate the pre-processing speed (*--processes_num*). After pre-processing, the raw text is converted to *dataset.pt*, which is the input of *pretrain.py*. Then we download Google's original pre-trained Chinese BERT model [*google_zh_model.bin*](https://share.weiyun.com/A1C49VPb) (in UER's format), and put it in *models* folder. We load the pre-trained Chinese BERT model and further pre-train it on book review corpus. Pre-training model is composed of embedding, encoder, and target. To build a pre-training model, we should explicitly specify model's embedding (*--embedding*), encoder (*--encoder* and *--mask*), and target (*--target*). Suppose we have a machine with 8 GPUs.:
 ```
 python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt --pretrained_model_path models/google_zh_model.bin \
                     --output_model_path models/book_review_model.bin  --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7 \
-                    --total_steps 5000 --save_checkpoint_steps 1000 --embedding word_pos_seg --encoder transformer --mask fully_visible --target bert
+                    --total_steps 5000 --save_checkpoint_steps 1000 --batch_size 32 --embedding word_pos_seg --encoder transformer --mask fully_visible --target bert
 
 mv models/book_review_model.bin-5000 models/book_review_model.bin
 ```
@@ -75,7 +75,7 @@ python3 preprocess.py --corpus_path corpora/book_review_bert.txt --vocab_path mo
 
 CUDA_VISIBLE_DEVICES=0,2 python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt --pretrained_model_path models/google_zh_model.bin \
                                              --output_model_path models/book_review_model.bin  --world_size 2 --gpu_ranks 0 1 \
-                                             --total_steps 5000 --save_checkpoint_steps 1000 --embedding word_pos_seg --encoder transformer --mask fully_visible --target bert
+                                             --total_steps 5000 --save_checkpoint_steps 1000 --batch_size 32 --embedding word_pos_seg --encoder transformer --mask fully_visible --target bert
 
 mv models/book_review_model.bin-5000 models/book_review_model.bin
 
@@ -99,15 +99,14 @@ python3 preprocess.py --corpus_path corpora/book_review.txt --vocab_path models/
 
 python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt --pretrained_model_path models/google_zh_model.bin \
                     --output_model_path models/book_review_mlm_model.bin  --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7 \
-                    --total_steps 5000 --save_checkpoint_steps 2500 --batch_size 64 --embedding word_pos_seg --encoder transformer --mask fully_visible --target mlm
+                    --total_steps 5000 --save_checkpoint_steps 2500 --batch_size 32 --embedding word_pos_seg --encoder transformer --mask fully_visible --target mlm
 
 mv models/book_review_mlm_model.bin-5000 models/book_review_mlm_model.bin
 
 CUDA_VISIBLE_DEVICES=0,1 python3 run_classifier.py --pretrained_model_path models/book_review_mlm_model.bin --vocab_path models/google_zh_vocab.txt \
                                                    --train_path datasets/douban_book_review/train.tsv --dev_path datasets/douban_book_review/dev.tsv --test_path datasets/douban_book_review/test.tsv \
-                                                   --epochs_num 3 --batch_size 64 --embedding word_pos_seg --encoder transformer --mask fully_visible
+                                                   --epochs_num 3 --batch_size 32 --embedding word_pos_seg --encoder transformer --mask fully_visible
 ```
-It turns out that the result of [*book_review_mlm_model.bin*](https://share.weiyun.com/V0XidqrV) is around 88.5. <br>
 Different targets require different corpus formats. The format of the corpus for MLM target is as follows (one document per line):
 ```
 doc1
@@ -184,7 +183,7 @@ CUDA_VISIBLE_DEVICES=0 python3 run_classifier_cv.py --pretrained_model_path mode
 The results of *google_zh_model.bin* are 79.1/63.8 (Accuracy/Marco F1). <br>
 *--folds_num* specifies the number of rounds of cross-validation. <br>
 *--output_path* specifies the path of the fine-tuned model. *--folds_num* models are saved and the *fold ID* suffix is added to the model's name. <br>
-*--train_features_path* specifies the path of out-of-fold (OOF) predictions. *run_classifier_cv.py* generates probabilities over classes on each fold by training a model on the other folds in the dataset. *train_features.npy* can be used as features for stacking. More details are introduced in [*Competition solutions*](https://github.com/dbiir/UER-py/wiki/competition-solutions) section. <br>
+*--train_features_path* specifies the path of out-of-fold (OOF) predictions. *run_classifier_cv.py* generates probabilities over classes on each fold by training a model on the other folds in the dataset. *train_features.npy* can be used as features for stacking. More details are introduced in [*Competition solutions*](https://github.com/dbiir/UER-py#competition-solutions) section. <br>
 
 We can further try different pre-trained models. For example, we download [*RoBERTa-wwm-ext-large from HIT*](https://github.com/ymcui/Chinese-BERT-wwm) and convert it into UER's format:
 ```
@@ -211,11 +210,11 @@ CUDA_VISIBLE_DEVICES=0,1 python3 run_classifier_cv.py --pretrained_model_path mo
                                                       --folds_num 5 --epochs_num 3 --batch_size 64 --seed 17 \
                                                       --embedding word_pos_seg --encoder transformer --mask fully_visible
 ```
-The results are 81.3/68.4 (Accuracy/Marco F1), which is very competitive compared with other open-source pre-trained weights. The corpus used by the above pre-trained weight is highly similar with SMP2020-EWECT, a Weibo review dataset. <br>
+The results are 81.3/68.4 (Accuracy/Marco F1), which are very competitive compared with other open-source pre-trained models. The corpus used by the above pre-trained model is highly similar with SMP2020-EWECT, a Weibo review dataset. <br>
 Sometimes large model does not converge. We need to try different random seeds by specifying *--seed*. 
 <br>
 
-Besides classification, UER-py also provides scripts for other downstream tasks. We could use *run_ner.py* for named entity recognition:
+Besides classification, UER-py also provides scripts for other downstream tasks. For example, we could use *run_ner.py* for named entity recognition:
 ```
 python3 run_ner.py --pretrained_model_path models/google_zh_model.bin --vocab_path models/google_zh_vocab.txt \
                    --train_path datasets/msra_ner/train.tsv --dev_path datasets/msra_ner/dev.tsv --test_path datasets/msra_ner/test.tsv \
@@ -240,15 +239,3 @@ python3 run_cmrc.py --pretrained_model_path models/google_zh_model.bin --vocab_p
                     --train_path datasets/cmrc2018/train.json --dev_path datasets/cmrc2018/dev.json \
                     --output_model_path models/cmrc_model.bin \
                     --epochs_num 2 --batch_size 8 --seq_length 512 \
-                    --embedding word_pos_seg --encoder transformer --mask fully_visible
-```
-We don't specify the *--test_path* because CMRC2018 dataset doesn't provide labels for testset. 
-Then we do inference with the fine-tuned cmrc model:
-```
-python3 inference/run_cmrc_infer.py --load_model_path models/cmrc_model.bin --vocab_path models/google_zh_vocab.txt \
-                                    --test_path datasets/cmrc2018/test.json  \
-                                    --prediction_path datasets/cmrc2018/prediction.json --seq_length 512 \
-                                    --embedding word_pos_seg --encoder transformer --mask fully_visible
-```
-
-<br/>
