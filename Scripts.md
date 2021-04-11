@@ -42,10 +42,10 @@ python3 scripts/extract_features.py --load_model_path models/google_zh_model.bin
                                     --test_path datasets/tencent_profile.txt --prediction_path features.pt \
                                     --pooling first --whitening_size 64
 ```
-*--whitening_size 64* 表明会使用白化操作，并且向量经过变化后，维度变为64。如果不指定 *--whitening_size* ，则不会使用白化操作。推荐在特征抽取过程中使用白化操作。
+*--whitening_size 64* indicates that the whitening operation is used and the dimension of the text embedding is *64*.
 
 #### Embedding extractor
-*extract_embeddings.py* 从预训练模型权重embedding层中抽取词向量。这里的词向量指传统的上下文无关词向量。抽取出的词向量可以用于初始化其他模型（比如CNN）词向量层初始化。*extract_embeddings.py* 使用示例：
+*extract_embeddings.py* extracts embedding layer from the pre-trained model. The extracted context-independent embedding can be used to initialize other models' (e.g. CNN) embedding layer. The example of using *extract_embeddings.py*:
 ```
 python3 scripts/extract_embeddings.py --load_model_path models/google_zh_model.bin --vocab_path models/google_zh_vocab.txt \
                                       --word_embedding_path embeddings.txt
