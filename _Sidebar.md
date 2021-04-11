@@ -10,7 +10,7 @@
     + [More pretraining models](https://github.com/dbiir/UER-py/wiki/More-pretraining-models)
     + [Finetune the tasks](https://github.com/dbiir/UER-py/wiki/Finetune-the-tasks)
     + [Tokenization and vocabulary](https://github.com/dbiir/UER-py/wiki/Tokenization-and-vocabulary)
-    + [Scripts](https://github.com/dbiir/UER-py/wiki/%E9%A2%84%E8%AE%AD%E7%BB%83%E7%9B%B8%E5%85%B3%E5%8A%9F%E8%83%BD%E8%84%9A%E6%9C%AC)
+    + [Scripts](https://github.com/dbiir/UER-py/wiki/Scripts)
   - [Competition solutions](https://github.com/dbiir/UER-py/wiki/Competition-solutions)
     + CLUE
       - [Classification](https://github.com/dbiir/UER-py/wiki/CLUE-Classification)
@@ -31,7 +31,7 @@
     + [更多预训练模型](https://github.com/dbiir/UER-py/wiki/更多预训练模型)
     + [下游任务微调](https://github.com/dbiir/UER-py/wiki/下游任务微调)
     + [分词和词典](https://github.com/dbiir/UER-py/wiki/分词和词典)
-    + [预训练相关功能脚本](https://github.com/dbiir/UER-py/wiki/预训练相关功能脚本)
+    + [功能脚本](https://github.com/dbiir/UER-py/wiki/功能脚本)
   - [竞赛解决方案](https://github.com/dbiir/UER-py/wiki/竞赛解决方案)
     + 中文任务测评基准CLUE
       - [分类](https://github.com/dbiir/UER-py/wiki/CLUE分类)
