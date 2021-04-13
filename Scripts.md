@@ -50,10 +50,10 @@ python3 scripts/extract_features.py --load_model_path models/google_zh_model.bin
 python3 scripts/extract_embeddings.py --load_model_path models/google_zh_model.bin --vocab_path models/google_zh_vocab.txt \
                                       --word_embedding_path embeddings.txt
 ```
-*--word_embedding_path* 指定输出词向量文件的路径。词向量文件的格式遵循[这里](https://github.com/Embedding/Chinese-Word-Vectors)，可以被主流项目直接使用。
+*--word_embedding_path* specifies the path of the output word embedding file. The format of word embedding file follows [here](https://github.com/Embedding/Chinese-Word-Vectors), which can be loaded directly by mainstream projects.
 
 #### Finding nearest neighbours
-预训练模型能够产生高质量的词向量。传统的词向量（比如word2vec和GloVe）给定一个单词固定的向量（上下文无关向量）。然而，一词多义是人类语言中的常见现象。一个单词的意思依赖于其上下文。我们可以使用预训练模型的隐层去表示单词。值得注意的是大多数的中文预训练模型是基于字的。如果需要真正的词向量而不是字向量，用户需要下载[基于词的BERT模型](https://share.weiyun.com/5s4HVMi)和[词典](https://share.weiyun.com/5NWYbYn)。上下文无关词向量以词搜词 *scripts/topn_words_indep.py* 使用示例（基于字和基于词）：
+The pre-trained model contains word embeddings. Traditional word embeddings such as word2vec and GloVe assign each word a fixed vector (context-independent word embedding). However, polysemy is a pervasive phenomenon in human language, and the meanings of a polysemous word depend on the context. To this end, we use the hidden state in pre-trained model to represent a word. It is noticeable that most Chinese pre-trained models are based on character. To obtain real word embedding (not character embedding), users can download [word-based BERT model](https://share.weiyun.com/5s4HVMi) and its [vocabulary](https://share.weiyun.com/5NWYbYn). The example of using *scripts/topn_words_indep.py* to find nearest neighbours for context-independent word embedding (character-based and word-based models):
 ```
 python3 scripts/topn_words_indep.py --load_model_path models/google_zh_model.bin --vocab_path models/google_zh_vocab.txt \
                                     --test_path target_words.txt
@@ -61,14 +61,14 @@ python3 scripts/topn_words_indep.py --load_model_path models/google_zh_model.bin
 python3 scripts/topn_words_indep.py --load_model_path models/wiki_bert_word_model.bin --vocab_path models/wiki_word_vocab.txt \
                                     --test_path target_words.txt
 ```
-上下文无关词向量来自于模型的embedding层， *target_words.txt* 的格式如下所示：
+Context-independent word embedding comes from embedding layer. The format of the *target_words.txt* is as follows: 
 ```
 word-1
 word-2
 ...
 word-n
 ```
-下面给出上下文相关词向量以词搜词 *scripts/topn_words_dep.py* 使用示例（基于字和基于词）：
+The example of using *scripts/topn_words_dep.py* to find nearest neighbours for context-dependent word embedding (character-based and word-based models):
 ```
 python3 scripts/topn_words_dep.py --load_model_path models/google_zh_model.bin --vocab_path models/google_zh_vocab.txt \
                                   --cand_vocab_path models/google_zh_vocab.txt --test_path target_words_with_sentences.txt --config_path models/bert/base_config.json \
@@ -78,17 +78,16 @@ python3 scripts/topn_words_dep.py --load_model_path models/bert_wiki_word_model.
                                   --cand_vocab_path models/wiki_word_vocab.txt --test_path target_words_with_sentences.txt --config_path models/bert/base_config.json \
                                   --batch_size 256 --seq_length 32 --tokenizer space
 ```
-我们把目标词替换成词典中其它的词（候选词），将序列送入网络。我们把目标词/候选词对应位置的隐层（最后一层）看作是目标词/候选词的上下文相关词向量。如果两个单词在特定上下文中的隐层向量接近，那么它们可能在特定的上下文中有相似的意思。<br>
-*--cand_vocab_path* 指定候选词文件的路径。由于需要将目标词替换成所有的候选词，然后经过网络，因此我们可以选择较小的候选词词典。<br>
-如果用户使用基于词的模型，需要对 *target_words_with_sentences.txt* 文件的句子进行分词。<br>
-*target_words_with_sentences.txt* 文件的格式如下：
+We substitute the target word with other words in the vocabulary and feed the sentences into the pre-trained model. Hidden state is used as the context-dependent embedding of a word. <br>
+*--cand_vocab_path* specifies the path of candidate word file. For faster speed one can use a smaller candidate vocabulary. <br> 
+Users should do word segmentation manually and use space tokenizer if word-based model is used. The format of *target_words_with_sentences.txt* is as follows:
 ```
 word1 sent1
 word2 sent2 
 ...
 wordn sentn
 ```
-单词与句子之间使用\t分隔。
+Sentence and word are split by \t.
 
 #### Model average
 *average_models.py* takes the average of multiple weights for probably more robust performance. The example of using *average_models.py*：
