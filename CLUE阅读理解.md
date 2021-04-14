@@ -1,4 +1,4 @@
-以下是我们[CLUE阅读理解](https://cluebenchmarks.com/rc.html)解决方案的简要介绍。
+以下是[CLUE阅读理解](https://cluebenchmarks.com/rc.html)解决方案的简要介绍。
 
 ### CMRC2018
 利用[*mixed_corpus_bert_large_model.bin*](https://share.weiyun.com/5G90sMJ)在CMRC2018数据集上做微调和预测示例：
