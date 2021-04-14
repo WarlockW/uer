@@ -10,8 +10,8 @@ python3 run_cmrc.py --pretrained_model_path models/mixed_corpus_bert_large_model
                     --epochs_num 2 --batch_size 8 --seq_length 512 --embedding word_pos_seg --encoder transformer --mask fully_visible
 
 python3 inference/run_cmrc_infer.py --load_model_path models/cmrc_model.bin --vocab_path models/google_zh_vocab.txt \
-                                     --config_path models/bert/large_config.json --test_path datasets/cmrc2018/test.json \
-                                     --prediction_path datasets/cmrc2018/prediction.json --embedding word_pos_seg --encoder transformer --mask fully_visible
+                                    --config_path models/bert/large_config.json --test_path datasets/cmrc2018/test.json \
+                                    --prediction_path datasets/cmrc2018/prediction.json --embedding word_pos_seg --encoder transformer --mask fully_visible
 ```
 
 ### ChID
