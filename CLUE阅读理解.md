@@ -48,6 +48,6 @@ python3 run_c3.py --pretrained_model_path models/mixed_corpus_bert_large_model.b
 python3 inference/run_c3_infer.py --load_model_path models/multichoice_model.bin --vocab_path models/google_zh_vocab.txt \
                                   --config_path models/bert/large_config.json --test_path datasets/c3/test.json \
                                   --prediction_path datasets/c3/prediction.json \
-                                  --max_choices_num 4 --seq_length 512 \
+                                  --seq_length 512 --max_choices_num 4 \
                                   --embedding word_pos_seg --encoder transformer --mask fully_visible
 ```
