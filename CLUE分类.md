@@ -1,4 +1,4 @@
-以下是我们[CLUE分类任务](https://www.cluebenchmarks.com/classification.html)解决方案的简要介绍。 我们提交了两个结果， *UER* 和 *UER-ensemble* ， *UER* 的结果基于[ *mixed_corpus_bert_large_model.bin* ](https://share.weiyun.com/5G90sMJ) 预训练权重； *UER-ensemble* 的结果基于大量模型的集成。本节主要关注单模型。关于模型集成的更多详细信息，请参见[这里](https://github.com/dbiir/UER-py/wiki/SMP2020-EWECT)。
+以下是[CLUE分类任务](https://www.cluebenchmarks.com/classification.html)解决方案的简要介绍。 我们提交了两个结果， *UER* 和 *UER-ensemble* ， *UER* 的结果基于[ *mixed_corpus_bert_large_model.bin* ](https://share.weiyun.com/5G90sMJ) 预训练权重； *UER-ensemble* 的结果基于大量模型的集成。本节主要关注单模型。关于模型集成的更多详细信息，请参见[这里](https://github.com/dbiir/UER-py/wiki/SMP2020-EWECT)。
 
 ### AFQMC
 首先做多任务学习，选择LCQMC和XNLI作为辅助任务：
