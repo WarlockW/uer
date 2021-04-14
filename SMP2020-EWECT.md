@@ -57,21 +57,21 @@ When hyper-parameters of the tree based model are determined, we extract feature
 ```
 CUDA_VISIBLE_DEVICES=0 python3 inference/run_classifier_infer_cv.py --load_model_path models/ewect_usual_classifier_model_0.bin \
                                                                     --vocab_path models/google_zh_vocab.txt \
-                                                                    --config_path models/bert_large_config.json \
+                                                                    --config_path models/bert/large_config.json \
                                                                     --test_path datasets/smp2020-ewect/usual/dev.tsv \
                                                                     --test_features_path datasets/smp2020-ewect/usual/test_features_0.npy --folds_num 5 --labels_num 6 \
                                                                     --embedding word_pos_seg --encoder transformer --mask fully_visible
 
 CUDA_VISIBLE_DEVICES=0 python3 inference/run_classifier_infer_cv.py --load_model_path models/ewect_usual_classifier_model_1.bin \
                                                                     --vocab_path models/google_zh_vocab.txt \
-                                                                    --config_path models/bert_large_config.json \
+                                                                    --config_path models/bert/large_config.json \
                                                                     --test_path datasets/smp2020-ewect/usual/dev.tsv \
                                                                     --test_features_path datasets/smp2020-ewect/usual/test_features_1.npy --folds_num 5 --labels_num 6 --seq_length 160 \
                                                                     --embedding word_pos_seg --encoder transformer --mask fully_visible
 
 CUDA_VISIBLE_DEVICES=0 python3 inference/run_classifier_infer_cv.py --load_model_path models/ewect_usual_classifier_model_2.bin \
                                                                     --vocab_path models/google_zh_vocab.txt \
-                                                                    --config_path models/bert_base_config.json \
+                                                                    --config_path models/bert/base_config.json \
                                                                     --test_path datasets/smp2020-ewect/usual/dev.tsv \
                                                                     --test_features_path datasets/smp2020-ewect/usual/test_features_2.npy --folds_num 5 --labels_num 6 --seq_length 100 \
                                                                     --embedding word_pos_seg --encoder transformer --mask causal --pooling mean
