@@ -83,6 +83,7 @@ Node-0 : python3 pretrain.py --dataset_path dataset.pt --vocab_path models/googl
                              --total_steps 100000 --save_checkpoint_steps 10000 --report_steps 100 \
                              --master_ip tcp://9.73.138.133:12345 \
                              --embedding word_pos_seg --encoder transformer --mask fully_visible --target bert
+
 Node-1 : python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt \
                              --output_model_path models/output_model.bin --world_size 16 --gpu_ranks 8 9 10 11 12 13 14 15 \
                              --total_steps 100000 \
@@ -103,6 +104,7 @@ The example of pre-training on CPU and single GPU:
 python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt --pretrained_model_path models/google_zh_model.bin \
                     --output_model_path models/output_model.bin \
                     --embedding word_pos_seg --encoder transformer --mask fully_visible --target bert
+
 python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt --pretrained_model_path models/google_zh_model.bin \
                     --output_model_path models/output_model.bin --gpu_ranks 3 \
                     --embedding word_pos_seg --encoder transformer --mask fully_visible --target bert
@@ -111,18 +113,19 @@ The example of pre-training on a single machine with 8 GPUs：
 ```
 python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt --pretrained_model_path models/google_zh_model.bin \
                     --output_model_path models/output_model.bin --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7 \
-                    --embedding word_pos_seg --encoder transformer --mask fully_visible --target bert 
+                    --embedding word_pos_seg --encoder transformer --mask fully_visible --target bert
 ```
 The example of pre-training on two machines: each machine has 8 GPUs (16 GPUs in total):
 ```
 Node-0 : python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt \
                              --pretrained_model_path models/google_zh_model.bin \
                              --output_model_path models/output_model.bin --world_size 16 --gpu_ranks 0 1 2 3 4 5 6 7 \
-                             --master_ip tcp://9.73.138.133:12345 --embedding word_pos_seg --encoder transformer --mask fully_visible --target bert  
+                             --master_ip tcp://9.73.138.133:12345 --embedding word_pos_seg --encoder transformer --mask fully_visible --target bert
+
 Node-1 : python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt \
                              --pretrained_model_path models/google_zh_model.bin \
                              --output_model_path models/output_model.bin --world_size 16 --gpu_ranks 8 9 10 11 12 13 14 15 \
-                             --master_ip tcp://9.73.138.133:12345 --embedding word_pos_seg --encoder transformer --mask fully_visible --target bert  
+                             --master_ip tcp://9.73.138.133:12345 --embedding word_pos_seg --encoder transformer --mask fully_visible --target bert
 ```
 The example of pre-training on three machines: each machine has 8 GPUs (24 GPUs in total):
 ```
@@ -130,10 +133,12 @@ Node-0: python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google
                             --pretrained_model_path models/google_zh_model.bin \
                             --output_model_path models/output_model.bin --world_size 24 --gpu_ranks 0 1 2 3 4 5 6 7 \
                             --master_ip tcp://9.73.138.133:12345 --embedding word_pos_seg --encoder transformer --mask fully_visible --target bert
+
 Node-1: python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt \
                             --pretrained_model_path models/google_zh_model.bin \
                             --output_model_path models/output_model.bin --world_size 24 --gpu_ranks 8 9 10 11 12 13 14 15 \
                             --master_ip tcp://9.73.138.133:12345 --embedding word_pos_seg --encoder transformer --mask fully_visible --target bert
+
 Node-2: python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt \
                             --pretrained_model_path models/google_zh_model.bin \
                             --output_model_path models/output_model.bin --world_size 24 --gpu_ranks 16 17 18 19 20 21 22 23 \
