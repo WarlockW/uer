@@ -38,7 +38,7 @@ It is recommended to explicitly specify model's embedding (*--embedding*), encod
 - gatedcnn: GatedCNN
 - transformer: BERT (*--encoder transformer --mask fully_visible*); GPT (*--encoder transformer --mask causal*); GPT-2 (*--encoder transformer --mask causal --layernorm_positioning pre*)
 
-The target should be coincident with the target in pre-processing stage. Users can try different combinations of encoders and targets by *--encoder* and *--target* .
+The target should be coincident with the target in pre-processing stage. Users can try different combinations of encoders and targets by *--encoder* and *--target* . More examples are found in [More pretraining models](https://github.com/dbiir/UER-py/wiki/More-pretraining-models).
 *--config_path* denotes the path of the configuration file, which specifies the hyper-parameters of the pre-training model. We have put the commonly-used configuration files in *models* folder. Users should choose the proper one according to encoder they use. <br>
 *--instances_buffer_size* specifies the buffer size in memory in pre-training stage. <br>
 *--remove_embedding_layernorm* removes the layernorm layer behind the embedding layer. <br>
