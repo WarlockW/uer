@@ -42,7 +42,7 @@ Notice that we should use the corpus (*--corpus_path*) whose format is in accord
 
 *--processes_num n* denotes that n processes are used for pre-processing. More processes can speed up the preprocess stage but lead to more memory consumption. <br>
 *--dup_factor* denotes that instances are duplicated multiple times (when using static masking). Static masking is used in BERT. The masked words are determined in pre-processing stage. <br>
-*--dynamic_masking* denotes that the words are masked during the pre-training stage, which is used in RoBERTa. Dynamic masking performs better and the output file (*--dataset_path*) is smaller (). <br>
+*--dynamic_masking* denotes that the words are masked during the pre-training stage, which is used in RoBERTa. Dynamic masking performs better and the output file (*--dataset_path*) is smaller (since it doesn't have to duplicate instances). <br>
 *--full_sentences* allows a sample to include contents from multiple documents, which is used in RoBERTa. <br>
 *--span_masking* denotes that masking consecutive words, which is used in SpanBERT. If dynamic masking is used, we should specify *--span_masking* in pre-training stage, otherwise we should specify *--span_masking* in pre-processing stage. <br>
 *--docs_buffer_size* specifies the buffer size in memory in pre-processing stage. <br>
