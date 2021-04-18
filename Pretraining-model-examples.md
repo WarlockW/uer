@@ -1,4 +1,4 @@
-UER-py allows users to combine different components (e.g. embeddings, encoders, and targets). Here are some examples of trying different combinations.
+UER-py allows users to combine different components (e.g. embeddings, encoders, and targets). Here are some examples of trying different combinations to implement frequently-used pre-training models.
 
 #### RoBERTa
 The example of pre-processing and pre-training for RoBERTa:
