@@ -108,7 +108,7 @@ python3 scripts/average_models.py --model_list_path models/book_review_model.bin
 ```
 
 #### Text generator (language model)
-We could use *generate_lm.py* to generate text through language model. Given a few words, *generate_lm.py* can continue writing. The example of using *generate_lm.py* to load [GPT-2-distil](https://share.weiyun.com/IAvDbjKR) weight and continue writing:
+We could use *generate_lm.py* to generate text through language model. Given a few words, *generate_lm.py* can continue writing. The example of using *generate_lm.py* to load [GPT-2-distil](https://share.weiyun.com/IAvDbjKR) and continue writing:
 ```
 python3 scripts/generate_lm.py --load_model_path models/gpt_model.bin --vocab_path models/google_zh_vocab.txt \
                                --test_path beginning.txt --prediction_path generated_text.txt \
@@ -119,8 +119,8 @@ python3 scripts/generate_lm.py --load_model_path models/gpt_model.bin --vocab_pa
 ```
 where *beginning.txt* contains the beginning of a text and *generated_text.txt* contains the text that the model writes.
 
-#### Text generator (Seq2seq model)
-We could use *generate_seq2seq.py* to generate text through Seq2seq model. Given the Chinese, *generate_seq2seq.py* can translate Chinese to English. The example of using *generate_seq2seq.py* to load [iwslt_zh_en](https://share.weiyun.com/yY1F1xEh) weight and continue writing:
+#### Text generator (seq2seq model)
+We could use *generate_seq2seq.py* to generate text through seq2seq model. The example of using *generate_seq2seq.py* to load [Transformer translation model (zh_en)](https://share.weiyun.com/yY1F1xEh) and translate from Chinese to English:
 ```
 python3 scripts/generate_seq2seq.py --load_model_path models/iwslt_zh_en_model.bin-50000 \
                                     --vocab_path models/google_zh_vocab.txt --tgt_vocab_path models/google_uncased_en_vocab.txt \
@@ -129,47 +129,47 @@ python3 scripts/generate_seq2seq.py --load_model_path models/iwslt_zh_en_model.b
                                     --embedding word_sinusoidalpos --tgt_embedding word_sinusoidalpos \
                                     --encoder transformer --mask fully_visible --decoder transformer --target seq2seq
 ```
-where *test_path* contains the content to be translated and *prediction_path* contains the translated content.
+where *test_path* contains the text to be translated and *prediction_path* contains the translated text.
 
-#### Model convert
-Convert model from UER format to Huggingface format (PyTorch) ：
+#### Model conversion
+Converting model from UER format to Huggingface format (PyTorch):
 
-We give a detailed UER to Huggingface conversion script usage method under each repository in [Huggingface model repository(uer)](https://huggingface.co/uer)
+We provide the usage of UER-to-Huggingface conversion scripts in [Huggingface model repository (uer)](https://huggingface.co/uer).
 
-Convert model from Huggingface format (PyTorch) to UER format ：
+Converting model from Huggingface format (PyTorch) to UER format ：
 
-Roberta：Take the [chinese_roberta_L-2_H-128](https://huggingface.co/uer/chinese_roberta_L-2_H-128) model in Huggingface as an example：
+Roberta: Taking the [chinese_roberta_L-2_H-128](https://huggingface.co/uer/chinese_roberta_L-2_H-128) model in Huggingface as an example：
 ```
 python3 scripts/convert_bert_from_huggingface_to_uer.py --input_model_path pytorch_model.bin \
                                                         --output_model_path uer_model.bin \
                                                         --layers_num 2 --target mlm
 ```
-GPT-2：Take the [gpt2-chinese-cluecorpussmall](https://huggingface.co/uer/gpt2-chinese-cluecorpussmall) model in Huggingface as an example：
+GPT-2: Taking the [gpt2-chinese-cluecorpussmall](https://huggingface.co/uer/gpt2-chinese-cluecorpussmall) model in Huggingface as an example：
 ```
 python3 scripts/convert_gpt2_from_huggingface_to_uer.py --input_model_path pytorch_model.bin \
                                                         --output_model_path uer_model.bin \
                                                         --layers_num 12
 ```
-RoBERTa model for extractive QA：Take the [roberta-base-chinese-extractive-qa](https://huggingface.co/uer/roberta-base-chinese-extractive-qa) model in Huggingface as an example：
+RoBERTa (BERT) for extractive QA: Take the [roberta-base-chinese-extractive-qa](https://huggingface.co/uer/roberta-base-chinese-extractive-qa) model in Huggingface as an example：
 ```
 python3 scripts/convert_bert_extractive_qa_from_huggingface_to_uer.py --input_model_path pytorch_model.bin \
                                                                       --output_model_path uer_model.bin \
                                                                       --layers_num 12
 ```
-RoBERTa mdoel for text classification：Take the [roberta-base-finetuned-dianping-chinese](https://huggingface.co/uer/roberta-base-finetuned-dianping-chinese) model in Huggingface as an example：
+RoBERTa (BERT) for text classification: Take the [roberta-base-finetuned-dianping-chinese](https://huggingface.co/uer/roberta-base-finetuned-dianping-chinese) model in Huggingface as an example：
 ```
 python3 scripts/convert_bert_text_classification_from_huggingface_to_uer.py --input_model_path pytorch_model.bin \
                                                                             --output_model_path uer_model.bin \
                                                                             --layers_num 12
 ```
-T5：Take the [t5-base-chinese-cluecorpussmall](https://huggingface.co/uer/t5-base-chinese-cluecorpussmall) model in Huggingface as an example：
+T5: Taking the [t5-base-chinese-cluecorpussmall](https://huggingface.co/uer/t5-base-chinese-cluecorpussmall) model in Huggingface as an example：
 ```
 python3 scripts/convert_t5_from_huggingface_to_uer.py --input_model_path pytorch_model.bin \
                                                       --output_model_path uer_model.bin \
                                                       --layers_num 12 \
                                                       --type t5
 ```
-T5-v1_1：Take the [t5-v1_1-small-chinese-cluecorpussmall](https://huggingface.co/uer/t5-v1_1-small-chinese-cluecorpussmall) model in Huggingface as an example：
+T5-v1_1: Taking the [t5-v1_1-small-chinese-cluecorpussmall](https://huggingface.co/uer/t5-v1_1-small-chinese-cluecorpussmall) model in Huggingface as an example：
 ```
 python3 scripts/convert_t5_from_huggingface_to_uer.py --input_model_path pytorch_model.bin \
                                                       --output_model_path uer_model.bin \
