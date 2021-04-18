@@ -1,21 +1,32 @@
 UER-py provides abundant tool scripts for pre-training models. This section firstly summarizes tool scripts and their functions, and then provides using examples of some scripts.
-<table>
-<tr align="center"><th> Script <th> Function description
-<tr align="center"><td> average_model.py <td> Take the average of pre-trained models. A frequently-used ensemble strategy for deep learning models
-<tr align="center"><td> build_vocab.py <td> Build vocabulary (multi-processing supported)
-<tr align="center"><td> check_model.py <td> Check the model (single GPU or multiple GPUs)
-<tr align="center"><td> cloze_test.py <td> Randomly mask a word and predict it, top n words are returned
-<tr align="center"><td> convert_bert_from_uer_to_google.py <td> convert the BERT of UER format to Google format (TF)
-<tr align="center"><td> convert_bert_from_uer_to_huggingface.py <td> convert the BERT of UER format to Huggingface format (PyTorch)
-<tr align="center"><td> convert_bert_from_google_to_uer.py <td> convert the BERT of Google format (TF) to UER format
-<tr align="center"><td> convert_bert_from_huggingface_to_uer.py <td> convert the BERT of Huggingface format (PyTorch) to UER format
-<tr align="center"><td> diff_vocab.py <td> Compare two vocabularies
-<tr align="center"><td> dynamic_vocab_adapter.py <td> Change the pre-trained model according to the vocabulary. It can save memory in fine-tuning stage since task-specific vocabulary is much smaller than general-domain vocabulary
-<tr align="center"><td> extract_embeddings.py <td> extract the embedding of the pre-trained model
-<tr align="center"><td> extract_features.py <td> extract the hidden states of the last of the pre-trained model
-<tr align="center"><td> topn_words_dep.py <td> Finding nearest neighbours with context-independent word embedding
-<tr align="center"><td> topn_words_indep.py <td> Finding nearest neighbours with context-dependent word embedding
-</table>
+|           Script         |   Function description   |
+| :----------------------- | :----------------------- |
+|      average_model.py    |  Take the average of pre-trained models  |
+|      build_vocab.py      |  Build vocabulary given corpus and tokenizer  |
+|      cloze_test.py       |  Randomly mask a word and predict it, top n words are returned  |
+|      convert_bert_extractive_qa_from_huggingface_to_uer.py      |  Convert extractive QA BERT of Huggingface format (PyTorch) to UER format  |
+|      convert_bert_extractive_qa_from_uer_to_huggingface.py      |  Convert extractive QA BERT of UER format to Huggingface format (PyTorch)  |
+|      convert_bert_from_google_to_uer.py                         |  Convert BERT of Google format (TF) to UER format  |
+|      convert_bert_from_huggingface_to_uer.py                    |  Convert BERT of Huggingface format (PyTorch) to UER format  |
+|      convert_bert_from_uer_to_google.py                         |  Convert BERT of UER format to Google format (TF)  |
+|      convert_bert_from_uer_to_huggingface.py                    |  Convert BERT of UER format to Huggingface format (PyTorch)  |
+|      convert_bert_text_classification_from_huggingface_to_uer.py|  Convert text classification BERT of Huggingface format (PyTorch) to UER format  |
+|      convert_bert_text_classification_from_uer_to_huggingface.py|  Convert text classification BERT of UER format to Huggingface format (PyTorch)  |
+|      convert_gpt2_from_huggingface_to_uer.py                    |  Convert GPT-2 of Huggingface format (PyTorch) to UER format  |
+|      convert_gpt2_from_uer_to_huggingface.py                    |  Convert GPT-2 of UER format to Huggingface format (PyTorch)  |
+|      convert_t5_from_huggingface_to_uer.py                      |  Convert T5 of Huggingface format (PyTorch) to UER format  |
+|      convert_t5_from_uer_to_huggingface.py                      |  Convert T5 of UER format to Huggingface format (PyTorch)  |
+|      diff_vocab.py           |  Compare two vocabularies  |
+|      dynamic_vocab_adapter.py|  Adapt the pre-trained model according to the vocabulary  |
+|      extract_embeddings.py   |  Extract the embedding of the pre-trained model  |
+|      extract_features.py     |  Obtain text representation  |
+|      generate_lm.py          |  Generate text with language model  |
+|      generate_seq2seq.py     |  Generate text with seq2seq model  |
+|      run_bayesopt.py         |  Search hyper-parameters for LightGBM by bayesian optimization  |
+|      run_lgb.py              |  Model ensemble with LightGBM (classification)  |
+|      topn_words_dep.py       |  Find nearest neighbors with context-dependent word embedding  |
+|      topn_words_indep.py     |  Find nearest neighbors with context-independent word embedding  |
+
 
 #### Cloze test
 *cloze_test.py* uses MLM target to predict masked word. Top n words are returned. Cloze test can be used for operations such as data augmentation. The example of using *cloze_test.py*:
