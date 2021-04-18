@@ -150,13 +150,13 @@ python3 scripts/convert_gpt2_from_huggingface_to_uer.py --input_model_path pytor
                                                         --output_model_path uer_model.bin \
                                                         --layers_num 12
 ```
-RoBERTa (BERT) for extractive QA: Take the [roberta-base-chinese-extractive-qa](https://huggingface.co/uer/roberta-base-chinese-extractive-qa) model in Huggingface as an example：
+RoBERTa (BERT) for extractive QA: Taking the [roberta-base-chinese-extractive-qa](https://huggingface.co/uer/roberta-base-chinese-extractive-qa) model in Huggingface as an example：
 ```
 python3 scripts/convert_bert_extractive_qa_from_huggingface_to_uer.py --input_model_path pytorch_model.bin \
                                                                       --output_model_path uer_model.bin \
                                                                       --layers_num 12
 ```
-RoBERTa (BERT) for text classification: Take the [roberta-base-finetuned-dianping-chinese](https://huggingface.co/uer/roberta-base-finetuned-dianping-chinese) model in Huggingface as an example：
+RoBERTa (BERT) for text classification: Taking the [roberta-base-finetuned-dianping-chinese](https://huggingface.co/uer/roberta-base-finetuned-dianping-chinese) model in Huggingface as an example：
 ```
 python3 scripts/convert_bert_text_classification_from_huggingface_to_uer.py --input_model_path pytorch_model.bin \
                                                                             --output_model_path uer_model.bin \
