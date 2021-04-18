@@ -129,7 +129,7 @@ python3 scripts/generate_seq2seq.py --load_model_path models/iwslt_zh_en_model.b
                                     --embedding word_sinusoidalpos --tgt_embedding word_sinusoidalpos \
                                     --encoder transformer --mask fully_visible --decoder transformer --target seq2seq
 ```
-where *test_path* contains the text to be translated and *prediction_path* contains the translated text.
+where *--test_path* specifies the path of text to be translated and *--prediction_path* specifies the path of translated text.
 
 #### Model conversion
 Converting model from UER format to Huggingface format (PyTorch):
