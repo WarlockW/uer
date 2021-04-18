@@ -38,7 +38,7 @@ We need to specify model's target (*--target*) in pre-processing stage since dif
 - prefixlm：prefix language model
 - seq2seq：sequence to sequence
 
-Notice that we should use the corpus (*--corpus_path*) whose format is in accordance with the target. More examples are found in [More pretraining models](https://github.com/dbiir/UER-py/wiki/More-pretraining-models).
+Notice that we should use the corpus (*--corpus_path*) whose format is in accordance with the target. More use cases are found in [Pretraining model examples](https://github.com/dbiir/UER-py/wiki/Pretraining-model-examples).
 
 *--processes_num n* denotes that n processes are used for pre-processing. More processes can speed up the preprocess stage but lead to more memory consumption. <br>
 *--dup_factor* denotes that instances are duplicated multiple times (when using static masking). Static masking is used in BERT. The masked words are determined in pre-processing stage. <br>
