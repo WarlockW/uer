@@ -69,11 +69,11 @@ python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_voca
 ```
 
 #### SpanBERT
-SpanBERT introduces span masking and span boundary objective. We only consider span masking here.
+SpanBERT introduces span masking and span boundary objective. We only consider span masking here. NSP target is removed by SpanBERT. <br>
 The example of pre-processing and pre-training for SpanBERT (static masking):
 ```
 python3 preprocess.py --corpus_path corpora/book_review.txt --vocab_path models/google_zh_vocab.txt \
-                      --dataset_path dataset.pt --processes_num 8 --target mlm --dup_factor 20 \
+                      --dataset_path dataset.pt --processes_num 8 --dup_factor 20 \
                       --span_masking --span_geo_prob 0.3 --span_max_length 5 --target mlm
 
 python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt \
@@ -82,7 +82,7 @@ python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_voca
                     --total_steps 10000 --save_checkpoint 5000 \
                     --embedding word_pos_seg --encoder transformer --mask fully_visible --target mlm
 ```
-*--dup_factor* specifies the number of times to duplicate the input data (with different masks). The default value is 5 .
+*--dup_factor* specifies the number of times to duplicate the input data (with different masks). The default value is 5 . <br>
 The example of pre-processing and pre-training for SpanBERT (dynamic masking):
 ```
 python3 preprocess.py --corpus_path corpora/book_review.txt --vocab_path models/google_zh_vocab.txt \
@@ -93,6 +93,42 @@ python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_voca
                     --output_model_path models/output_model.bin \
                     --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7  --learning_rate 1e-4 \
                     --span_masking --span_geo_prob 0.3 --span_max_length 5 \
+                    --total_steps 10000 --save_checkpoint 5000 \
+                    --embedding word_pos_seg --encoder transformer --mask fully_visible --target mlm
+```
+
+#### BERT-WWM
+BERT-WWM introduces whole word masking. MLM target is used here. <br>
+The example of pre-processing and pre-training for BERT-WWM (static masking):
+```
+python3 preprocess.py --corpus_path corpora/book_review.txt \
+                      --vocab_path models/google_zh_vocab.txt \
+                      --dataset_path dataset.pt \
+                      --processes_num 8 --dup_factor 20 \
+                      --whole_word_masking \
+                      --target mlm
+
+python3 pretrain.py --dataset_path dataset.pt \
+                    --vocab_path models/google_zh_vocab.txt \
+                    --output_model_path models/output_model.bin \
+                    --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7  --learning_rate 1e-4 \
+                    --total_steps 10000 --save_checkpoint 5000 \
+                    --embedding word_pos_seg --encoder transformer --mask fully_visible --target mlm
+```
+*--whole_word_masking* denotes that whole word masking is used. <br>
+The example of pre-processing and pre-training for BERT-WMM (dynamic masking):
+```
+python3 preprocess.py --corpus_path corpora/book_review.txt \
+                      --vocab_path models/google_zh_vocab.txt \
+                      --dataset_path dataset.pt \
+                      --processes_num 8 --dynamic_masking \
+                      --target mlm
+
+python3 pretrain.py --dataset_path dataset.pt \
+                    --vocab_path models/google_zh_vocab.txt \
+                    --output_model_path models/output_model.bin \
+                    --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7  --learning_rate 1e-4 \
+                    --whole_word_masking \
                     --total_steps 10000 --save_checkpoint 5000 \
                     --embedding word_pos_seg --encoder transformer --mask fully_visible --target mlm
 ```
@@ -135,8 +171,8 @@ python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_voca
                     --config_path models/birnn_config.json --learning_rate 5e-4 \
                     --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7 --embedding word --encoder bilstm --target bilm
 ```
-The corpus format of ELMo is identical with GPT. We can pre-train ELMo through *--embedding word*, *--encoder bilstm*, and *--target bilm*. <br>
-*--embedding word* denotes using traditional word embedding. LSTM does not require position embedding. In addition, layernorm is not commonly used in traditional RNN related models. So we can use *--remove_embedding_layernorm* . Nevertheless, it doesn't matter if layernorm is added.
+The corpus format of ELMo is identical with GPT-2. We can pre-train ELMo through *--embedding word*, *--encoder bilstm*, and *--target bilm*. <br>
+*--embedding word* denotes using traditional word embedding. LSTM does not require position embedding. In addition, we specify *--remove_embedding_layernorm* and the layernorm after word embedding is removed.
 
 #### T5
 T5 proposes to use seq2seq model to unify NLU and NLG tasks. With extensive experiments, T5 recommend to use encoder-decoder architecture and BERT-style objective function (the model predicts the masked words). The example of using T5 for pre-training:
@@ -153,7 +189,7 @@ python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_voca
                     --encoder transformer --mask fully_visible --layernorm_positioning pre --decoder transformer \
                     --target t5 --tie_weights
 ```
-The corpus format of T5 is identical with GPT. *--relative_position_embedding* denotes using relative position embedding. *--remove_embedding_layernorm* and *--layernorm_positioning pre* denote that pre-layernorm is used (same with GPT-2). Since T5 uses encoder-decoder architecture, we have to specify *--encoder* and *--decoder*.
+The corpus format of T5 is identical with GPT-2. *--relative_position_embedding* denotes using relative position embedding. *--remove_embedding_layernorm* and *--layernorm_positioning pre* denote that pre-layernorm is used (same with GPT-2). Since T5 uses encoder-decoder architecture, we have to specify *--encoder* and *--decoder*.
 
 #### T5-v1_1
 T5-v1_1 includes several improvements compared to the original T5 model. The example of using T5-v1_1 for pre-training:
@@ -180,7 +216,7 @@ python3 preprocess.py --corpus_path corpora/book_review.txt --vocab_path models/
 python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt --output_model_path models/output_model.bin \
                     --config_path models/rnn_config.json --learning_rate 1e-3 \
                     --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7 --total_steps 20000 --save_checkpoint_steps 5000 \
-                    --embedding word --encoder lstm --target lm
+                    --embedding word --remove_embedding_layernorm --encoder lstm --target lm
 ```
 We use the *models/rnn_config.json* as configuration file.
 
@@ -191,7 +227,7 @@ python3 preprocess.py --corpus_path corpora/book_review.txt --vocab_path models/
 python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt --output_model_path models/output_model.bin \
                     --config_path models/rnn_config.json --learning_rate 1e-3 \
                     --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7 --total_steps 20000 --save_checkpoint_steps 5000 \
-                    --embedding word --encoder gru --target lm
+                    --embedding word --remove_embedding_layernorm --encoder gru --target lm
 ```
 
 The example of using GatedCNN encoder and LM target for pre-training:
@@ -201,7 +237,7 @@ python3 preprocess.py --corpus_path corpora/book_review.txt --vocab_path models/
 python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt --output_model_path models/output_model.bin \
                     --config_path models/gatedcnn_9_config.json --learning_rate 1e-4 \
                     --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7 --total_steps 20000 --save_checkpoint_steps 5000 \
-                    --embedding word --encoder gatedcnn --target lm
+                    --embedding word --remove_embedding_layernorm --encoder gatedcnn --target lm
 ```
 
 The example of using machine translation for pre-training (the objective is the same with CoVe but the Transformer encoder and decoder are used):
@@ -211,7 +247,7 @@ python3 preprocess.py --corpus_path corpora/iwslt_15_zh_en.tsv \
                       --dataset_path dataset.pt --seq_length 64 --tgt_seq_length 64 --processes_num 8 --target seq2seq
 
 python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt --tgt_vocab_path models/google_uncased_en_vocab.txt \
-                    --output_model_path output_model.bin --config_path models/bert_base_config.json \
+                    --output_model_path output_model.bin --config_path models/encoder_decoder_config.json \
                     --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7 --learning_rate 1e-4 \
                     --report_steps 1000 --total_steps 50000 --save_checkpoint_steps 10000 \
                     --embedding word_sinusoidalpos --tgt_embedding word_sinusoidalpos \
