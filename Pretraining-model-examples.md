@@ -267,5 +267,5 @@ python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_voca
                     --total_steps 5000 --save_checkpoint_steps 100 \
                     --embedding word_pos_seg --encoder transformer --mask causal_with_prefix --target prefixlm
 ```
-[*csl_title_abstract.txt*](https://share.weiyun.com/hIKCDpf6) is a Chinese scientific literature corpus. The title and abstract sequences are separated by \t , which is the corpus format of *--target prefixlm* . We can pre-train prefix LM model through *--mask causal_with_prefix* and *--target prefixlm*. Notice that the model use the segment information to determine which part is prefix. Therefore we have to use *--embedding word_pos_seg*.
+[*csl_title_abstract.txt*](https://share.weiyun.com/LwuQwWVl) is a Chinese scientific literature corpus. The title and abstract sequences are separated by \t , which is the corpus format of *--target prefixlm* . We can pre-train prefix LM model through *--mask causal_with_prefix* and *--target prefixlm*. Notice that the model use the segment information to determine which part is prefix. Therefore we have to use *--embedding word_pos_seg*.
 <br>
