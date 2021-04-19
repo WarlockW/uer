@@ -8,7 +8,7 @@ UER-py supports a wide range of pre-training models and downstream tasks. This s
 - #### [Pretrain the model](https://github.com/dbiir/UER-py/wiki/Pretrain-the-model)
 
 
-- #### [More pretraining models](https://github.com/dbiir/UER-py/wiki/More-pretraining-models)
+- #### [Pretraining model examples](https://github.com/dbiir/UER-py/wiki/Pretraining-model-examples)
 
 
 - #### [Finetune the tasks](https://github.com/dbiir/UER-py/wiki/Finetune-the-tasks)
