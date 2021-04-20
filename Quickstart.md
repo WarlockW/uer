@@ -116,18 +116,32 @@ doc3
 Notice that *corpora/book_review.txt* (instead of *corpora/book_review_bert.txt*) is used when the target is switched to MLM. 
 <br>
 
-BERT is slow. It could be great if we can speed up the model and still achieve competitive performance. To achieve this goal, we select a 2-layers LSTM encoder to substitute 12-layers Transformer encoder. We firstly download [*reviews_lstm_lm_model.bin*](https://share.weiyun.com/57dZhqo) for 2-layers LSTM encoder. Then we fine-tune it on downstream classification dataset:
+BERT is slow. It could be great if we can speed up the model and still achieve competitive performance. To achieve this goal, we select a 2-layers LSTM encoder to substitute 12-layers Transformer encoder. We firstly download [*reviews_lstm_lm_model.bin*](https://share.weiyun.com/qdWEhR3B) for 2-layers LSTM encoder. The model is pre-trained on [CLUECorpusSmall](https://github.com/CLUEbenchmark/CLUECorpus2020) corpus for 500,000 steps:
 ```
-python3 run_classifier.py --pretrained_model_path models/reviews_lstm_lm_model.bin --vocab_path models/google_zh_vocab.txt --config_path models/rnn_config.json \
+python3 preprocess.py --corpus_path corpora/cluecorpussmall.txt --vocab_path models/google_zh_vocab.txt --dataset_path dataset.pt \
+                     --processes_num 8 --seq_length 256 --target lm
+
+python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt \
+                    --output_model_path models/cluecorpussmall_lstm_lm_model.bin \
+                    --config_path models/rnn_config.json \
+                    --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7 \
+                    --total_steps 500000 --save_checkpoint_steps 100000 \
+                    --learning_rate 1e-3 --batch_size 64 \
+                    --embedding word --remove_embedding_layernorm --encoder lstm --target lm
+```
+Then we remove the training step suffix of pre-trained model and fine-tune it on downstream classification dataset:
+```
+python3 run_classifier.py --pretrained_model_path models/cluecorpussmall_lstm_lm_model.bin --vocab_path models/google_zh_vocab.txt --config_path models/rnn_config.json \
                           --train_path datasets/douban_book_review/train.tsv --dev_path datasets/douban_book_review/dev.tsv --test_path datasets/douban_book_review/test.tsv \
-                          --epochs_num 5  --batch_size 64 --learning_rate 1e-3 --embedding word --encoder lstm --pooling mean
+                          --learning_rate 1e-3 --batch_size 64 --epochs_num 5 \
+                          --embedding word --remove_embedding_layernorm --encoder lstm --pooling mean
 
 python3 inference/run_classifier_infer.py --load_model_path models/finetuned_model.bin --vocab_path models/google_zh_vocab.txt \
                                           --config_path models/rnn_config.json --test_path datasets/douban_book_review/test_nolabel.tsv \
                                           --prediction_path datasets/douban_book_review/prediction.tsv \
-                                          --labels_num 2 --embedding word --encoder lstm --pooling mean
+                                          --labels_num 2 --embedding word --remove_embedding_layernorm --encoder lstm --pooling mean
 ```
-We can achieve over 85.4 accuracy on testset, which is a competitive result. Using the same LSTM encoder without pre-training can only achieve around 81 accuracy.
+We can achieve over 84.6 accuracy on testset, which is a competitive result. Using the same LSTM encoder without pre-training can only achieve around 81 accuracy.
 <br>
 
 UER-py also provides many other encoders and corresponding pre-trained models. <br>
