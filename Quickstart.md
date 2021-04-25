@@ -266,7 +266,7 @@ python3 inference/run_classifier_infer.py --load_model_path models/classifier_mo
                                           --prediction_path datasets/lcqmc/prediction.tsv --labels_num 2 --seq_length 128 \
                                           --embedding word_pos_seg --encoder transformer --mask fully_visible
 ```
-The file to be predicted (--test_path) should contain text_a and text_b columns.
+The file to be predicted (*--test_path*) should contain text_a and text_b columns.
 <br>
 
 We could use *run_ner.py* for named entity recognition:
