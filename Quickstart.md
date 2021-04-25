@@ -138,7 +138,8 @@ python3 run_classifier.py --pretrained_model_path models/cluecorpussmall_lstm_lm
                           --embedding word --remove_embedding_layernorm --encoder lstm --pooling mean
 
 python3 inference/run_classifier_infer.py --load_model_path models/finetuned_model.bin --vocab_path models/google_zh_vocab.txt \
-                                          --config_path models/rnn_config.json --test_path datasets/douban_book_review/test_nolabel.tsv \
+                                          --config_path models/rnn_config.json \
+                                          --test_path datasets/douban_book_review/test_nolabel.tsv \
                                           --prediction_path datasets/douban_book_review/prediction.tsv \
                                           --labels_num 2 --embedding word --remove_embedding_layernorm --encoder lstm --pooling mean
 ```
@@ -175,7 +176,13 @@ mv models/chnsenticorp_elmo_model.bin-5000 models/chnsenticorp_elmo_model.bin
 python3 run_classifier.py --pretrained_model_path models/chnsenticorp_elmo_model.bin --vocab_path models/google_zh_vocab.txt --config_path models/birnn_config.json \
                           --train_path datasets/chnsenticorp/train.tsv --dev_path datasets/chnsenticorp/dev.tsv --test_path datasets/chnsenticorp/test.tsv \
                           --epochs_num 5  --batch_size 64 --seq_length 192 --learning_rate 5e-4 \
-                          --embedding word --remove_embedding_layernorm --encoder bilstm --target bilm
+                          --embedding word --remove_embedding_layernorm --encoder bilstm --pooling max
+
+python3 inference/run_classifier_infer.py --load_model_path models/finetuned_model.bin --vocab_path models/google_zh_vocab.txt \
+                                          --config_path models/birnn_config.json \
+                                          --test_path datasets/chnsenticorp/test_nolabel.tsv \
+                                          --prediction_path datasets/chnsenticorp/prediction.tsv \
+                                          --labels_num 2 --embedding word --remove_embedding_layernorm --encoder bilstm --pooling max
 ```
 *corpora/chnsenticorp.txt* is obtained from Chnsenticorp dataset and labels are removed.
 
