@@ -1,3 +1,4 @@
+## Pre-training and text classification with BERT
 This section uses several commonly-used examples to demonstrate how to use UER-py. More details are discussed in Instructions. We firstly use BERT model on [Douban book review classification dataset](https://embedding.github.io/evaluation/). We pre-train model on book review corpus and then fine-tune it on classification dataset. There are three input files: book review corpus, book review classification dataset, and vocabulary. All files are encoded in UTF-8 and included in this project.
 
 The format of the corpus for BERT is as follows (one sentence per line and documents are delimited by empty lines)：
@@ -68,7 +69,9 @@ python3 inference/run_classifier_infer.py --load_model_path models/finetuned_mod
 *--prediction_path* specifies the path of the file with prediction results. <br>
 We need to explicitly specify the number of labels by *--labels_num*. Douban book review is a two-way classification dataset.
 
+<br>
 
+## Specifying which GPUs are used
 We recommend to use *CUDA_VISIBLE_DEVICES* to specify which GPUs are visible (all GPUs are used in default). Suppose GPU 0 and GPU 2 are available:
 ```
 python3 preprocess.py --corpus_path corpora/book_review_bert.txt --vocab_path models/google_zh_vocab.txt --dataset_path dataset.pt \
@@ -91,8 +94,10 @@ CUDA_VISIBLE_DEVICES=0,2 python3 inference/run_classifier_infer.py --load_model_
                                                                    --embedding word_pos_seg --encoder transformer --mask fully_visible
 ```
 Notice that we explicitly specify the fine-tuned model path by *--output_model_path* in fine-tuning stage. The actual batch size of pre-training is *--batch_size* times *--world_size* ; The actual batch size of classification is *--batch_size* . 
+
 <br>
 
+## Pre-training with MLM target
 BERT consists of next sentence prediction (NSP) target. However, NSP target is not suitable for sentence-level reviews since we have to split a sentence into multiple parts to construct document. UER-py facilitates the use of different targets. Using masked language modeling (MLM) as target could be a properer choice for pre-training of reviews:
 ```
 python3 preprocess.py --corpus_path corpora/book_review.txt --vocab_path models/google_zh_vocab.txt --dataset_path dataset.pt \
@@ -115,8 +120,10 @@ doc2
 doc3
 ``` 
 Notice that *corpora/book_review.txt* (instead of *corpora/book_review_bert.txt*) is used when the target is switched to MLM. 
+
 <br>
 
+## Using more encoders besides Transformer
 BERT is slow. It could be great if we can speed up the model and still achieve competitive performance. To achieve this goal, we select a 2-layers LSTM encoder to substitute 12-layers Transformer encoder. We firstly download [*reviews_lstm_lm_model.bin*](https://share.weiyun.com/qdWEhR3B) for 2-layers LSTM encoder. The model is pre-trained on [CLUECorpusSmall](https://github.com/CLUEbenchmark/CLUECorpus2020) corpus for 500,000 steps:
 ```
 python3 preprocess.py --corpus_path corpora/cluecorpussmall.txt --vocab_path models/google_zh_vocab.txt --dataset_path dataset.pt \
@@ -202,8 +209,10 @@ python3 inference/run_classifier_infer.py --load_model_path models/finetuned_mod
                                           --labels_num 2 --embedding word --encoder gatedcnn --pooling max
 ```
 Users can download *wikizh_gatedcnn_lm_model.bin* from [here](https://share.weiyun.com/W2gmPPeA).
+
 <br>
 
+## Cross validation for classification
 UER-py supports cross validation for classification. The example of using cross validation on [SMP2020-EWECT](http://39.97.118.137/), a competition dataset:
 ```
 CUDA_VISIBLE_DEVICES=0 python3 run_classifier_cv.py --pretrained_model_path models/google_zh_model.bin \
@@ -247,8 +256,10 @@ CUDA_VISIBLE_DEVICES=0,1 python3 run_classifier_cv.py --pretrained_model_path mo
 ```
 The results are 81.3/68.4 (Accuracy/Marco F1), which are very competitive compared with other open-source pre-trained models. The corpus used by the above pre-trained model is highly similar with SMP2020-EWECT, a Weibo review dataset. <br>
 Sometimes large model does not converge. We need to try different random seeds by specifying *--seed*. 
+
 <br>
 
+## Downstream task fine-tuning with BERT
 Besides classification, UER-py also supports other downstream tasks. For example, *run_classifier.py* can be also used for text pair classification. We can download the text pair classification dataset LCQMC in Datasets section and fine-tune the pre-trained model on it: 
 ```
 python3 run_classifier.py --pretrained_model_path models/google_zh_model.bin --vocab_path models/google_zh_vocab.txt \
