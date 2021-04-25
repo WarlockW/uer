@@ -64,7 +64,7 @@ python3 inference/run_classifier_infer.py --load_model_path models/finetuned_mod
                                           --prediction_path datasets/douban_book_review/prediction.tsv --labels_num 2 \
                                           --embedding word_pos_seg --encoder transformer --mask fully_visible
 ```
-*--test_path* specifies the path of the file to be predicted. <br>
+*--test_path* specifies the path of the file to be predicted. The file should contain text_a column. <br>
 *--prediction_path* specifies the path of the file with prediction results. <br>
 We need to explicitly specify the number of labels by *--labels_num*. Douban book review is a two-way classification dataset.
 
@@ -249,7 +249,27 @@ The results are 81.3/68.4 (Accuracy/Marco F1), which are very competitive compar
 Sometimes large model does not converge. We need to try different random seeds by specifying *--seed*. 
 <br>
 
-Besides classification, UER-py also provides scripts for other downstream tasks. For example, we could use *run_ner.py* for named entity recognition:
+Besides classification, UER-py also supports other downstream tasks. For example, *run_classifier.py* can be also used for text pair classification. We can download the text pair classification dataset LCQMC in Datasets section and fine-tune the pre-trained model on it: 
+```
+python3 run_classifier.py --pretrained_model_path models/google_zh_model.bin --vocab_path models/google_zh_vocab.txt \
+                          --train_path datasets/lcqmc/train.tsv --dev_path datasets/lcqmc/dev.tsv --test_path datasets/lcqmc/test.tsv \
+                          --output_model_path models/classifier_model.bin \
+                          --batch_size 32 --epochs_num 3 --seq_length 128 \
+                          --embedding word_pos_seg --encoder transformer --mask fully_visible
+```
+For text pair classification, the dataset should contain text_a, text_b, and label columns.
+
+Then we do inference with the fine-tuned text pair classification model:
+```
+python3 inference/run_classifier_infer.py --load_model_path models/classifier_model.bin --vocab_path models/google_zh_vocab.txt \
+                                          --test_path datasets/lcqmc/test.tsv \
+                                          --prediction_path datasets/lcqmc/prediction.tsv --labels_num 2 --seq_length 128 \
+                                          --embedding word_pos_seg --encoder transformer --mask fully_visible
+```
+The file to be predicted (--test_path) should contain text_a and text_b columns.
+<br>
+
+We could use *run_ner.py* for named entity recognition:
 ```
 python3 run_ner.py --pretrained_model_path models/google_zh_model.bin --vocab_path models/google_zh_vocab.txt \
                    --train_path datasets/msra_ner/train.tsv --dev_path datasets/msra_ner/dev.tsv --test_path datasets/msra_ner/test.tsv \
