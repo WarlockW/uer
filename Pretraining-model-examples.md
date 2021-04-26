@@ -1,6 +1,6 @@
 UER-py allows users to combine different components (e.g. embeddings, encoders, and targets). Here are some examples of trying different combinations to implement frequently-used pre-training models.
 
-#### RoBERTa
+### RoBERTa
 The example of pre-processing and pre-training for RoBERTa:
 ```
 python3 preprocess.py --corpus_path corpora/book_review.txt --vocab_path models/google_zh_vocab.txt \
@@ -28,7 +28,7 @@ python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_voca
                     --embedding word_pos_seg --encoder transformer --mask fully_visible --target mlm
 ```
 
-#### ALBERT
+### ALBERT
 The example of pre-processing and pre-training for ALBERT:
 ```
 python3 preprocess.py --corpus_path corpora/book_review_bert.txt --vocab_path models/google_zh_vocab.txt \
@@ -68,7 +68,7 @@ python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_voca
                     --embedding word_pos_seg --encoder transformer --mask fully_visible --target albert
 ```
 
-#### SpanBERT
+### SpanBERT
 SpanBERT introduces span masking and span boundary objective. We only consider span masking here. NSP target is removed by SpanBERT. <br>
 The example of pre-processing and pre-training for SpanBERT (static masking):
 ```
@@ -97,7 +97,7 @@ python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_voca
                     --embedding word_pos_seg --encoder transformer --mask fully_visible --target mlm
 ```
 
-#### BERT-WWM
+### BERT-WWM
 BERT-WWM introduces whole word masking. MLM target is used here. <br>
 The example of pre-processing and pre-training for BERT-WWM (static masking):
 ```
@@ -139,7 +139,7 @@ wordlist = jieba.cut(sentence)
 ```
 One can change the code in *uer/utils/data.py* to substitute jieba for other word segmentation tools.
 
-#### GPT
+### GPT
 The example of pre-processing and pre-training for GPT:
 ```
 python3 preprocess.py --corpus_path corpora/book_review.txt --vocab_path models/google_zh_vocab.txt \
@@ -153,7 +153,7 @@ python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_voca
 The corpus format of GPT is the identical with RoBERTa. We can pre-train GPT through *--embedding word_pos --encoder transformer --mask causal --target lm* .
 GPT can use the configuration file of BERT.
 
-#### GPT-2
+### GPT-2
 The example of pre-processing and pre-training for GPT-2:
 ```
 python3 preprocess.py --corpus_path corpora/book_review.txt --vocab_path models/google_zh_vocab.txt \
@@ -167,7 +167,7 @@ python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_voca
 ```
 The corpus format of GPT-2 is the identical with GPT and RoBERTa. Notice that the encoder of GPT-2 is different from the encoder of GPT. The layer normalization is moved to the input of each sub-block (*--layernorm_positioning pre*) and an additional layer normalization is added after the final block. The layer normalization after embedding layer should be removed (*--remove_embedding_layernorm*).
 
-#### ELMo
+### ELMo
 The example of pre-processing and pre-training for ELMo:
 ```
 python3 preprocess.py --corpus_path corpora/book_review.txt --vocab_path models/google_zh_vocab.txt \
@@ -180,7 +180,7 @@ python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_voca
 The corpus format of ELMo is identical with GPT-2. We can pre-train ELMo through *--embedding word*, *--encoder bilstm*, and *--target bilm*. <br>
 *--embedding word* denotes using traditional word embedding. LSTM does not require position embedding. In addition, we specify *--remove_embedding_layernorm* and the layernorm after word embedding is removed.
 
-#### T5
+### T5
 T5 proposes to use seq2seq model to unify NLU and NLG tasks. With extensive experiments, T5 recommend to use encoder-decoder architecture and BERT-style objective function (the model predicts the masked words). The example of using T5 for pre-training:
 ```
 python3 preprocess.py --corpus_path corpora/book_review.txt --vocab_path models/google_zh_vocab.txt \
@@ -197,7 +197,7 @@ python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_voca
 ```
 The corpus format of T5 is identical with GPT-2. *--relative_position_embedding* denotes using relative position embedding. *--remove_embedding_layernorm* and *--layernorm_positioning pre* denote that pre-layernorm is used (same with GPT-2). Since T5 uses encoder-decoder architecture, we have to specify *--encoder* and *--decoder*.
 
-#### T5-v1_1
+### T5-v1_1
 T5-v1_1 includes several improvements compared to the original T5 model. The example of using T5-v1_1 for pre-training:
 ```
 python3 preprocess.py --corpus_path corpora/book_review.txt --vocab_path models/google_zh_vocab.txt \
@@ -214,7 +214,7 @@ python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_voca
 ```
 The corpus format of T5-v1_1 is identical with T5. *--feed_forward* denotes the type of feed-forward layer. *--tie_weights* is removed and there is no parameter sharing between embedding and classifier layer. T5-v1_1 and T5 have different configuration files.
 
-#### More combinations
+### More combinations
 The example of using LSTM encoder and LM target for pre-training:
 ```
 python3 preprocess.py --corpus_path corpora/book_review.txt --vocab_path models/google_zh_vocab.txt --dataset_path dataset.pt --processes_num 8 --target lm
@@ -275,7 +275,7 @@ python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_voca
 ```
 [*csl_title_abstract.txt*](https://share.weiyun.com/LwuQwWVl) is a Chinese scientific literature corpus. The title and abstract sequences are separated by \t , which is the corpus format of *--target prefixlm* . We can pre-train prefix LM model through *--mask causal_with_prefix* and *--target prefixlm*. Notice that the model use the segment information to determine which part is prefix. Therefore we have to use *--embedding word_pos_seg*.
 
-The example of using Transformer encoder and CLS target for pre-training:
+The example of using Transformer encoder and classification (CLS) target for pre-training:
 ```
 python3 preprocess.py --corpus_path corpora/book_review_cls.txt --vocab_path models/google_zh_vocab.txt --dataset_path dataset.pt --processes_num 8 --target cls
 
@@ -284,9 +284,20 @@ python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_voca
                     --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7 --total_steps 2000 --save_checkpoint_steps 1000 --learning_rate 2e-5 \
                     --embedding word_pos_seg --encoder transformer --mask fully_visible --pooling first --target cls --labels_num 2
 ```
-Notice that we need to explicitly specify the number of labels by --labels_num.
+Notice that we need to explicitly specify the number of labels by *--labels_num*. The format of the corpus for classification target is as follows (text and text pair classification):
+```
+1        instance1
+0        instance2
+1        instance3
+```
+```
+1        instance1_text_a        instance1_text_b
+0        instance2_text_a        instance1_text_b
+1        instance3_text_a        instance1_text_b
+```
+\t is used to separate different columns (see *book_review_cls.txt* in *corpora* folder).
 
-The example of using LSTM encoder and CLS target for pre-training:
+The example of using LSTM encoder and classification (CLS) target for pre-training:
 ```
 python3 preprocess.py --corpus_path corpora/book_review_cls.txt --vocab_path models/google_zh_vocab.txt --dataset_path dataset.pt --processes_num 8 --target cls
 
