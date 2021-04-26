@@ -132,6 +132,12 @@ python3 pretrain.py --dataset_path dataset.pt \
                     --total_steps 10000 --save_checkpoint 5000 \
                     --embedding word_pos_seg --encoder transformer --mask fully_visible --target mlm
 ```
+BERT-WMM implemented in UER is only applicable to Chinese. [jieba](https://github.com/fxsjy/jieba) is used as word segmentation tool (see *uer/utils/data.py*):
+```
+import jieba
+wordlist = jieba.cut(sentence)
+```
+One can change the code in *uer/utils/data.py* to subsitute jieba for other word segmentation tools.
 
 #### GPT
 The example of pre-processing and pre-training for GPT:
