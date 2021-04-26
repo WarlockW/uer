@@ -137,7 +137,7 @@ BERT-WMM implemented in UER is only applicable to Chinese. [jieba](https://githu
 import jieba
 wordlist = jieba.cut(sentence)
 ```
-One can change the code in *uer/utils/data.py* to subsitute jieba for other word segmentation tools.
+One can change the code in *uer/utils/data.py* to substitute jieba for other word segmentation tools.
 
 #### GPT
 The example of pre-processing and pre-training for GPT:
@@ -274,4 +274,25 @@ python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_voca
                     --embedding word_pos_seg --encoder transformer --mask causal_with_prefix --target prefixlm
 ```
 [*csl_title_abstract.txt*](https://share.weiyun.com/LwuQwWVl) is a Chinese scientific literature corpus. The title and abstract sequences are separated by \t , which is the corpus format of *--target prefixlm* . We can pre-train prefix LM model through *--mask causal_with_prefix* and *--target prefixlm*. Notice that the model use the segment information to determine which part is prefix. Therefore we have to use *--embedding word_pos_seg*.
+
+The example of using Transformer encoder and CLS target for pre-training:
+```
+python3 preprocess.py --corpus_path corpora/book_review_cls.txt --vocab_path models/google_zh_vocab.txt --dataset_path dataset.pt --processes_num 8 --target cls
+
+python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt --output_model_path models/output_model.bin \
+                    --config_path models/bert/base_config.json \
+                    --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7 --total_steps 2000 --save_checkpoint_steps 1000 --learning_rate 2e-5 \
+                    --embedding word_pos_seg --encoder transformer --mask fully_visible --pooling first --target cls --labels_num 2
+```
+Notice that we need to explicitly specify the number of labels by --labels_num.
+
+The example of using LSTM encoder and CLS target for pre-training:
+```
+python3 preprocess.py --corpus_path corpora/book_review_cls.txt --vocab_path models/google_zh_vocab.txt --dataset_path dataset.pt --processes_num 8 --target cls
+
+python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt --output_model_path models/output_model.bin \
+                    --config_path models/rnn_config.json \
+                    --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7 --total_steps 2000 --save_checkpoint_steps 1000 --learning_rate 1e-3 \
+                    --embedding word --remove_embedding_layernorm --encoder lstm --pooling max --target cls --labels_num 2
+```
 <br>
