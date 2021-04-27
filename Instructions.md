@@ -17,4 +17,4 @@ UER-py supports a wide range of pre-training models and downstream tasks. This s
 - #### [Tokenization and vocabulary](https://github.com/dbiir/UER-py/wiki/Tokenization-and-vocabulary)
 
 
-- #### [Scripts](https://github.com/dbiir/UER-py/wiki/预训练相关功能脚本)
+- #### [Scripts](https://github.com/dbiir/UER-py/wiki/Scripts)
