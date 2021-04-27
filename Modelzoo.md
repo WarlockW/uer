@@ -106,14 +106,14 @@ Take the CLUECorpusSmall GPT-2-distil weight as an example, we download the CLUE
 ```
 python3 preprocess.py --corpus_path corpora/book_review.txt \
                       --vocab_path models/google_zh_vocab.txt \
-                      --dataset_path dataset.pt --processes_num 1 \
+                      --dataset_path dataset.pt --processes_num 8 \
                       --seq_length 128 --target lm 
 
 python3 pretrain.py --dataset_path dataset.pt --pretrained_model_path models/cluecorpussmall_gpt2_distil_seq1024_model.bin \
                     --vocab_path models/google_zh_vocab.txt --config_path models/gpt2/distil_config.json \
                     --output_model_path models/book_review_gpt2_model.bin \
                     --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7 \
-                    --total_steps 100000 --save_checkpoint_steps 10000 --report_steps 5000 \
+                    --total_steps 10000 --save_checkpoint_steps 5000 --report_steps 1000 \
                     --learning_rate 5e-5 --batch_size 64 \
                     --embedding word_pos --remove_embedding_layernorm \
                     --encoder transformer --mask causal --layernorm_positioning pre \
@@ -162,13 +162,25 @@ python3 pretrain.py --dataset_path dataset.pt \
                     --config_path models/t5/small_config.json \
                     --output_model_path models/book_review_t5_model.bin \
                     --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7 \
-                    --total_steps 10000 --save_checkpoint_steps 1000 --report_steps 5000 \
+                    --total_steps 10000 --save_checkpoint_steps 5000 --report_steps 1000 \
                     --learning_rate 5e-4 --batch_size 64 \
                     --span_masking --span_geo_prob 0.3 --span_max_length 5 \
                     --embedding word --relative_position_embedding --remove_embedding_layernorm --tgt_embedding word \
                     --encoder transformer --mask fully_visible --layernorm_positioning pre --decoder transformer \
                     --target t5 --tie_weights
 ```
+
+## Fine-tuned Chinese RoBERTa Weights
+This is the set of fine-tuned Chinese RoBERTa weights. All of them use *models/bert/base_config.json* configuration file.
+
+The link and detailed description (Huggingface model hub) of different fine-tuned RoBERTa weights:
+|           Model link           |           Description link          |
+| :-----------------------:| :-----------------------:|
+| [**JD full sentiment classification**][roberta_jd_full_classification] | https://huggingface.co/uer/roberta-base-finetuned-jd-full-chinese |
+| [**JD binary sentiment classification**][roberta_jd_binary_classification] | https://huggingface.co/uer/roberta-base-finetuned-jd-binary-chinese |
+| [**Dianping sentiment classification**][roberta_dianping_classification] | https://huggingface.co/uer/roberta-base-finetuned-dianping-chinese |
+| [**Ifeng news topic classification**][roberta_ifeng_classification] | https://huggingface.co/uer/roberta-base-finetuned-ifeng-chinese |
+| [**Chinanews news topic classification**][roberta_chinanews_classification] | https://huggingface.co/uer/roberta-base-finetuned-chinanews-chinese |
 
 ## More pre-trained Weights
 Pre-trained Chinese models from Google (in UER format):
@@ -250,3 +262,9 @@ MixedCorpus contains baidubaike, Wikizh, WebQA, RenMinRiBao, literature, and rev
 
 [t5_small]:https://share.weiyun.com/uRNl4CXz
 [t5_base]:https://share.weiyun.com/QvVu3w5a
+
+[roberta_jd_full_classification]:https://share.weiyun.com/paIBCwA3
+[roberta_jd_binary_classification]:https://share.weiyun.com/f9a3HUES
+[roberta_dianping_classification]:https://share.weiyun.com/B9ceqrhh
+[roberta_ifeng_classification]:https://share.weiyun.com/awR9YP7S
+[roberta_chinanews_classification]:https://share.weiyun.com/imuT6FuN
