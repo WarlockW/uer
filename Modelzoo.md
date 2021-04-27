@@ -140,6 +140,36 @@ python3 scripts/generate_lm.py --load_model_path models/cluecorpussmall_gpt2_dis
                                --target lm --tie_weights
 ```
 
+## Chinese T5 Pre-trained Weights
+This is the set of Chinese T5 pre-trained weights. Configuration files are in *models/t5/* folder.
+
+The link and detailed description (Huggingface model hub) of different pre-trained T5 weights:
+|           Model link           |           Description link          |
+| :-----------------------:| :-----------------------:|
+| [**CLUECorpusSmall T5-small**][t5_small] | https://huggingface.co/uer/t5-small-chinese-cluecorpussmall |
+| [**CLUECorpusSmall T5-base**][t5_base] | https://huggingface.co/uer/t5-base-chinese-cluecorpussmall |
+
+Take the CLUECorpusSmall T5-small weight as an example, we download the CLUECorpusSmall T5-small weight through the above link and put it in *models/* folder. We can conduct further pre-training upon it:
+```
+python3 preprocess.py --corpus_path corpora/book_review.txt \
+                      --vocab_path models/google_zh_with_sentinel_vocab.txt \
+                      --dataset_path dataset.pt \
+                      --processes_num 8 --seq_length 128 \
+                      --dynamic_masking --target t5
+
+python3 pretrain.py --dataset_path dataset.pt \
+                    --vocab_path models/google_zh_with_sentinel_vocab.txt \
+                    --config_path models/t5/small_config.json \
+                    --output_model_path models/book_review_t5_model.bin \
+                    --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7 \
+                    --total_steps 10000 --save_checkpoint_steps 1000 --report_steps 5000 \
+                    --learning_rate 5e-4 --batch_size 64 \
+                    --span_masking --span_geo_prob 0.3 --span_max_length 5 \
+                    --embedding word --relative_position_embedding --remove_embedding_layernorm --tgt_embedding word \
+                    --encoder transformer --mask fully_visible --layernorm_positioning pre --decoder transformer \
+                    --target t5 --tie_weights
+```
+
 ## More pre-trained Weights
 Pre-trained Chinese models from Google (in UER format):
 <table>
@@ -217,3 +247,6 @@ MixedCorpus contains baidubaike, Wikizh, WebQA, RenMinRiBao, literature, and rev
 [gpt2_couplet]:https://share.weiyun.com/LbMecOGj
 [gpt2_lyric]:https://share.weiyun.com/jBv5weES
 [gpt2_ancient]:https://share.weiyun.com/d3FHbVMx
+
+[t5_small]:https://share.weiyun.com/uRNl4CXz
+[t5_base]:https://share.weiyun.com/QvVu3w5a
