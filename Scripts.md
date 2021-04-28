@@ -12,8 +12,8 @@ UER-py provides abundant tool scripts for pre-training models. This section firs
 |      convert_bert_from_uer_to_huggingface.py                    |  Convert BERT of UER format to Huggingface format (PyTorch)  |
 |      convert_bert_text_classification_from_huggingface_to_uer.py|  Convert text classification BERT of Huggingface format (PyTorch) to UER format  |
 |      convert_bert_text_classification_from_uer_to_huggingface.py|  Convert text classification BERT of UER format to Huggingface format (PyTorch)  |
-|      convert_bert_token_classification_from_huggingface_to_uer.py|  Convert token classification BERT of Huggingface format (PyTorch) to UER format  |
-|      convert_bert_token_classification_from_uer_to_huggingface.py|  Convert token classification BERT of UER format to Huggingface format (PyTorch)  |
+|      convert_bert_token_classification_from_huggingface_to_uer.py|  Convert sequence labeling BERT of Huggingface format (PyTorch) to UER format  |
+|      convert_bert_token_classification_from_uer_to_huggingface.py|  Convert sequence labeling BERT of UER format to Huggingface format (PyTorch)  |
 |      convert_gpt2_from_huggingface_to_uer.py                    |  Convert GPT-2 of Huggingface format (PyTorch) to UER format  |
 |      convert_gpt2_from_uer_to_huggingface.py                    |  Convert GPT-2 of UER format to Huggingface format (PyTorch)  |
 |      convert_t5_from_huggingface_to_uer.py                      |  Convert T5 of Huggingface format (PyTorch) to UER format  |
@@ -164,7 +164,7 @@ python3 scripts/convert_bert_text_classification_from_huggingface_to_uer.py --in
                                                                             --output_model_path uer_model.bin \
                                                                             --layers_num 12
 ```
-RoBERTa (BERT) for token classification: Taking the [roberta-base-finetuned-cluener2020-chinese](https://huggingface.co/uer/roberta-base-finetuned-cluener2020-chinese) model in Huggingface as an example：
+RoBERTa (BERT) for token classification (sequence labeling): Taking the [roberta-base-finetuned-cluener2020-chinese](https://huggingface.co/uer/roberta-base-finetuned-cluener2020-chinese) model in Huggingface as an example：
 ```
 python3 scripts/convert_bert_token_classification_from_huggingface_to_uer.py --input_model_path pytorch_model.bin \
                                                                              --output_model_path uer_model.bin \
