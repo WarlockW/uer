@@ -181,6 +181,8 @@ The link and detailed description (Huggingface model hub) of different fine-tune
 | [**Dianping sentiment classification**][roberta_dianping_classification] | https://huggingface.co/uer/roberta-base-finetuned-dianping-chinese |
 | [**Ifeng news topic classification**][roberta_ifeng_classification] | https://huggingface.co/uer/roberta-base-finetuned-ifeng-chinese |
 | [**Chinanews news topic classification**][roberta_chinanews_classification] | https://huggingface.co/uer/roberta-base-finetuned-chinanews-chinese |
+| [**CLUENER2020 NER**][roberta_cluener2020_token_classification] | https://huggingface.co/uer/roberta-base-finetuned-cluener2020-chinese |
+| [**Extractive QA**][roberta_extractive_qa] | https://huggingface.co/uer/roberta-base-chinese-extractive-qa |
 
 ## More pre-trained Weights
 Pre-trained Chinese models from Google (in UER format):
@@ -268,3 +270,6 @@ MixedCorpus contains baidubaike, Wikizh, WebQA, RenMinRiBao, literature, and rev
 [roberta_dianping_classification]:https://share.weiyun.com/B9ceqrhh
 [roberta_ifeng_classification]:https://share.weiyun.com/awR9YP7S
 [roberta_chinanews_classification]:https://share.weiyun.com/imuT6FuN
+
+[roberta_cluener2020_token_classification]:https://share.weiyun.com/FYyEsX8B
+[roberta_extractive_qa]:https://share.weiyun.com/vNsCcyuo
