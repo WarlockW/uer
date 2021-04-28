@@ -214,6 +214,23 @@ python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_voca
 ```
 The corpus format of T5-v1_1 is identical with T5. *--feed_forward* denotes the type of feed-forward layer. *--tie_weights* is removed and there is no parameter sharing between embedding and classifier layer. T5-v1_1 and T5 have different configuration files.
 
+### Machine translation
+The example of using machine translation for pre-training (the objective is the same with CoVe but the Transformer encoder and decoder are used):
+```
+python3 preprocess.py --corpus_path corpora/iwslt_15_zh_en.tsv \
+                      --vocab_path models/google_zh_vocab.txt --tgt_vocab_path models/google_uncased_en_vocab.txt \
+                      --dataset_path dataset.pt --seq_length 64 --tgt_seq_length 64 --processes_num 8 --target seq2seq
+
+python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt --tgt_vocab_path models/google_uncased_en_vocab.txt \
+                    --output_model_path output_model.bin --config_path models/encoder_decoder_config.json \
+                    --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7 --learning_rate 1e-4 \
+                    --report_steps 1000 --total_steps 50000 --save_checkpoint_steps 10000 \
+                    --embedding word_sinusoidalpos --tgt_embedding word_sinusoidalpos \
+                    --encoder transformer --mask fully_visible --decoder transformer \
+                    --target seq2seq
+```
+[*iwslt_15_zh_en.tsv*](https://share.weiyun.com/hIKCDpf6) is a Chinese-English parallel corpus. The source and target sequences are separated by \t , which is the corpus format of *--target seq2seq* . The pre-trained encoder can be used for downstream tasks.
+
 ### More combinations
 The example of using LSTM encoder and LM target for pre-training:
 ```
@@ -245,22 +262,6 @@ python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_voca
                     --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7 --total_steps 20000 --save_checkpoint_steps 5000 \
                     --embedding word --remove_embedding_layernorm --encoder gatedcnn --target lm
 ```
-
-The example of using machine translation for pre-training (the objective is the same with CoVe but the Transformer encoder and decoder are used):
-```
-python3 preprocess.py --corpus_path corpora/iwslt_15_zh_en.tsv \
-                      --vocab_path models/google_zh_vocab.txt --tgt_vocab_path models/google_uncased_en_vocab.txt \
-                      --dataset_path dataset.pt --seq_length 64 --tgt_seq_length 64 --processes_num 8 --target seq2seq
-
-python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt --tgt_vocab_path models/google_uncased_en_vocab.txt \
-                    --output_model_path output_model.bin --config_path models/encoder_decoder_config.json \
-                    --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7 --learning_rate 1e-4 \
-                    --report_steps 1000 --total_steps 50000 --save_checkpoint_steps 10000 \
-                    --embedding word_sinusoidalpos --tgt_embedding word_sinusoidalpos \
-                    --encoder transformer --mask fully_visible --decoder transformer \
-                    --target seq2seq
-```
-[*iwslt_15_zh_en.tsv*](https://share.weiyun.com/hIKCDpf6) is a Chinese-English parallel corpus. The source and target sequences are separated by \t , which is the corpus format of *--target seq2seq* . The pre-trained encoder can be used for downstream tasks.
 
 The example of using prefix LM for pre-training (which is used in UniLM):
 ```
