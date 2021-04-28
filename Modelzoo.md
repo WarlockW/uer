@@ -184,6 +184,8 @@ The link and detailed description (Huggingface model hub) of different fine-tune
 | [**CLUENER2020 NER**][roberta_cluener2020_token_classification] | https://huggingface.co/uer/roberta-base-finetuned-cluener2020-chinese |
 | [**Extractive QA**][roberta_extractive_qa] | https://huggingface.co/uer/roberta-base-chinese-extractive-qa |
 
+One can load these pre-trained models for pre-training, fine-tuning, and inference.
+
 ## More pre-trained Weights
 Pre-trained Chinese models from Google (in UER format):
 <table>
