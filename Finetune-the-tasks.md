@@ -1,6 +1,6 @@
-Currently, UER-py supports the many downstream tasks, including text classification, pair classification, document-based question answering, sequence labeling, machine reading comprehension, etc. The encoder used for downstream task should be coincident with the pre-trained model.
+Currently, UER-py supports the many downstream tasks, including text classification, pair classification, document-based question answering, sequence labeling, machine reading comprehension, etc. The embedding, encoder, and configuration file used for downstream task should be coincident with the pre-trained model.
 
-#### Classification
+## Classification
 run_classifier.py adds two feedforward layers upon encoder layer.
 ```
 usage: run_classifier.py [-h] [--pretrained_model_path PRETRAINED_MODEL_PATH]
@@ -9,17 +9,30 @@ usage: run_classifier.py [-h] [--pretrained_model_path PRETRAINED_MODEL_PATH]
                          [--spm_model_path SPM_MODEL_PATH] --train_path
                          TRAIN_PATH --dev_path DEV_PATH
                          [--test_path TEST_PATH] [--config_path CONFIG_PATH]
-                         [--batch_size BATCH_SIZE] [--seq_length SEQ_LENGTH]
-                         [--embedding {bert,word}]
-                         [--encoder {bert,lstm,gru,cnn,gatedcnn,attn,synt,rcnn,crnn,gpt,bilstm}]
-                         [--bidirectional] [--pooling {mean,max,first,last}]
+                         [--embedding {word,word_pos,word_pos_seg,word_sinusoidalpos}]
+                         [--max_seq_length MAX_SEQ_LENGTH]
+                         [--relative_position_embedding]
+                         [--relative_attention_buckets_num RELATIVE_ATTENTION_BUCKETS_NUM]
+                         [--remove_embedding_layernorm]
+                         [--remove_attention_scale]
+                         [--encoder {transformer,rnn,lstm,gru,birnn,bilstm,bigru,gatedcnn}]
+                         [--mask {fully_visible,causal,causal_with_prefix}]
+                         [--layernorm_positioning {pre,post}]
+                         [--feed_forward {dense,gated}]
+                         [--remove_transformer_bias] [--layernorm {normal,t5}]
+                         [--bidirectional]
                          [--factorized_embedding_parameterization]
-                         [--parameter_sharing] [--tokenizer {bert,char,space}]
-                         [--soft_targets] [--soft_alpha SOFT_ALPHA]
-                         [--learning_rate LEARNING_RATE] [--warmup WARMUP]
-                         [--fp16] [--fp16_opt_level {O0,O1,O2,O3}]
+                         [--parameter_sharing] [--learning_rate LEARNING_RATE]
+                         [--warmup WARMUP] [--fp16]
+                         [--fp16_opt_level {O0,O1,O2,O3}]
+                         [--optimizer {adamw,adafactor}]
+                         [--scheduler {linear,cosine,cosine_with_restarts,polynomial,constant,constant_with_warmup}]
+                         [--batch_size BATCH_SIZE] [--seq_length SEQ_LENGTH]
                          [--dropout DROPOUT] [--epochs_num EPOCHS_NUM]
                          [--report_steps REPORT_STEPS] [--seed SEED]
+                         [--pooling {mean,max,first,last}]
+                         [--tokenizer {bert,char,space}] [--soft_targets]
+                         [--soft_alpha SOFT_ALPHA]
 ```
 The example of using *run_classifier.py*：
 ```
@@ -33,6 +46,8 @@ python3 run_classifier.py --pretrained_model_path models/google_zh_model.bin --v
                           --train_path datasets/lcqmc/train.tsv --dev_path datasets/lcqmc/dev.tsv --test_path datasets/lcqmc/test.tsv \
                           --epochs_num 3 --batch_size 64 --embedding word_pos_seg --encoder transformer --mask fully_visible
 ```
+One can download the LCQMC dataset in Datasets section and put it in *datasets* folder.
+
 The example of using *inference/run_classifier_infer.py* to do inference:
 ```
 python3 inference/run_classifier_infer.py --load_model_path models/finetuned_model.bin --vocab_path models/google_zh_vocab.txt \
@@ -47,7 +62,7 @@ For classification, texts in *text_a* column are predicted. For pair classificat
 *--output_prob* denotes the predicted probabilities are outputted，whose column name is prob. <br>
 *--seq_length* specifies the sequence length, which should be the same with setting in training stage.
 
-Notice that BERT and RoBERTa have the same encoder. There is no difference between loading BERT and RoBERTa.
+Notice that BERT and RoBERTa have the same embedding and encoder. There is no difference between loading BERT and RoBERTa.
 
 The example of using ALBERT for classification:
 ```
@@ -117,7 +132,7 @@ python3 run_classifier.py --pretrained_model_path mixed_corpus_bert_tiny_model.b
 *--soft_targets* denotes that the model uses logits (soft label) for training. Mean-squared-error (MSE) is used as loss function. <br>
 *--soft_alpha* specifies the weight of the soft label loss. The loss function is weighted average of cross-entropy loss (for hard label) and mean-squared-error loss (for soft label).
 
-#### Document-based question answering
+## Document-based question answering
 *run_dbqa.py* uses the same network architecture with *run_classifier.py* .
 ```
 usage: run_dbqa.py [-h] [--pretrained_model_path PRETRAINED_MODEL_PATH]
@@ -174,7 +189,7 @@ python3 inference/run_classifier_infer.py --load_model_path models/finetuned_mod
                                           --embedding word_pos_seg --encoder transformer --mask fully_visible
 ```
 
-#### Sequence labeling
+## Sequence labeling
 *run_ner.py* adds one feedforward layer upon encoder layer.
 ```
 usage: run_ner.py [-h] [--pretrained_model_path PRETRAINED_MODEL_PATH]
@@ -226,7 +241,7 @@ python3 inference/run_ner_infer.py --load_model_path models/finetuned_model.bin 
                                           --embedding word_pos_seg --encoder transformer --mask fully_visible
 ```
 
-#### Machine reading comprehension
+## Machine reading comprehension
 run_cmrc.py adds two feedforward layers upon encoder layer.
 ```
 usage: run_cmrc.py [-h] [--pretrained_model_path PRETRAINED_MODEL_PATH]
@@ -279,7 +294,7 @@ python3 inference/run_cmrc_infer.py --load_model_path models/finetuned_model.bin
                                      --embedding word_pos_seg --encoder transformer --mask fully_visible
 ```
 
-#### Multiple choice
+## Multiple choice
 run_c3.py adds one feedforward layer upon encoder layer.
 ```
 usage: run_c3.py [-h] [--pretrained_model_path PRETRAINED_MODEL_PATH]
