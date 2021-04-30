@@ -186,16 +186,17 @@ The link and detailed description (Huggingface model hub) of different fine-tune
 
 One can load these pre-trained models for pre-training, fine-tuning, and inference.
 
+## Chinese Pre-trained Weights from Other Organizations
+
+|           Model link           |       Description        |           Description link          |
+| :-----------------------:| :-----------------------:| :-----------------------:|
+| [**Google Chinese BERT-Base**][google_zh_bert_base] | Configuration file: *models/bert/base_config.json* <br> Vocabulary: *models/google_zh_vocab.txt* <br> Tokenizer: BertTokenizer | https://github.com/google-research/bert |
+| [**Google Chinese ALBERT-Base**][google_zh_albert_base] | Configuration file: *models/albert/base_config.json* <br> Vocabulary: *models/google_zh_vocab.txt* <br> Tokenizer: BertTokenizer | https://github.com/google-research/albert |
+| [**Google Chinese ALBERT-Large**][google_zh_albert_large] | Configuration file: *models/albert/large_config.json* <br> Vocabulary: *models/google_zh_vocab.txt* <br> Tokenizer: BertTokenizer | https://github.com/google-research/albert |
+| [**Google Chinese ALBERT-Xlarge**][google_zh_albert_xlarge] | Configuration file: *models/albert/xlarge_config.json* <br> Vocabulary: *models/google_zh_vocab.txt* <br> Tokenizer: BertTokenizer | https://github.com/google-research/albert |
+| [**Google Chinese ALBERT-Xxlarge**][google_zh_albert_xxlarge] | Configuration file: *models/albert/xxlarge_config.json* <br> Vocabulary: *models/google_zh_vocab.txt* <br> Tokenizer: BertTokenizer | https://github.com/google-research/albert |
+
 ## More pre-trained Weights
-Pre-trained Chinese models from Google (in UER format):
-<table>
-<tr align="center"><th> Pre-trained model <th> Link <th> Description 
-<tr align="center"><td> Wikizh+BertEncoder+BertTarget <td> https://share.weiyun.com/A1C49VPb <td> Google's pre-trained Chinese model from https://github.com/google-research/bert
-<tr align="center"><td> CLUECorpus+<br>AlbertEncoder(base)+AlbertTarget <td> https://share.weiyun.com/UnKHNKRG <td> Google's pre-trained Chinese model from https://github.com/google-research/albert . <br>The configuration file is albert_base_config.json
-<tr align="center"><td> CLUECorpus+<br>AlbertEncoder(large)+AlbertTarget <td> https://share.weiyun.com/9tTUwALd <td> Google's pre-trained Chinese model from https://github.com/google-research/albert . <br>The configuration file is albert_large_config.json
-<tr align="center"><td> CLUECorpus+<br>AlbertEncoder(xlarge)+AlbertTarget <td> https://share.weiyun.com/mUamRQFR <td> Google's pre-trained Chinese model from https://github.com/google-research/albert . <br>The configuration file is albert_xlarge_config.json
-<tr align="center"><td> CLUECorpus+<br>AlbertEncoder(xxlarge)+AlbertTarget <td> https://share.weiyun.com/0i2lX62b <td> Google's pre-trained Chinese model from https://github.com/google-research/albert . <br>The configuration file is albert_xxlarge_config.json
-</table>
 
 Models pre-trained by UER:
 <table>
@@ -275,3 +276,9 @@ MixedCorpus contains baidubaike, Wikizh, WebQA, RenMinRiBao, literature, and rev
 
 [roberta_cluener2020_token_classification]:https://share.weiyun.com/FYyEsX8B
 [roberta_extractive_qa]:https://share.weiyun.com/vNsCcyuo
+
+[google_zh_bert_base]:https://share.weiyun.com/A1C49VPb
+[google_zh_albert_base]:https://share.weiyun.com/UnKHNKRG
+[google_zh_albert_large]:https://share.weiyun.com/9tTUwALd
+[google_zh_albert_xlarge]:https://share.weiyun.com/mUamRQFR
+[google_zh_albert_xxlarge]:https://share.weiyun.com/0i2lX62b
