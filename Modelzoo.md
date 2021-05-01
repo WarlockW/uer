@@ -195,6 +195,10 @@ One can load these pre-trained models for pre-training, fine-tuning, and inferen
 | [**Google Chinese ALBERT-Large**][google_zh_albert_large] | Configuration file: *models/albert/large_config.json* <br> Vocabulary: *models/google_zh_vocab.txt* <br> Tokenizer: BertTokenizer | https://github.com/google-research/albert |
 | [**Google Chinese ALBERT-Xlarge**][google_zh_albert_xlarge] | Configuration file: *models/albert/xlarge_config.json* <br> Vocabulary: *models/google_zh_vocab.txt* <br> Tokenizer: BertTokenizer | https://github.com/google-research/albert |
 | [**Google Chinese ALBERT-Xxlarge**][google_zh_albert_xxlarge] | Configuration file: *models/albert/xxlarge_config.json* <br> Vocabulary: *models/google_zh_vocab.txt* <br> Tokenizer: BertTokenizer | https://github.com/google-research/albert |
+| [**HFL Chinese BERT-wwm**][hfl_zh_bert_wwm] | Configuration file: *models/bert/base_config.json* <br> Vocabulary: *models/google_zh_vocab.txt* <br> Tokenizer: BertTokenizer | https://github.com/ymcui/Chinese-BERT-wwm |
+| [**HFL Chinese BERT-wwm-ext**][hfl_zh_bert_wwm_ext] | Configuration file: *models/bert/base_config.json* <br> Vocabulary: *models/google_zh_vocab.txt* <br> Tokenizer: BertTokenizer | https://github.com/ymcui/Chinese-BERT-wwm |
+| [**HFL Chinese RoBERTa-wwm-ext**][hfl_zh_roberta_wwm_ext] | Configuration file: *models/bert/base_config.json* <br> Vocabulary: *models/google_zh_vocab.txt* <br> Tokenizer: BertTokenizer | https://github.com/ymcui/Chinese-BERT-wwm |
+| [**HFL Chinese RoBERTa-wwm-large-ext**][hfl_zh_roberta_wwm_large_ext] | Configuration file: *models/bert/large_config.json* <br> Vocabulary: *models/google_zh_vocab.txt* <br> Tokenizer: BertTokenizer | https://github.com/ymcui/Chinese-BERT-wwm |
 
 ## More pre-trained Weights
 
@@ -282,3 +286,8 @@ MixedCorpus contains baidubaike, Wikizh, WebQA, RenMinRiBao, literature, and rev
 [google_zh_albert_large]:https://share.weiyun.com/9tTUwALd
 [google_zh_albert_xlarge]:https://share.weiyun.com/mUamRQFR
 [google_zh_albert_xxlarge]:https://share.weiyun.com/0i2lX62b
+
+[hfl_zh_bert_wwm]:https://share.weiyun.com/rgOiCvGj
+[hfl_zh_bert_wwm_ext]:https://share.weiyun.com/IxirLuvk
+[hfl_zh_roberta_wwm_ext]:https://share.weiyun.com/b2Pp9jdR
+[hfl_zh_roberta_wwm_large_ext]:https://share.weiyun.com/bE8SUvoM
