@@ -126,7 +126,7 @@ Notice that *corpora/book_review.txt* (instead of *corpora/book_review_bert.txt*
 <br>
 
 ## Using more encoders besides Transformer
-BERT is slow. It could be great if we can speed up the model and still achieve competitive performance. To achieve this goal, we select a 2-layers LSTM encoder to substitute 12-layers Transformer encoder. We firstly download [*reviews_lstm_lm_model.bin*](https://share.weiyun.com/qdWEhR3B) for 2-layers LSTM encoder. The model is pre-trained on [CLUECorpusSmall](https://github.com/CLUEbenchmark/CLUECorpus2020) corpus for 500,000 steps:
+BERT is slow. It could be great if we can speed up the model and still achieve competitive performance. To achieve this goal, we select a 2-layers LSTM encoder to substitute 12-layers Transformer encoder. We firstly download [*cluecorpussmall_lstm_lm_model.bin*](https://share.weiyun.com/XFc4hcn6) for 2-layers LSTM encoder. The model is pre-trained on [CLUECorpusSmall](https://github.com/CLUEbenchmark/CLUECorpus2020) corpus for 500,000 steps:
 ```
 python3 preprocess.py --corpus_path corpora/cluecorpussmall.txt --vocab_path models/google_zh_vocab.txt --dataset_path dataset.pt \
                      --processes_num 8 --seq_length 256 --target lm
@@ -169,7 +169,7 @@ python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_voca
                     --learning_rate 5e-4 --batch_size 64 \
                     --embedding word --remove_embedding_layernorm --encoder bilstm --target bilm
 ```
-We remove the training step suffix of pre-trained model. Then we do incremental pre-training and fine-tune on Chnsenticorp sentiment classification dataset:
+We remove the training step suffix of pre-trained model. Then we do further pre-training and fine-tune on Chnsenticorp sentiment classification dataset:
 ```
 python3 preprocess.py --corpus_path corpora/chnsenticorp.txt --vocab_path models/google_zh_vocab.txt --dataset_path dataset.pt \
                       --processes_num 8 --seq_length 192 --target bilm
