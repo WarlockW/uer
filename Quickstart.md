@@ -256,7 +256,7 @@ CUDA_VISIBLE_DEVICES=0,1 python3 run_classifier_cv.py --pretrained_model_path mo
                                                       --embedding word_pos_seg --encoder transformer --mask fully_visible
 ```
 The results of *RoBERTa-wwm-ext-large* are 80.3/66.8 (Accuracy/Marco F1). <br>
-The example of using our pre-trained model [*Reviews+BertEncoder(large)+MlmTarget*](https://share.weiyun.com/hn7kp9bs) (see model zoo for more details):
+The example of using our [review-corpus RoBERTa-large](https://share.weiyun.com/hn7kp9bs) pre-trained model:
 ```
 CUDA_VISIBLE_DEVICES=0,1 python3 run_classifier_cv.py --pretrained_model_path models/reviews_bert_large_mlm_model.bin \
                                                       --vocab_path models/google_zh_vocab.txt \
@@ -326,4 +326,46 @@ python3 inference/run_cmrc_infer.py --load_model_path models/cmrc_model.bin --vo
                                     --test_path datasets/cmrc2018/test.json \
                                     --prediction_path datasets/cmrc2018/prediction.json --seq_length 512 \
                                     --embedding word_pos_seg --encoder transformer --mask fully_visible
+```
+
+<br>
+
+## Downstream task fine-tuning and text generation with language model
+The example of fine-tuning GPT-2 on classification dataset:
+```
+python3 run_classifier.py --pretrained_model_path models/cluecorpussmall_gpt2_seq1024_model.bin --vocab_path models/google_zh_vocab.txt \
+                          --config_path models/gpt2/config.json \
+                          --train_path datasets/douban_book_review/train.tsv --dev_path datasets/douban_book_review/dev.tsv --test_path datasets/douban_book_review/test.tsv \
+                          --epochs_num 3 --batch_size 32 \
+                          --embedding word_pos --remove_embedding_layernorm \
+                          --encoder transformer --mask causal --layernorm_positioning pre --pooling mean
+```
+The example of using GPT-2 to generate text:
+```
+python3 scripts/generate_lm.py --load_model_path models/cluecorpussmall_gpt2_seq1024_model.bin-250000 \
+                               --vocab_path models/google_zh_vocab.txt \
+                               --test_path beginning.txt --prediction_path generated_text.txt \
+                               --config_path models/gpt2/config.json --seq_length 128 \
+                               --embedding word_pos --remove_embedding_layernorm \
+                               --encoder transformer --mask causal --layernorm_positioning pre \
+                               --target lm --tie_weights
+```
+Users can download *cluecorpussmall_gpt2_seq1024_model.bin* from [here](https://share.weiyun.com/0eAlQWRB).
+
+The example of using [LSTM language model](https://share.weiyun.com/XFc4hcn6) to generate text:
+```
+python3 scripts/generate_lm.py --load_model_path models/cluecorpussmall_lstm_lm_model.bin --vocab_path models/google_zh_vocab.txt \
+                               --test_path beginning.txt --prediction_path generated_text.txt \
+                               --config_path models/rnn_config.json --seq_length 128 \
+                               --embedding word --remove_embedding_layernorm \
+                               --encoder lstm --target lm
+```
+
+The example of using [GatedCNN language model](https://share.weiyun.com/VLe8O6kM) to generate text:
+```
+python3 scripts/generate_lm.py --load_model_path models/cluecorpussmall_gatedcnn_lm_model.bin --vocab_path models/google_zh_vocab.txt \
+                               --test_path beginning.txt --prediction_path generated_text.txt \
+                               --config_path models/gatedcnn_9_config.json --seq_length 128 \
+                               --embedding word --remove_embedding_layernorm \
+                               --encoder gatedcnn --target lm
 ```
