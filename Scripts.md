@@ -117,7 +117,7 @@ python3 scripts/generate_lm.py --load_model_path models/gpt_model.bin --vocab_pa
                                --config_path models/gpt2/distil_config.json --seq_length 128 \
                                --embedding word_pos --remove_embedding_layernorm \
                                --encoder transformer --mask causal --layernorm_positioning pre \
-                               --target lm --tie_weight
+                               --target lm --tie_weights
 ```
 where *beginning.txt* contains the beginning of a text and *generated_text.txt* contains the text that the model writes.
 
