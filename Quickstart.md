@@ -369,3 +369,79 @@ python3 scripts/generate_lm.py --load_model_path models/cluecorpussmall_gatedcnn
                                --embedding word --remove_embedding_layernorm \
                                --encoder gatedcnn --target lm
 ```
+
+<br>
+
+## Using different tokenizers and vocabularies
+In most cases, we use *--vocab_path models/google_zh_vocab.txt* and *--tokenizer bert* to tokenize the text. Since most scripts in this project use *--tokenizer bert* in default, *--tokenizer* is not usually explicitly specified. Next we show more use cases of tokenizers and vocabularies.
+
+*--tokenizer bert* is based on character when processing Chinese. To pre-train word-based model and fine-tine it, we firstly do word segmentation on corpus and words are separated by spaces. Then we build vocabulary based on the corpus:
+```
+python3 scripts/build_vocab.py --corpus_path corpora/book_review_seg.txt \
+                               --vocab_path models/book_review_word_vocab.txt \
+                               --tokenizer space --workers_num 8 --min_count 5 
+```
+*--tokenizer space* is used in pre-process and pre-training stages since spaces are used to separate words. The examples of pre-process and pre-train word-based model:
+```
+python3 preprocess.py --corpus_path corpora/book_review_seg.txt \
+                      --vocab_path models/book_review_word_vocab.txt  --tokenizer space \
+                      --dataset_path book_review_word_dataset.pt \
+                      --processes_num 8 --seq_length 128 --dynamic_masking --target mlm
+
+python3 pretrain.py --dataset_path book_review_word_dataset.pt \
+                    --vocab_path models/book_review_word_vocab.txt  --tokenizer space \
+                    --output_model_path models/book_review_word_model.bin \
+                    --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7 \
+                    --total_steps 5000 --save_checkpoint_steps 2500 --report_steps 500 \
+                    --learning_rate 1e-4 --batch_size 64 \
+                    --embedding word_pos_seg --encoder transformer --mask fully_visible --target mlm --tie_weights
+```
+In fine-tuning and inference stages, we also need to explicitly specify *--vocab_path models/book_review_word_vocab.txt* and *--tokenizer space*. The text in train/dev/text datasets (text_a and text_b columns) should be processed by the same word segmentation tool. We do word segmentation on *datasets/douban_book_review/* dataset to obtain *datasets/douban_book_review_seg/*:
+```
+mv models/book_review_word_model.bin-5000 models/book_review_word_model.bin
+
+python3 run_classifier.py --pretrained_model_path models/book_review_word_model.bin \
+                          --vocab_path models/book_review_word_vocab.txt  --tokenizer space \
+                          --train_path datasets/douban_book_review_seg/train.tsv --dev_path datasets/douban_book_review_seg/dev.tsv --test_path datasets/douban_book_review_seg/test.tsv \
+                          --epochs_num 3 --batch_size 32 --embedding word_pos_seg --encoder transformer --mask fully_visible
+
+python3 inference/run_classifier_infer.py --load_model_path models/finetuned_model.bin \
+                                          --vocab_path models/book_review_word_vocab.txt  --tokenizer space \
+                                          --test_path datasets/douban_book_review_seg/test_nolabel.tsv \
+                                          --prediction_path datasets/douban_book_review_seg/prediction.tsv --labels_num 2 \
+                                          --embedding word_pos_seg --encoder transformer --mask fully_visible
+```
+
+The example of using SentencePiece:
+```
+python3 preprocess.py --corpus_path corpora/book_review.txt \
+                      --spm_model_path models/cluecorpussmall_spm.model \
+                      --dataset_path book_review_word_sp_dataset.pt \
+                      --processes_num 8 --seq_length 128 --dynamic_masking --target mlm
+
+python3 pretrain.py --dataset_path book_review_word_sp_dataset.pt \
+                    --spm_model_path models/cluecorpussmall_spm.model \
+                    --output_model_path models/book_review_word_sp_model.bin \
+                    --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7 \
+                    --total_steps 5000 --save_checkpoint_steps 2500 --report_steps 500 \
+                    --learning_rate 1e-4 --batch_size 64 \
+                    --embedding word_pos_seg --encoder transformer --mask fully_visible --target mlm --tie_weights
+
+mv models/book_review_word_sp_model.bin-5000 models/book_review_word_sp_model.bin
+
+python3 run_classifier.py --pretrained_model_path models/book_review_word_sp_model.bin \
+                          --spm_model_path models/cluecorpussmall_spm.model \
+                          --train_path datasets/douban_book_review/train.tsv --dev_path datasets/douban_book_review/dev.tsv --test_path datasets/douban_book_review/test.tsv \
+                          --epochs_num 3 --batch_size 32 --embedding word_pos_seg --encoder transformer --mask fully_visible
+
+python3 inference/run_classifier_infer.py --load_model_path models/finetuned_model.bin \
+                                          --spm_model_path models/cluecorpussmall_spm.model \
+                                          --test_path datasets/douban_book_review/test_nolabel.tsv \
+                                          --prediction_path datasets/douban_book_review/prediction.tsv --labels_num 2 \
+                                          --embedding word_pos_seg --encoder transformer --mask fully_visible
+```
+
+To use character-based tokenizer, one can use *--vocab_path models/google_zh_vocab.txt* and *--tokenizer char* to substitute *--spm_model_path models/cluecorpussmall_spm.model* and other options are the same as above.
+*--vocab_path models/google_zh_vocab.txt* can be used since it is also character-based for Chinese.
+
+More details can be found in [Tokenization and vocabulary](https://github.com/dbiir/UER-py/wiki/https://github.com/dbiir/UER-py/wiki/Tokenization-and-vocabulary)
