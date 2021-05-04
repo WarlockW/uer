@@ -1,4 +1,4 @@
-Currently, UER-py supports the many downstream tasks, including text classification, pair classification, document-based question answering, sequence labeling, machine reading comprehension, etc. The embedding, encoder, and configuration file used for downstream task should be coincident with the pre-trained model.
+Currently, UER-py supports the many downstream tasks, including text classification, pair classification, document-based question answering, sequence labeling, machine reading comprehension, etc. The embedding, encoder, and configuration file used for downstream task should be coincident with the pre-trained model. The pre-trained models used in this section can be found in [Modelzoo](https://github.com/dbiir/UER-py/wiki/Modelzoo).
 
 ## Classification
 run_classifier.py adds two feedforward layers upon encoder layer.
@@ -40,6 +40,8 @@ python3 run_classifier.py --pretrained_model_path models/google_zh_model.bin --v
                           --train_path datasets/douban_book_review/train.tsv --dev_path datasets/douban_book_review/dev.tsv --test_path datasets/douban_book_review/test.tsv \
                           --epochs_num 3 --batch_size 64 --embedding word_pos_seg --encoder transformer --mask fully_visible
 ```
+CLS embedding is used for prediction in default (*--pooling first*).
+
 The example of using *run_classifier.py* for pair classification:
 ```
 python3 run_classifier.py --pretrained_model_path models/google_zh_model.bin --vocab_path models/google_zh_vocab.txt \
@@ -85,6 +87,68 @@ python3 inference/run_classifier_infer.py --load_model_path models/finetuned_mod
                                           --prediction_path datasets/douban_book_review/prediction.tsv --labels_num 2 \
                                           --factorized_embedding_parameterization --parameter_sharing \
                                           --embedding word_pos_seg --encoder transformer --mask fully_visible
+```
+
+The example of using GPT-2 for classification:
+```
+python3 run_classifier.py --pretrained_model_path models/cluecorpussmall_gpt2_seq1024_model.bin --vocab_path models/google_zh_vocab.txt \
+                          --config_path models/gpt2/config.json \
+                          --train_path datasets/douban_book_review/train.tsv --dev_path datasets/douban_book_review/dev.tsv --test_path datasets/douban_book_review/test.tsv \
+                          --epochs_num 3 --batch_size 32 \
+                          --embedding word_pos --remove_embedding_layernorm \
+                          --encoder transformer --mask causal --layernorm_positioning pre --pooling mean
+
+python3 inference/run_classifier_infer.py --load_model_path models/finetuned_model.bin --vocab_path models/google_zh_vocab.txt \
+                                          --config_path models/gpt2/config.json \
+                                          --test_path datasets/douban_book_review/test_nolabel.tsv \
+                                          --prediction_path datasets/douban_book_review/prediction.tsv --labels_num 2 \
+                                          --embedding word_pos --remove_embedding_layernorm \
+                                          --encoder transformer --mask causal --layernorm_positioning pre --pooling mean
+```
+We use *--pooling mean* to obtain text representation. *--pooling max* and *--pooling last* can also be used in above case. *--pooling first* is not suitable since language model is used (*--mask causal*). 
+
+The example of using LSTM for classification:
+```
+python3 run_classifier.py --pretrained_model_path models/cluecorpussmall_lstm_lm_model.bin --vocab_path models/google_zh_vocab.txt --config_path models/rnn_config.json \
+                          --train_path datasets/douban_book_review/train.tsv --dev_path datasets/douban_book_review/dev.tsv --test_path datasets/douban_book_review/test.tsv \
+                          --learning_rate 1e-3 --batch_size 64 --epochs_num 5 \
+                          --embedding word --remove_embedding_layernorm --encoder lstm --pooling mean
+
+python3 inference/run_classifier_infer.py --load_model_path models/finetuned_model.bin --vocab_path models/google_zh_vocab.txt \
+                                          --config_path models/rnn_config.json \
+                                          --test_path datasets/douban_book_review/test_nolabel.tsv \
+                                          --prediction_path datasets/douban_book_review/prediction.tsv \
+                                          --labels_num 2 --embedding word --remove_embedding_layernorm --encoder lstm --pooling mean
+```
+
+The example of using ELMo for classification:
+```
+python3 run_classifier.py --pretrained_model_path models/chnsenticorp_elmo_model.bin --vocab_path models/google_zh_vocab.txt --config_path models/birnn_config.json \
+                          --train_path datasets/douban_book_review/train.tsv --dev_path datasets/douban_book_review/dev.tsv --test_path datasets/douban_book_review/test.tsv \
+                          --epochs_num 5  --batch_size 64 --seq_length 192 --learning_rate 5e-4 \
+                          --embedding word --remove_embedding_layernorm --encoder bilstm --pooling max
+
+python3 inference/run_classifier_infer.py --load_model_path models/finetuned_model.bin --vocab_path models/google_zh_vocab.txt \
+                                          --config_path models/birnn_config.json \
+                                          --test_path datasets/douban_book_review/test_nolabel.tsv \
+                                          --prediction_path datasets/douban_book_review/prediction.tsv \
+                                          --labels_num 2 --embedding word --remove_embedding_layernorm --encoder bilstm --pooling max
+```
+
+The example of using GatedCNN for classification:
+```
+python3 run_classifier.py --pretrained_model_path models/cluecorpussmall_gatedcnn_lm_model.bin \
+                          --vocab_path models/google_zh_vocab.txt \
+                          --config_path models/gatedcnn_9_config.json \
+                          --train_path datasets/douban_book_review/train.tsv --dev_path datasets/douban_book_review/dev.tsv --test_path datasets/douban_book_review/test.tsv \
+                          --epochs_num 5  --batch_size 64 --learning_rate 5e-5 \
+                          --embedding word --remove_embedding_layernorm --encoder gatedcnn --pooling mean
+
+python3 inference/run_classifier_infer.py --load_model_path models/finetuned_model.bin --vocab_path models/google_zh_vocab.txt \
+                                          --config_path models/gatedcnn_9_config.json \
+                                          --test_path datasets/douban_book_review/test_nolabel.tsv \
+                                          --prediction_path datasets/douban_book_review/prediction.tsv \
+                                          --labels_num 2 --embedding word --remove_embedding_layernorm --encoder gatedcnn --pooling mean
 ```
 
 UER-py supports multi-task learning. Embedding and encoder layers are shared by different tasks. <br>
