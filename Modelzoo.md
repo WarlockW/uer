@@ -186,6 +186,18 @@ The link and detailed description (Huggingface model hub) of different fine-tune
 
 One can load these pre-trained models for pre-training, fine-tuning, and inference.
 
+## Chinese Pre-trained Weights Besides Transformer
+This is the set of pre-trained weights besides Transformer.
+
+The link and detailed description of different pre-trained weights:
+
+|            Model link           |           Configuration file           |           Model details           |           Training details            |
+| :-----------------------:| :-----------------------:| :-----------------------:| :-----------------------:|
+| [**CLUECorpusSmall LSTM language model**][lstm_lm] | models/rnn_config.json | --embedding word --remove_embedding_layernorm --encoder lstm --target lm | steps: 500000 learning rate: 1e-3 batch size: 64*8 (the number of GPUs) sequence length: 256 |
+| [**CLUECorpusSmall GRU language model**][gru_lm] | models/rnn_config.json | --embedding word --remove_embedding_layernorm --encoder gru --target lm | steps: 500000 learning rate: 1e-3  batch size: 64*8 (the number of GPUs) sequence length: 256 |
+| [**CLUECorpusSmall GatedCNN language model**][gatedcnn_lm] | models/gatedcnn_9_config.json | --embedding word --remove_embedding_layernorm --encoder gatedcnn --target lm | steps: 500000 learning rate: 1e-4 batch size: 64*8 (the number of GPUs)  sequence length: 256 |
+| [**CLUECorpusSmall ELMo**][elmo] | models/birnn_config.json | --embedding word --remove_embedding_layernorm --encoder bilstm --target bilm | steps: 500000 learning rate: 5e-4 batch size: 64*8 (the number of GPUs) sequence length: 256 |
+
 ## Chinese Pre-trained Weights from Other Organizations
 
 |           Model link           |       Description        |           Description link          |
@@ -291,3 +303,8 @@ MixedCorpus contains baidubaike, Wikizh, WebQA, RenMinRiBao, literature, and rev
 [hfl_zh_bert_wwm_ext]:https://share.weiyun.com/IxirLuvk
 [hfl_zh_roberta_wwm_ext]:https://share.weiyun.com/b2Pp9jdR
 [hfl_zh_roberta_wwm_large_ext]:https://share.weiyun.com/bE8SUvoM
+
+[lstm_lm]:https://share.weiyun.com/XFc4hcn6
+[gru_lm]:https://share.weiyun.com/2m6WRATo
+[gatedcnn_lm]:https://share.weiyun.com/VLe8O6kM
+[elmo]:https://share.weiyun.com/xezGTd86
