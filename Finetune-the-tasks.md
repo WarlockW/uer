@@ -438,7 +438,7 @@ The example of using *run_c3.py* for multiple choice task:
 ```
 python3 run_c3.py --pretrained_model_path models/google_zh_model.bin --vocab_path models/google_zh_vocab.txt \
                   --train_path datasets/c3/train.json --dev_path datasets/c3/dev.json \
-                  --epochs_num 8 --batch_size 16 --seq_length 512 --max_choices_num 4 \
+                  --epochs_num 8 --batch_size 8 --seq_length 512 --max_choices_num 4 \
                   --embedding word_pos_seg --encoder transformer --mask fully_visible
 ```
 *--test_path* option is not specified since test set of C3 dataset is not publicly available. <br>
