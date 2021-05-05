@@ -160,6 +160,16 @@ python3 run_classifier_mt.py --pretrained_model_path models/google_zh_model.bin 
 ```
 *--dataset_path_list* specifies folder path list of different tasks. Each folder should contains train set *train.tsv* and development set *dev.tsv* .
 
+UER-py supports grid search for classification task:
+```
+python3 run_classifier_grid.py --vocab_path models/google_zh_vocab.txt \
+                               --config_path models/bert/tiny_config.json \
+                               --train_path datasets/douban_book_review/train.tsv \
+                               --dev_path datasets/douban_book_review/dev.tsv \
+                               --embedding word_pos_seg --encoder transformer --mask fully_visible \
+                               --batch_size_list 32 64 --learning_rate_list 3e-5 1e-4 3e-4 --epochs_num_list 3 5 8
+```
+We use grid search to find optimal batch size, learning rate, and the number of epochs.
 
 UER-py supports distillation for classification tasks. <br>
 First of all, we train a teacher model. We fine-tune upon a Chinese BERT-large model (provided in model zoo):
