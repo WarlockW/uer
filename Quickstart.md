@@ -296,7 +296,7 @@ python3 scripts/convert_bert_from_huggingface_to_uer.py --input_model_path model
                                                         --output_model_path models/chinese_roberta_wwm_large_ext_pytorch/pytorch_model_uer.bin \
                                                         --layers_num 24
 
-CUDA_VISIBLE_DEVICES=0,1 python3 run_classifier_cv.py --pretrained_model_path models/chinese_roberta_wwm_large_ext_pytorch/pytorch_model_uer.bin \
+CUDA_VISIBLE_DEVICES=0,1 python3 run_classifier_cv.py --pretrained_model_path models/chinese_roberta_wwm_large_ext_pytorch/pytorch_uer_model.bin \
                                                       --vocab_path models/google_zh_vocab.txt \
                                                       --config_path models/bert/large_config.json \
                                                       --train_path datasets/smp2020-ewect/virus/train.tsv \
@@ -307,7 +307,7 @@ CUDA_VISIBLE_DEVICES=0,1 python3 run_classifier_cv.py --pretrained_model_path mo
 The results of *RoBERTa-wwm-ext-large* are 80.3/66.8 (Accuracy/Marco F1). <br>
 The example of using our [review-corpus RoBERTa-large](https://share.weiyun.com/hn7kp9bs) pre-trained model:
 ```
-CUDA_VISIBLE_DEVICES=0,1 python3 run_classifier_cv.py --pretrained_model_path models/reviews_bert_large_mlm_model.bin \
+CUDA_VISIBLE_DEVICES=0,1 python3 run_classifier_cv.py --pretrained_model_path models/review_bert_large_mlm_model.bin \
                                                       --vocab_path models/google_zh_vocab.txt \
                                                       --config_path models/bert/large_config.json \
                                                       --train_path datasets/smp2020-ewect/virus/train.tsv \
@@ -324,7 +324,9 @@ Sometimes large model does not converge. We need to try different random seeds b
 Besides classification, UER-py also supports other downstream tasks. For example, *run_classifier.py* can be also used for text pair classification. We can download the text pair classification dataset LCQMC in Datasets section and fine-tune the pre-trained model on it: 
 ```
 python3 run_classifier.py --pretrained_model_path models/google_zh_model.bin --vocab_path models/google_zh_vocab.txt \
-                          --train_path datasets/lcqmc/train.tsv --dev_path datasets/lcqmc/dev.tsv --test_path datasets/lcqmc/test.tsv \
+                          --train_path datasets/lcqmc/train.tsv \
+                          --dev_path datasets/lcqmc/dev.tsv \
+                          --test_path datasets/lcqmc/test.tsv \
                           --output_model_path models/classifier_model.bin \
                           --batch_size 32 --epochs_num 3 --seq_length 128 \
                           --embedding word_pos_seg --encoder transformer --mask fully_visible
@@ -333,9 +335,11 @@ For text pair classification, the dataset should contain text_a, text_b, and lab
 
 Then we do inference with the fine-tuned text pair classification model:
 ```
-python3 inference/run_classifier_infer.py --load_model_path models/classifier_model.bin --vocab_path models/google_zh_vocab.txt \
+python3 inference/run_classifier_infer.py --load_model_path models/classifier_model.bin \
+                                          --vocab_path models/google_zh_vocab.txt \
                                           --test_path datasets/lcqmc/test.tsv \
-                                          --prediction_path datasets/lcqmc/prediction.tsv --labels_num 2 --seq_length 128 \
+                                          --prediction_path datasets/lcqmc/prediction.tsv \
+                                          --labels_num 2 --seq_length 128 \
                                           --embedding word_pos_seg --encoder transformer --mask fully_visible
 ```
 The file to be predicted (*--test_path*) should contain text_a and text_b columns.
@@ -344,9 +348,12 @@ The file to be predicted (*--test_path*) should contain text_a and text_b column
 We could use *run_ner.py* for named entity recognition:
 ```
 python3 run_ner.py --pretrained_model_path models/google_zh_model.bin --vocab_path models/google_zh_vocab.txt \
-                   --train_path datasets/msra_ner/train.tsv --dev_path datasets/msra_ner/dev.tsv --test_path datasets/msra_ner/test.tsv \
+                   --train_path datasets/msra_ner/train.tsv \
+                   --dev_path datasets/msra_ner/dev.tsv \
+                   --test_path datasets/msra_ner/test.tsv \
                    --output_model_path models/ner_model.bin \
-                   --label2id_path datasets/msra_ner/label2id.json --epochs_num 5 --batch_size 16 \
+                   --label2id_path datasets/msra_ner/label2id.json \
+                   --epochs_num 5 --batch_size 16 \
                    --embedding word_pos_seg --encoder transformer --mask fully_visible
 ```
 *--label2id_path* specifies the path of label2id file for named entity recognition.
@@ -372,7 +379,7 @@ We don't specify the *--test_path* because CMRC2018 dataset doesn't provide labe
 Then we do inference with the fine-tuned cmrc model:
 ```
 python3 inference/run_cmrc_infer.py --load_model_path models/cmrc_model.bin --vocab_path models/google_zh_vocab.txt \
-                                    --test_path datasets/cmrc2018/test.json \
+                                    --test_path datasets/cmrc2018/test.json  \
                                     --prediction_path datasets/cmrc2018/prediction.json --seq_length 512 \
                                     --embedding word_pos_seg --encoder transformer --mask fully_visible
 ```
@@ -382,9 +389,12 @@ python3 inference/run_cmrc_infer.py --load_model_path models/cmrc_model.bin --vo
 ## Downstream task fine-tuning and text generation with language model
 The example of fine-tuning GPT-2 on classification dataset:
 ```
-python3 run_classifier.py --pretrained_model_path models/cluecorpussmall_gpt2_seq1024_model.bin --vocab_path models/google_zh_vocab.txt \
+python3 run_classifier.py --pretrained_model_path models/cluecorpussmall_gpt2_seq1024_model.bin \
+                          --vocab_path models/google_zh_vocab.txt \
                           --config_path models/gpt2/config.json \
-                          --train_path datasets/douban_book_review/train.tsv --dev_path datasets/douban_book_review/dev.tsv --test_path datasets/douban_book_review/test.tsv \
+                          --train_path datasets/douban_book_review/train.tsv \
+                          --dev_path datasets/douban_book_review/dev.tsv \
+                          --test_path datasets/douban_book_review/test.tsv \
                           --epochs_num 3 --batch_size 32 \
                           --embedding word_pos --remove_embedding_layernorm \
                           --encoder transformer --mask causal --layernorm_positioning pre --pooling mean
@@ -403,7 +413,8 @@ Users can download *cluecorpussmall_gpt2_seq1024_model.bin* from [here](https://
 
 The example of using [LSTM language model](https://share.weiyun.com/XFc4hcn6) to generate text:
 ```
-python3 scripts/generate_lm.py --load_model_path models/cluecorpussmall_lstm_lm_model.bin --vocab_path models/google_zh_vocab.txt \
+python3 scripts/generate_lm.py --load_model_path models/cluecorpussmall_lstm_lm_model.bin \
+                               --vocab_path models/google_zh_vocab.txt \
                                --test_path beginning.txt --prediction_path generated_text.txt \
                                --config_path models/rnn_config.json --seq_length 128 \
                                --embedding word --remove_embedding_layernorm \
@@ -412,7 +423,8 @@ python3 scripts/generate_lm.py --load_model_path models/cluecorpussmall_lstm_lm_
 
 The example of using [GatedCNN language model](https://share.weiyun.com/VLe8O6kM) to generate text:
 ```
-python3 scripts/generate_lm.py --load_model_path models/cluecorpussmall_gatedcnn_lm_model.bin --vocab_path models/google_zh_vocab.txt \
+python3 scripts/generate_lm.py --load_model_path models/cluecorpussmall_gatedcnn_lm_model.bin \
+                               --vocab_path models/google_zh_vocab.txt \
                                --test_path beginning.txt --prediction_path generated_text.txt \
                                --config_path models/gatedcnn_9_config.json --seq_length 128 \
                                --embedding word --remove_embedding_layernorm \
@@ -433,7 +445,7 @@ python3 scripts/build_vocab.py --corpus_path corpora/book_review_seg.txt \
 *--tokenizer space* is used in pre-process and pre-training stages since spaces are used to separate words. The examples of pre-process and pre-train word-based model:
 ```
 python3 preprocess.py --corpus_path corpora/book_review_seg.txt \
-                      --vocab_path models/book_review_word_vocab.txt  --tokenizer space \
+                      --vocab_path models/book_review_word_vocab.txt --tokenizer space \
                       --dataset_path book_review_word_dataset.pt \
                       --processes_num 8 --seq_length 128 --dynamic_masking --target mlm
 
@@ -450,14 +462,18 @@ In fine-tuning and inference stages, we also need to explicitly specify *--vocab
 mv models/book_review_word_model.bin-5000 models/book_review_word_model.bin
 
 python3 run_classifier.py --pretrained_model_path models/book_review_word_model.bin \
-                          --vocab_path models/book_review_word_vocab.txt  --tokenizer space \
-                          --train_path datasets/douban_book_review_seg/train.tsv --dev_path datasets/douban_book_review_seg/dev.tsv --test_path datasets/douban_book_review_seg/test.tsv \
-                          --epochs_num 3 --batch_size 32 --embedding word_pos_seg --encoder transformer --mask fully_visible
+                          --vocab_path models/book_review_word_vocab.txt --tokenizer space \
+                          --train_path datasets/douban_book_review_seg/train.tsv \
+                          --dev_path datasets/douban_book_review_seg/dev.tsv \
+                          --test_path datasets/douban_book_review_seg/test.tsv \
+                          --epochs_num 3 --batch_size 32 \
+                          --embedding word_pos_seg --encoder transformer --mask fully_visible
 
 python3 inference/run_classifier_infer.py --load_model_path models/finetuned_model.bin \
-                                          --vocab_path models/book_review_word_vocab.txt  --tokenizer space \
+                                          --vocab_path models/book_review_word_vocab.txt --tokenizer space \
                                           --test_path datasets/douban_book_review_seg/test_nolabel.tsv \
-                                          --prediction_path datasets/douban_book_review_seg/prediction.tsv --labels_num 2 \
+                                          --prediction_path datasets/douban_book_review_seg/prediction.tsv \
+                                          --labels_num 2 \
                                           --embedding word_pos_seg --encoder transformer --mask fully_visible
 ```
 
@@ -480,8 +496,11 @@ mv models/book_review_word_sp_model.bin-5000 models/book_review_word_sp_model.bi
 
 python3 run_classifier.py --pretrained_model_path models/book_review_word_sp_model.bin \
                           --spm_model_path models/cluecorpussmall_spm.model \
-                          --train_path datasets/douban_book_review/train.tsv --dev_path datasets/douban_book_review/dev.tsv --test_path datasets/douban_book_review/test.tsv \
-                          --epochs_num 3 --batch_size 32 --embedding word_pos_seg --encoder transformer --mask fully_visible
+                          --train_path datasets/douban_book_review/train.tsv \
+                          --dev_path datasets/douban_book_review/dev.tsv \
+                          --test_path datasets/douban_book_review/test.tsv \
+                          --epochs_num 3 --batch_size 32 \
+                          --embedding word_pos_seg --encoder transformer --mask fully_visible
 
 python3 inference/run_classifier_infer.py --load_model_path models/finetuned_model.bin \
                                           --spm_model_path models/cluecorpussmall_spm.model \
