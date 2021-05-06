@@ -89,23 +89,32 @@ It turns out that the result of Google's model is 87.5.
 ## Specifying which GPUs are used
 We recommend to use *CUDA_VISIBLE_DEVICES* to specify which GPUs are visible (all GPUs are used in default). Suppose GPU 0 and GPU 2 are available:
 ```
-python3 preprocess.py --corpus_path corpora/book_review_bert.txt --vocab_path models/google_zh_vocab.txt --dataset_path dataset.pt \
-                      --processes_num 8 --target bert
+python3 preprocess.py --corpus_path corpora/book_review_bert.txt --vocab_path models/google_zh_vocab.txt \
+                      --dataset_path dataset.pt --processes_num 8 --target bert
 
-CUDA_VISIBLE_DEVICES=0,2 python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt --pretrained_model_path models/google_zh_model.bin \
-                                             --output_model_path models/book_review_model.bin  --world_size 2 --gpu_ranks 0 1 \
-                                             --total_steps 5000 --save_checkpoint_steps 1000 --batch_size 32 --embedding word_pos_seg --encoder transformer --mask fully_visible --target bert
+CUDA_VISIBLE_DEVICES=0,2 python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt \
+                                             --pretrained_model_path models/google_zh_model.bin \
+                                             --output_model_path models/book_review_model.bin \
+                                             --world_size 2 --gpu_ranks 0 1 \
+                                             --total_steps 5000 --save_checkpoint_steps 1000 --batch_size 32 \
+                                             --embedding word_pos_seg --encoder transformer --mask fully_visible --target bert
 
 mv models/book_review_model.bin-5000 models/book_review_model.bin
 
-CUDA_VISIBLE_DEVICES=0,2 python3 run_classifier.py --pretrained_model_path models/book_review_model.bin --vocab_path models/google_zh_vocab.txt \
-                                                   --train_path datasets/douban_book_review/train.tsv --dev_path datasets/douban_book_review/dev.tsv --test_path datasets/douban_book_review/test.tsv \
+CUDA_VISIBLE_DEVICES=0,2 python3 run_classifier.py --pretrained_model_path models/book_review_model.bin \
+                                                   --vocab_path models/google_zh_vocab.txt \
+                                                   --train_path datasets/douban_book_review/train.tsv \
+                                                   --dev_path datasets/douban_book_review/dev.tsv \
+                                                   --test_path datasets/douban_book_review/test.tsv \
                                                    --output_model_path models/classifier_model.bin \
-                                                   --epochs_num 3 --batch_size 32 --embedding word_pos_seg --encoder transformer --mask fully_visible
+                                                   --epochs_num 3 --batch_size 32 \
+                                                   --embedding word_pos_seg --encoder transformer --mask fully_visible
 
-CUDA_VISIBLE_DEVICES=0,2 python3 inference/run_classifier_infer.py --load_model_path models/classifier_model.bin --vocab_path models/google_zh_vocab.txt \
+CUDA_VISIBLE_DEVICES=0,2 python3 inference/run_classifier_infer.py --load_model_path models/classifier_model.bin \
+                                                                   --vocab_path models/google_zh_vocab.txt \
                                                                    --test_path datasets/douban_book_review/test_nolabel.tsv \
-                                                                   --prediction_path datasets/douban_book_review/prediction.tsv --labels_num 2 \
+                                                                   --prediction_path datasets/douban_book_review/prediction.tsv \
+                                                                   --labels_num 2 \
                                                                    --embedding word_pos_seg --encoder transformer --mask fully_visible
 ```
 Notice that we explicitly specify the fine-tuned model path by *--output_model_path* in fine-tuning stage. The actual batch size of pre-training is *--batch_size* times *--world_size* ; The actual batch size of classification is *--batch_size* . 
@@ -115,18 +124,25 @@ Notice that we explicitly specify the fine-tuned model path by *--output_model_p
 ## Pre-training with MLM target
 BERT consists of next sentence prediction (NSP) target. However, NSP target is not suitable for sentence-level reviews since we have to split a sentence into multiple parts to construct document. UER-py facilitates the use of different targets. Using masked language modeling (MLM) as target could be a properer choice for pre-training of reviews:
 ```
-python3 preprocess.py --corpus_path corpora/book_review.txt --vocab_path models/google_zh_vocab.txt --dataset_path dataset.pt \
-                      --processes_num 8 --target mlm
+python3 preprocess.py --corpus_path corpora/book_review.txt --vocab_path models/google_zh_vocab.txt \
+                      --dataset_path dataset.pt --processes_num 8 --target mlm
 
-python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt --pretrained_model_path models/google_zh_model.bin \
-                    --output_model_path models/book_review_mlm_model.bin  --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7 \
-                    --total_steps 5000 --save_checkpoint_steps 2500 --batch_size 32 --embedding word_pos_seg --encoder transformer --mask fully_visible --target mlm
+python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt \
+                    --pretrained_model_path models/google_zh_model.bin \
+                    --output_model_path models/book_review_mlm_model.bin \
+                    --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7 \
+                    --total_steps 5000 --save_checkpoint_steps 2500 --batch_size 32 \
+                    --embedding word_pos_seg --encoder transformer --mask fully_visible --target mlm
 
 mv models/book_review_mlm_model.bin-5000 models/book_review_mlm_model.bin
 
-CUDA_VISIBLE_DEVICES=0,1 python3 run_classifier.py --pretrained_model_path models/book_review_mlm_model.bin --vocab_path models/google_zh_vocab.txt \
-                                                   --train_path datasets/douban_book_review/train.tsv --dev_path datasets/douban_book_review/dev.tsv --test_path datasets/douban_book_review/test.tsv \
-                                                   --epochs_num 3 --batch_size 32 --embedding word_pos_seg --encoder transformer --mask fully_visible
+CUDA_VISIBLE_DEVICES=0,1 python3 run_classifier.py --pretrained_model_path models/book_review_mlm_model.bin \
+                                                   --vocab_path models/google_zh_vocab.txt \
+                                                   --train_path datasets/douban_book_review/train.tsv \
+                                                   --dev_path datasets/douban_book_review/dev.tsv \
+                                                   --test_path datasets/douban_book_review/test.tsv \
+                                                   --epochs_num 3 --batch_size 32 \
+                                                   --embedding word_pos_seg --encoder transformer --mask fully_visible
 ```
 Different targets require different corpus formats. The format of the corpus for MLM target is as follows (one document per line):
 ```
@@ -141,8 +157,8 @@ Notice that *corpora/book_review.txt* (instead of *corpora/book_review_bert.txt*
 ## Using more encoders besides Transformer
 BERT is slow. It could be great if we can speed up the model and still achieve competitive performance. To achieve this goal, we select a 2-layers LSTM encoder to substitute 12-layers Transformer encoder. We firstly download [*cluecorpussmall_lstm_lm_model.bin*](https://share.weiyun.com/XFc4hcn6) for 2-layers LSTM encoder. The model is pre-trained on [CLUECorpusSmall](https://github.com/CLUEbenchmark/CLUECorpus2020) corpus for 500,000 steps:
 ```
-python3 preprocess.py --corpus_path corpora/cluecorpussmall.txt --vocab_path models/google_zh_vocab.txt --dataset_path dataset.pt \
-                     --processes_num 8 --seq_length 256 --target lm
+python3 preprocess.py --corpus_path corpora/cluecorpussmall.txt --vocab_path models/google_zh_vocab.txt \
+                      --dataset_path dataset.pt --processes_num 8 --seq_length 256 --target lm
 
 python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt \
                     --output_model_path models/cluecorpussmall_lstm_lm_model.bin \
@@ -154,16 +170,21 @@ python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_voca
 ```
 Then we remove the training step suffix of pre-trained model and fine-tune it on downstream classification dataset:
 ```
-python3 run_classifier.py --pretrained_model_path models/cluecorpussmall_lstm_lm_model.bin --vocab_path models/google_zh_vocab.txt --config_path models/rnn_config.json \
-                          --train_path datasets/douban_book_review/train.tsv --dev_path datasets/douban_book_review/dev.tsv --test_path datasets/douban_book_review/test.tsv \
+python3 run_classifier.py --pretrained_model_path models/cluecorpussmall_lstm_lm_model.bin \
+                          --vocab_path models/google_zh_vocab.txt --config_path models/rnn_config.json \
+                          --train_path datasets/douban_book_review/train.tsv \
+                          --dev_path datasets/douban_book_review/dev.tsv \
+                          --test_path datasets/douban_book_review/test.tsv \
                           --learning_rate 1e-3 --batch_size 64 --epochs_num 5 \
                           --embedding word --remove_embedding_layernorm --encoder lstm --pooling mean
 
-python3 inference/run_classifier_infer.py --load_model_path models/finetuned_model.bin --vocab_path models/google_zh_vocab.txt \
+python3 inference/run_classifier_infer.py --load_model_path models/finetuned_model.bin \
+                                          --vocab_path models/google_zh_vocab.txt \
                                           --config_path models/rnn_config.json \
                                           --test_path datasets/douban_book_review/test_nolabel.tsv \
                                           --prediction_path datasets/douban_book_review/prediction.tsv \
-                                          --labels_num 2 --embedding word --remove_embedding_layernorm --encoder lstm --pooling mean
+                                          --labels_num 2 \
+                                          --embedding word --remove_embedding_layernorm --encoder lstm --pooling mean
 ```
 We can achieve over 84.6 accuracy on testset, which is a competitive result. Using the same LSTM encoder without pre-training can only achieve around 81 accuracy.
 <br>
@@ -171,8 +192,8 @@ We can achieve over 84.6 accuracy on testset, which is a competitive result. Usi
 UER-py also includes many other pre-training models. <br>
 We download [*cluecorpussmall_elmo_model.bin*](https://share.weiyun.com/xezGTd86) for pre-trained ELMo model. The model is pre-trained on CLUECorpusSmall corpus for 500,000 steps:
 ```
-python3 preprocess.py --corpus_path corpora/cluecorpussmall.txt --vocab_path models/google_zh_vocab.txt --dataset_path dataset.pt \
-                     --processes_num 8 --seq_length 256 --target bilm
+python3 preprocess.py --corpus_path corpora/cluecorpussmall.txt --vocab_path models/google_zh_vocab.txt \
+                      --dataset_path dataset.pt --processes_num 8 --seq_length 256 --target bilm
 
 python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt \
                     --output_model_path models/cluecorpussmall_elmo_model.bin \
@@ -184,27 +205,36 @@ python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_voca
 ```
 We remove the training step suffix of pre-trained model. Then we do further pre-training and fine-tune on Chnsenticorp sentiment classification dataset:
 ```
-python3 preprocess.py --corpus_path corpora/chnsenticorp.txt --vocab_path models/google_zh_vocab.txt --dataset_path dataset.pt \
-                      --processes_num 8 --seq_length 192 --target bilm
+python3 preprocess.py --corpus_path corpora/chnsenticorp.txt --vocab_path models/google_zh_vocab.txt \
+                      --dataset_path dataset.pt --processes_num 8 --seq_length 192 --target bilm
 
-python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt --pretrained_model_path models/cluecorpussmall_elmo_model.bin \
+python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt \
+                    --pretrained_model_path models/cluecorpussmall_elmo_model.bin \
                     --config_path models/birnn_config.json \
-                    --output_model_path models/chnsenticorp_elmo_model.bin --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7 \
-                    --total_steps 5000 --save_checkpoint_steps 2500 --batch_size 64 --learning_rate 5e-4 \
+                    --output_model_path models/chnsenticorp_elmo_model.bin \
+                    --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7 \
+                    --total_steps 5000 --save_checkpoint_steps 2500 \
+                    --batch_size 64 --learning_rate 5e-4 \
                     --embedding word --remove_embedding_layernorm --encoder bilstm --target bilm
 
 mv models/chnsenticorp_elmo_model.bin-5000 models/chnsenticorp_elmo_model.bin
 
-python3 run_classifier.py --pretrained_model_path models/chnsenticorp_elmo_model.bin --vocab_path models/google_zh_vocab.txt --config_path models/birnn_config.json \
-                          --train_path datasets/chnsenticorp/train.tsv --dev_path datasets/chnsenticorp/dev.tsv --test_path datasets/chnsenticorp/test.tsv \
+python3 run_classifier.py --pretrained_model_path models/chnsenticorp_elmo_model.bin \
+                          --vocab_path models/google_zh_vocab.txt \
+                          --config_path models/birnn_config.json \
+                          --train_path datasets/chnsenticorp/train.tsv \
+                          --dev_path datasets/chnsenticorp/dev.tsv \
+                          --test_path datasets/chnsenticorp/test.tsv \
                           --epochs_num 5  --batch_size 64 --seq_length 192 --learning_rate 5e-4 \
                           --embedding word --remove_embedding_layernorm --encoder bilstm --pooling max
 
-python3 inference/run_classifier_infer.py --load_model_path models/finetuned_model.bin --vocab_path models/google_zh_vocab.txt \
+python3 inference/run_classifier_infer.py --load_model_path models/finetuned_model.bin \
+                                          --vocab_path models/google_zh_vocab.txt \
                                           --config_path models/birnn_config.json \
                                           --test_path datasets/chnsenticorp/test_nolabel.tsv \
                                           --prediction_path datasets/chnsenticorp/prediction.tsv \
-                                          --labels_num 2 --embedding word --remove_embedding_layernorm --encoder bilstm --pooling max
+                                          --labels_num 2 --seq_length 192 \
+                                          --embedding word --remove_embedding_layernorm --encoder bilstm --pooling max
 ```
 *corpora/chnsenticorp.txt* is obtained from Chnsenticorp dataset and labels are removed.
 
@@ -213,25 +243,31 @@ The example of fine-tuning GatedCNN on Chnsenticorp dataset:
 python3 run_classifier.py --pretrained_model_path models/cluecorpussmall_gatedcnn_lm_model.bin \
                           --vocab_path models/google_zh_vocab.txt \
                           --config_path models/gatedcnn_9_config.json \
-                          --train_path datasets/chnsenticorp/train.tsv --dev_path datasets/chnsenticorp/dev.tsv --test_path datasets/chnsenticorp/test.tsv \
+                          --train_path datasets/chnsenticorp/train.tsv \
+                          --dev_path datasets/chnsenticorp/dev.tsv \
+                          --test_path datasets/chnsenticorp/test.tsv \
                           --epochs_num 5  --batch_size 64 --learning_rate 5e-5 \
                           --embedding word --remove_embedding_layernorm --encoder gatedcnn --pooling mean
 
-python3 inference/run_classifier_infer.py --load_model_path models/finetuned_model.bin --vocab_path models/google_zh_vocab.txt \
+python3 inference/run_classifier_infer.py --load_model_path models/finetuned_model.bin \
+                                          --vocab_path models/google_zh_vocab.txt \
                                           --config_path models/gatedcnn_9_config.json \
                                           --test_path datasets/chnsenticorp/test_nolabel.tsv \
                                           --prediction_path datasets/chnsenticorp/prediction.tsv \
-                                          --labels_num 2 --embedding word --remove_embedding_layernorm --encoder gatedcnn --pooling mean
+                                          --labels_num 2 \
+                                          --embedding word --remove_embedding_layernorm --encoder gatedcnn --pooling mean
 ```
 Users can download *cluecorpussmall_gatedcnn_lm_model.bin* from [here](https://share.weiyun.com/VLe8O6kM). The model is pre-trained on CLUECorpusSmall corpus for 500,000 steps:
 ```
-python3 preprocess.py --corpus_path corpora/cluecorpussmall.txt --vocab_path models/google_zh_vocab.txt --dataset_path dataset.pt \
-                     --processes_num 8 --seq_length 256 --target lm
+python3 preprocess.py --corpus_path corpora/cluecorpussmall.txt --vocab_path models/google_zh_vocab.txt \
+                      --dataset_path dataset.pt --processes_num 8 --seq_length 256 --target lm
 
 python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt \
                     --config_path models/gatedcnn_9_config.json \
-                    --output_model_path models/cluecorpussmall_gatedcnn_lm_model.bin --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7 \
-                    --total_steps 500000 --save_checkpoint_steps 100000 --report_steps 100 --learning_rate 1e-4 --batch_size 64 \
+                    --output_model_path models/cluecorpussmall_gatedcnn_lm_model.bin \
+                    --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7 \
+                    --total_steps 500000 --save_checkpoint_steps 100000 --report_steps 100 \
+                    --learning_rate 1e-4 --batch_size 64 \
                     --embedding word --remove_embedding_layernorm --encoder gatedcnn --target lm
 ```
 
