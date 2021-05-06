@@ -17,21 +17,25 @@ The pre-trained Chinese weight links of different layers (L) and hidden sizes (H
 
 Take the Tiny weight as an example, we download the Tiny weight through the above link and put it in *models/* folder. We can either conduct further pre-training upon it:
 ```
-python3 preprocess.py --corpus_path corpora/book_review.txt --vocab_path models/google_zh_vocab.txt --dataset_path dataset.pt \
-                      --processes_num 8 --target mlm
+python3 preprocess.py --corpus_path corpora/book_review.txt --vocab_path models/google_zh_vocab.txt \
+                      --dataset_path dataset.pt --processes_num 8 --target mlm
 
 python3 pretrain.py --dataset_path dataset.pt --pretrained_model_path models/cluecorpussmall_roberta_tiny_seq512_model.bin \
                     --vocab_path models/google_zh_vocab.txt --config_path models/bert/tiny_config.json \
                     --output_model_path models/output_model.bin --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7 \
-                    --total_steps 5000 --save_checkpoint_steps 2500 --batch_size 64 --embedding word_pos_seg --encoder transformer --mask fully_visible --target mlm
+                    --total_steps 5000 --save_checkpoint_steps 2500 --batch_size 64 \
+                    --embedding word_pos_seg --encoder transformer --mask fully_visible --target mlm
 ```
 
 or use it on downstream classification dataset：
 ```
 python3 run_classifier.py --pretrained_model_path models/cluecorpussmall_roberta_tiny_seq512_model.bin \
                           --vocab_path models/google_zh_vocab.txt --config_path models/bert/tiny_config.json \
-                          --train_path datasets/douban_book_review/train.tsv --dev_path datasets/douban_book_review/dev.tsv --test_path datasets/douban_book_review/test.tsv \
-                          --learning_rate 3e-4 --batch_size 64 --epochs_num 8 --embedding word_pos_seg --encoder transformer --mask fully_visible
+                          --train_path datasets/douban_book_review/train.tsv \
+                          --dev_path datasets/douban_book_review/dev.tsv \
+                          --test_path datasets/douban_book_review/test.tsv \
+                          --learning_rate 3e-4 --batch_size 64 --epochs_num 8 \
+                          --embedding word_pos_seg --encoder transformer --mask fully_visible
 ```
 
 In fine-tuning stage, pre-trained models of different sizes usually require different hyper-parameters. The example of using grid search to find best hyper-parameters:
@@ -59,21 +63,26 @@ The pre-trained Chinese weight links of different sizes:
 
 Take the word-based Tiny weight as an example, we download the word-based Tiny weight through the above link and put it in *models/* folder. We can either conduct further pre-training upon it:
 ```
-python3 preprocess.py --corpus_path corpora/book_review.txt --spm_model_path models/cluecorpussmall_spm.model --dataset_path dataset.pt \
-                      --processes_num 8 --target mlm
+python3 preprocess.py --corpus_path corpora/book_review.txt --spm_model_path models/cluecorpussmall_spm.model \
+                      --dataset_path dataset.pt --processes_num 8 --target mlm
 
 python3 pretrain.py --dataset_path dataset.pt --pretrained_model_path models/cluecorpussmall_roberta_tiny_seq512_model.bin \
                     --spm_model_path models/cluecorpussmall_spm.model --config_path models/bert/tiny_config.json \
                     --output_model_path models/output_model.bin --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7 \
-                    --total_steps 5000 --save_checkpoint_steps 2500 --batch_size 64 --embedding word_pos_seg --encoder transformer --mask fully_visible --target mlm
+                    --total_steps 5000 --save_checkpoint_steps 2500 --batch_size 64 \
+                    --embedding word_pos_seg --encoder transformer --mask fully_visible --target mlm
 ```
 
 or use it on downstream classification dataset：
 ```
 python3 run_classifier.py --pretrained_model_path models/cluecorpussmall_word_roberta_tiny_seq512_model.bin \
-                          --spm_model_path models/cluecorpussmall_spm.model --config_path models/bert/tiny_config.json \
-                          --train_path datasets/douban_book_review/train.tsv --dev_path datasets/douban_book_review/dev.tsv --test_path datasets/douban_book_review/test.tsv \
-                          --learning_rate 3e-4 --batch_size 64 --epochs_num 8 --embedding word_pos_seg --encoder transformer --mask fully_visible
+                          --spm_model_path models/cluecorpussmall_spm.model \
+                          --config_path models/bert/tiny_config.json \
+                          --train_path datasets/douban_book_review/train.tsv \
+                          --dev_path datasets/douban_book_review/dev.tsv \
+                          --test_path datasets/douban_book_review/test.tsv \
+                          --learning_rate 3e-4 --batch_size 64 --epochs_num 8 \
+                          --embedding word_pos_seg --encoder transformer --mask fully_visible
 ```
 
 The example of using grid search to find best hyper-parameters for word-based model:
@@ -109,8 +118,10 @@ python3 preprocess.py --corpus_path corpora/book_review.txt \
                       --dataset_path dataset.pt --processes_num 8 \
                       --seq_length 128 --target lm 
 
-python3 pretrain.py --dataset_path dataset.pt --pretrained_model_path models/cluecorpussmall_gpt2_distil_seq1024_model.bin \
-                    --vocab_path models/google_zh_vocab.txt --config_path models/gpt2/distil_config.json \
+python3 pretrain.py --dataset_path dataset.pt \
+                    --pretrained_model_path models/cluecorpussmall_gpt2_distil_seq1024_model.bin \
+                    --vocab_path models/google_zh_vocab.txt \
+                    --config_path models/gpt2/distil_config.json \
                     --output_model_path models/book_review_gpt2_model.bin \
                     --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7 \
                     --total_steps 10000 --save_checkpoint_steps 5000 --report_steps 1000 \
@@ -122,8 +133,11 @@ python3 pretrain.py --dataset_path dataset.pt --pretrained_model_path models/clu
 or use it on downstream classification dataset：
 ```
 python3 run_classifier.py --pretrained_model_path models/cluecorpussmall_gpt2_distil_seq1024_model.bin \
-                          --vocab_path models/google_zh_vocab.txt --config_path models/gpt2/distil_config.json \
-                          --train_path datasets/douban_book_review/train.tsv --dev_path datasets/douban_book_review/dev.tsv --test_path datasets/douban_book_review/test.tsv \
+                          --vocab_path models/google_zh_vocab.txt \
+                          --config_path models/gpt2/distil_config.json \
+                          --train_path datasets/douban_book_review/train.tsv \
+                          --dev_path datasets/douban_book_review/dev.tsv \
+                          --test_path datasets/douban_book_review/test.tsv \
                           --learning_rate 3e-5 --batch_size 64 --epochs_num 8 \
                           --embedding word_pos_seg --remove_embedding_layernorm \
                           --encoder transformer --mask causal --layernorm_positioning pre
