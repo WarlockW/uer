@@ -268,22 +268,27 @@ usage: run_dbqa.py [-h] [--pretrained_model_path PRETRAINED_MODEL_PATH]
 The document-based question answering (DBQA) can be converted to classification task. Column text_a contains question and column text_b contains sentence which may has answer.
 The example of using *run_dbqa.py*:
 ```
-python3 run_dbqa.py --pretrained_model_path models/google_zh_model.bin --vocab_path models/google_zh_vocab.txt \
+python3 run_dbqa.py --pretrained_model_path models/google_zh_model.bin \
+                    --vocab_path models/google_zh_vocab.txt \
                     --train_path datasets/nlpcc-dbqa/train.tsv \
                     --dev_path datasets/nlpcc-dbqa/dev.tsv \
                     --test datasets/nlpcc-dbqa/test.tsv \
-                    --epochs_num 3 --batch_size 64 --embedding word_pos_seg --encoder transformer --mask fully_visible
+                    --epochs_num 3 --batch_size 64 \
+                    --embedding word_pos_seg --encoder transformer --mask fully_visible
 ```
 The example of using *inference/run_classifier_infer.py* to do inference for DBQA:
 ```
-python3 inference/run_classifier_infer.py --load_model_path models/finetuned_model.bin --vocab_path models/google_zh_vocab.txt \
+python3 inference/run_classifier_infer.py --load_model_path models/finetuned_model.bin \
+                                          --vocab_path models/google_zh_vocab.txt \
                                           --test_path datasets/nlpcc-dbqa/test_nolabel.tsv \
                                           --prediction_path datasets/nlpcc-dbqa/prediction.tsv --labels_num 2 \
-                                          --output_logits --output_prob --embedding word_pos_seg --encoder transformer --mask fully_visible
+                                          --output_logits --output_prob \
+                                          --embedding word_pos_seg --encoder transformer --mask fully_visible
 ```
 The example of using ALBERT for DBQA:
 ```
-python3 run_dbqa.py --pretrained_model_path models/google_zh_albert_base_model.bin --vocab_path models/google_zh_vocab.txt \
+python3 run_dbqa.py --pretrained_model_path models/google_zh_albert_base_model.bin \
+                    --vocab_path models/google_zh_vocab.txt \
                     --config_path models/albert/base_config.json \
                     --train_path datasets/nlpcc-dbqa/train.tsv \
                     --dev_path datasets/nlpcc-dbqa/dev.tsv \
@@ -294,7 +299,8 @@ python3 run_dbqa.py --pretrained_model_path models/google_zh_albert_base_model.b
 ```
 The example of doing inference for ALBERT:
 ```
-python3 inference/run_classifier_infer.py --load_model_path models/finetuned_model.bin --vocab_path models/google_zh_vocab.txt \
+python3 inference/run_classifier_infer.py --load_model_path models/finetuned_model.bin \
+                                          --vocab_path models/google_zh_vocab.txt \
                                           --config_path models/albert/base_config.json \
                                           --test_path datasets/nlpcc-dbqa/test_nolabel.tsv \
                                           --prediction_path datasets/nlpcc-dbqa/prediction.tsv --labels_num 2 \
@@ -333,8 +339,11 @@ usage: run_ner.py [-h] [--pretrained_model_path PRETRAINED_MODEL_PATH]
 The example of using *run_ner.py*:
 ```
 python3 run_ner.py --pretrained_model_path models/google_zh_model.bin --vocab_path models/google_zh_vocab.txt \
-                   --train_path datasets/msra_ner/train.tsv --dev_path datasets/msra_ner/dev.tsv --test_path datasets/msra_ner/test.tsv \
-                   --label2id_path datasets/msra_ner/label2id.json --epochs_num 5 --batch_size 16 \
+                   --train_path datasets/msra_ner/train.tsv \
+                   --dev_path datasets/msra_ner/dev.tsv \
+                   --test_path datasets/msra_ner/test.tsv \
+                   --label2id_path datasets/msra_ner/label2id.json \
+                   --epochs_num 5 --batch_size 16 \
                    --embedding word_pos_seg --encoder transformer --mask fully_visible
 ```
 The example of doing inference:
@@ -347,14 +356,19 @@ python3 inference/run_ner_infer.py --load_model_path models/finetuned_model.bin 
 ```
 The example of using ALBERT for NER:
 ```
-python3 run_ner.py --pretrained_model_path models/google_zh_albert_base_model.bin --vocab_path models/google_zh_vocab.txt \
+python3 run_ner.py --pretrained_model_path models/google_zh_albert_base_model.bin \
+                   --vocab_path models/google_zh_vocab.txt \
                    --config_path models/albert/base_config.json \
-                   --train_path datasets/msra_ner/train.tsv --dev_path datasets/msra_ner/dev.tsv --test_path datasets/msra_ner/test.tsv \
-                   --label2id_path datasets/msra_ner/label2id.json --epochs_num 5 --batch_size 16 \
-                   --learning_rate 1e-4 --factorized_embedding_parameterization --parameter_sharing \
+                   --train_path datasets/msra_ner/train.tsv \
+                   --dev_path datasets/msra_ner/dev.tsv \
+                   --test_path datasets/msra_ner/test.tsv \
+                   --label2id_path datasets/msra_ner/label2id.json \
+                   --epochs_num 5 --batch_size 16 --learning_rate 1e-4 \
+                   --factorized_embedding_parameterization --parameter_sharing \
                    --embedding word_pos_seg --encoder transformer --mask fully_visible
 
-python3 inference/run_ner_infer.py --load_model_path models/finetuned_model.bin --vocab_path models/google_zh_vocab.txt \
+python3 inference/run_ner_infer.py --load_model_path models/finetuned_model.bin \
+                                   --vocab_path models/google_zh_vocab.txt \
                                    --config_path models/albert/base_config.json \
                                    --test_path datasets/msra_ner/test_nolabel.tsv \
                                    --prediction_path datasets/msra_ner/prediction.tsv \
@@ -365,14 +379,18 @@ python3 inference/run_ner_infer.py --load_model_path models/finetuned_model.bin 
 
 The example of using ELMo for NER:
 ```
-python3 run_ner.py --pretrained_model_path models/cluecorpussmall_elmo_model.bin-500000 --vocab_path models/google_zh_vocab.txt \
+python3 run_ner.py --pretrained_model_path models/cluecorpussmall_elmo_model.bin-500000 \
+                   --vocab_path models/google_zh_vocab.txt \
                    --config_path models/birnn_config.json \
-                   --train_path datasets/msra_ner/train.tsv --dev_path datasets/msra_ner/dev.tsv --test_path datasets/msra_ner/test.tsv \
+                   --train_path datasets/msra_ner/train.tsv \
+                   --dev_path datasets/msra_ner/dev.tsv \
+                   --test_path datasets/msra_ner/test.tsv \
                    --label2id_path datasets/msra_ner/label2id.json \
                    --epochs_num 5  --batch_size 16  --learning_rate 5e-4 \
                    --embedding word --remove_embedding_layernorm --encoder bilstm
 
-python3 inference/run_ner_infer.py --load_model_path models/finetuned_model.bin --vocab_path models/google_zh_vocab.txt \
+python3 inference/run_ner_infer.py --load_model_path models/finetuned_model.bin \
+                                   --vocab_path models/google_zh_vocab.txt \
                                    --config_path models/birnn_config.json \
                                    --test_path datasets/msra_ner/test_nolabel.tsv \
                                    --prediction_path datasets/msra_ner/prediction.tsv \
@@ -419,7 +437,8 @@ The *train.json* and *dev.json* are of squad-style. Train set and development se
 
 The example of doing inference:
 ```
-python3  inference/run_cmrc_infer.py --load_model_path models/finetuned_model.bin --vocab_path models/google_zh_vocab.txt \
+python3  inference/run_cmrc_infer.py --load_model_path models/finetuned_model.bin \
+                                     --vocab_path models/google_zh_vocab.txt \
                                      --test_path datasets/cmrc2018/test.json \
                                      --prediction_path datasets/cmrc2018/prediction.json --seq_length 512 \
                                      --embedding word_pos_seg --encoder transformer --mask fully_visible
@@ -436,7 +455,8 @@ python3 run_cmrc.py --pretrained_model_path models/google_zh_albert_xxlarge_mode
 ```
 The example of doing inference for ALBERT:
 ```
-python3 inference/run_cmrc_infer.py --load_model_path models/finetuned_model.bin --vocab_path models/google_zh_vocab.txt \
+python3 inference/run_cmrc_infer.py --load_model_path models/finetuned_model.bin \
+                                     --vocab_path models/google_zh_vocab.txt \
                                      --config_path models/albert/xxlarge_config.json \
                                      --test_path datasets/cmrc2018/test.json \
                                      --prediction_path datasets/cmrc2018/prediction.json --seq_length 512 \
@@ -486,14 +506,17 @@ The question in C3 dataset contains at most 4 candidate answers. *--max_choices_
 
 The example of doing inference:
 ```
-python3 inference/run_c3_infer.py --load_model_path models/finetuned_model.bin --vocab_path models/google_zh_vocab.txt \
+python3 inference/run_c3_infer.py --load_model_path models/finetuned_model.bin \
+                                  --vocab_path models/google_zh_vocab.txt \
                                   --test_path datasets/c3/test.json \
-                                  --prediction_path datasets/c3/prediction.json --max_choices_num 4 --seq_length 512 \
+                                  --prediction_path datasets/c3/prediction.json \
+                                  --max_choices_num 4 --seq_length 512 \
                                   --embedding word_pos_seg --encoder transformer --mask fully_visible
 ```
 The example of using ALBERT-xlarge for C3:
 ```
-python3 run_c3.py --pretrained_model_path models/google_zh_albert_xlarge_model.bin --vocab_path models/google_zh_vocab.txt \
+python3 run_c3.py --pretrained_model_path models/google_zh_albert_xlarge_model.bin \
+                  --vocab_path models/google_zh_vocab.txt \
                   --config_path models/albert/xlarge_config.json \
                   --train_path datasets/c3/train.json --dev_path datasets/c3/dev.json \
                   --epochs_num 8 --batch_size 8 --seq_length 512 --max_choices_num 4 \
@@ -503,10 +526,12 @@ python3 run_c3.py --pretrained_model_path models/google_zh_albert_xlarge_model.b
 
 The example of doing inference for ALBERT-large:
 ```
-python3  inference/run_c3_infer.py --load_model_path models/finetuned_model.bin --vocab_path models/google_zh_vocab.txt \
+python3  inference/run_c3_infer.py --load_model_path models/finetuned_model.bin \
+                                   --vocab_path models/google_zh_vocab.txt \
                                    --config_path models/albert/xlarge_config.json \
                                    --test_path datasets/c3/test.json \
-                                   --prediction_path datasets/c3/prediction.json --max_choices_num 4 --seq_length 512 \
+                                   --prediction_path datasets/c3/prediction.json \
+                                   --max_choices_num 4 --seq_length 512 \
                                    --factorized_embedding_parameterization --parameter_sharing \
                                    --embedding word_pos_seg --encoder transformer --mask fully_visible
 ```
