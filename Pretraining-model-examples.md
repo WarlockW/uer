@@ -145,7 +145,8 @@ The example of pre-processing and pre-training for GPT:
 python3 preprocess.py --corpus_path corpora/book_review.txt --vocab_path models/google_zh_vocab.txt \
                       --dataset_path dataset.pt --processes_num 8 --target lm
 
-python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt --output_model_path models/output_model.bin \
+python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt \
+                    --output_model_path models/output_model.bin \
                     --config_path models/gpt2/config.json --learning_rate 1e-4 \
                     --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7 \
                     --embedding word_pos --encoder transformer --mask causal --target lm
@@ -159,11 +160,13 @@ The example of pre-processing and pre-training for GPT-2:
 python3 preprocess.py --corpus_path corpora/book_review.txt --vocab_path models/google_zh_vocab.txt \
                       --dataset_path dataset.pt --processes_num 8 --target lm
 
-python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt --output_model_path models/output_model.bin \
+python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt \
+                    --output_model_path models/output_model.bin \
                     --config_path models/gpt2/config.json --learning_rate 1e-4 \
-                    --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7 --tie_weight \
+                    --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7 \
                     --embedding word_pos --remove_embedding_layernorm \
-                    --encoder transformer --mask causal --layernorm_positioning pre --target lm
+                    --encoder transformer --mask causal --layernorm_positioning pre \
+                    --target lm --tie_weights
 ```
 The corpus format of GPT-2 is the identical with GPT and RoBERTa. Notice that the encoder of GPT-2 is different from the encoder of GPT. The layer normalization is moved to the input of each sub-block (*--layernorm_positioning pre*) and an additional layer normalization is added after the final block. The layer normalization after embedding layer should be removed (*--remove_embedding_layernorm*).
 
@@ -173,9 +176,11 @@ The example of pre-processing and pre-training for ELMo:
 python3 preprocess.py --corpus_path corpora/book_review.txt --vocab_path models/google_zh_vocab.txt \
                       --dataset_path dataset.pt --processes_num 8 --target bilm
 
-python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt --output_model_path models/output_model.bin \
+python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt  \
+                    --output_model_path models/output_model.bin \
                     --config_path models/birnn_config.json --learning_rate 5e-4 \
-                    --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7 --embedding word --encoder bilstm --target bilm
+                    --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7 \
+                    --embedding word --remove_embedding_layernorm --encoder bilstm --target bilm
 ```
 The corpus format of ELMo is identical with GPT-2. We can pre-train ELMo through *--embedding word*, *--encoder bilstm*, and *--target bilm*. <br>
 *--embedding word* denotes using traditional word embedding. LSTM does not require position embedding. In addition, we specify *--remove_embedding_layernorm* and the layernorm after word embedding is removed.
@@ -184,9 +189,11 @@ The corpus format of ELMo is identical with GPT-2. We can pre-train ELMo through
 T5 proposes to use seq2seq model to unify NLU and NLG tasks. With extensive experiments, T5 recommend to use encoder-decoder architecture and BERT-style objective function (the model predicts the masked words). The example of using T5 for pre-training:
 ```
 python3 preprocess.py --corpus_path corpora/book_review.txt --vocab_path models/google_zh_vocab.txt \
-                      --dataset_path dataset.pt --processes_num 8 --seq_length 128 --dynamic_masking --target t5
+                      --dataset_path dataset.pt --processes_num 8 --seq_length 128 \
+                      --dynamic_masking --target t5
 
-python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt --config_path models/t5/small_config.json \
+python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt \
+                    --config_path models/t5/small_config.json \
                     --output_model_path models/output_model.bin \
                     --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7 \
                     --learning_rate 1e-3 --batch_size 64 \
@@ -201,9 +208,11 @@ The corpus format of T5 is identical with GPT-2. *--relative_position_embedding*
 T5-v1_1 includes several improvements compared to the original T5 model. The example of using T5-v1_1 for pre-training:
 ```
 python3 preprocess.py --corpus_path corpora/book_review.txt --vocab_path models/google_zh_vocab.txt \
-                      --dataset_path dataset.pt --processes_num 8 --seq_length 128 --dynamic_masking --target t5
+                      --dataset_path dataset.pt --processes_num 8 --seq_length 128 \
+                      --dynamic_masking --target t5
 
-python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt --config_path models/t5-v1_1/small_config.json \
+python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt \
+                    --config_path models/t5-v1_1/small_config.json \
                     --output_model_path models/output_model.bin \
                     --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7 \
                     --learning_rate 1e-3 --batch_size 64 \
@@ -231,42 +240,53 @@ python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_voca
 ### More combinations
 The example of using LSTM encoder and LM target for pre-training:
 ```
-python3 preprocess.py --corpus_path corpora/book_review.txt --vocab_path models/google_zh_vocab.txt --dataset_path dataset.pt --processes_num 8 --target lm
+python3 preprocess.py --corpus_path corpora/book_review.txt --vocab_path models/google_zh_vocab.txt \
+                      --dataset_path dataset.pt --processes_num 8 --target lm
 
-python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt --output_model_path models/output_model.bin \
+python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt \
+                    --output_model_path models/output_model.bin \
                     --config_path models/rnn_config.json --learning_rate 1e-3 \
-                    --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7 --total_steps 20000 --save_checkpoint_steps 5000 \
+                    --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7 \
+                    --total_steps 20000 --save_checkpoint_steps 5000 \
                     --embedding word --remove_embedding_layernorm --encoder lstm --target lm
 ```
 We use the *models/rnn_config.json* as configuration file.
 
 The example of using GRU encoder and LM target for pre-training:
 ```
-python3 preprocess.py --corpus_path corpora/book_review.txt --vocab_path models/google_zh_vocab.txt --dataset_path dataset.pt --processes_num 8 --target lm
+python3 preprocess.py --corpus_path corpora/book_review.txt --vocab_path models/google_zh_vocab.txt \
+                      --dataset_path dataset.pt --processes_num 8 --target lm
 
-python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt --output_model_path models/output_model.bin \
+python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt \
+                    --output_model_path models/output_model.bin \
                     --config_path models/rnn_config.json --learning_rate 1e-3 \
-                    --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7 --total_steps 20000 --save_checkpoint_steps 5000 \
+                    --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7 \
+                    --total_steps 20000 --save_checkpoint_steps 5000 \
                     --embedding word --remove_embedding_layernorm --encoder gru --target lm
 ```
 
 The example of using GatedCNN encoder and LM target for pre-training:
 ```
-python3 preprocess.py --corpus_path corpora/book_review.txt --vocab_path models/google_zh_vocab.txt --dataset_path dataset.pt --processes_num 8 --target lm
+python3 preprocess.py --corpus_path corpora/book_review.txt --vocab_path models/google_zh_vocab.txt \
+                      --dataset_path dataset.pt --processes_num 8 --target lm
 
-python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt --output_model_path models/output_model.bin \
+python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt \
+                    --output_model_path models/output_model.bin \
                     --config_path models/gatedcnn_9_config.json --learning_rate 1e-4 \
-                    --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7 --total_steps 20000 --save_checkpoint_steps 5000 \
+                    --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7 \
+                    --total_steps 20000 --save_checkpoint_steps 5000 \
                     --embedding word --remove_embedding_layernorm --encoder gatedcnn --target lm
 ```
 
 The example of using machine translation for pre-training (the objective is the same with CoVe but the Transformer encoder and decoder are used):
 ```
-python3 preprocess.py --corpus_path corpora/iwslt_15_zh_en.tsv \
-                      --vocab_path models/google_zh_vocab.txt --tgt_vocab_path models/google_uncased_en_vocab.txt \
-                      --dataset_path dataset.pt --seq_length 64 --tgt_seq_length 64 --processes_num 8 --target seq2seq
+python3 preprocess.py --corpus_path corpora/iwslt_15_zh_en.tsv --vocab_path models/google_zh_vocab.txt \
+                      --tgt_vocab_path models/google_uncased_en_vocab.txt \
+                      --dataset_path dataset.pt --seq_length 64 --tgt_seq_length 64 \
+                      --processes_num 8 --target seq2seq
 
-python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt --tgt_vocab_path models/google_uncased_en_vocab.txt \
+python3 pretrain.py --dataset_path dataset.pt \
+                    --vocab_path models/google_zh_vocab.txt --tgt_vocab_path models/google_uncased_en_vocab.txt \
                     --output_model_path output_model.bin --config_path models/encoder_decoder_config.json \
                     --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7 --learning_rate 1e-4 \
                     --report_steps 1000 --total_steps 50000 --save_checkpoint_steps 10000 \
@@ -278,12 +298,16 @@ python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_voca
 
 The example of using Transformer encoder and classification (CLS) target for pre-training:
 ```
-python3 preprocess.py --corpus_path corpora/book_review_cls.txt --vocab_path models/google_zh_vocab.txt --dataset_path dataset.pt --processes_num 8 --target cls
+python3 preprocess.py --corpus_path corpora/book_review_cls.txt --vocab_path models/google_zh_vocab.txt \
+                      --dataset_path dataset.pt --processes_num 8 --target cls
 
-python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt --output_model_path models/output_model.bin \
+python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt \
+                    --output_model_path models/output_model.bin \
                     --config_path models/bert/base_config.json \
-                    --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7 --total_steps 2000 --save_checkpoint_steps 1000 --learning_rate 2e-5 \
-                    --embedding word_pos_seg --encoder transformer --mask fully_visible --pooling first --target cls --labels_num 2
+                    --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7 \
+                    --total_steps 2000 --save_checkpoint_steps 1000 --learning_rate 2e-5 \
+                    --embedding word_pos_seg --encoder transformer --mask fully_visible \
+                    --pooling first --target cls --labels_num 2
 ```
 Notice that we need to explicitly specify the number of labels by *--labels_num*. The format of the corpus for classification target is as follows (text and text pair classification):
 ```
@@ -300,11 +324,14 @@ Notice that we need to explicitly specify the number of labels by *--labels_num*
 
 The example of using LSTM encoder and classification (CLS) target for pre-training:
 ```
-python3 preprocess.py --corpus_path corpora/book_review_cls.txt --vocab_path models/google_zh_vocab.txt --dataset_path dataset.pt --processes_num 8 --target cls
+python3 preprocess.py --corpus_path corpora/book_review_cls.txt --vocab_path models/google_zh_vocab.txt \
+                      --dataset_path dataset.pt --processes_num 8 --target cls
 
-python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt --output_model_path models/output_model.bin \
+python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt \
+                    --output_model_path models/output_model.bin \
                     --config_path models/rnn_config.json \
-                    --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7 --total_steps 2000 --save_checkpoint_steps 1000 --learning_rate 1e-3 \
-                    --embedding word --remove_embedding_layernorm --encoder lstm --pooling max --target cls --labels_num 2
+                    --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7 \
+                    --total_steps 2000 --save_checkpoint_steps 1000 --learning_rate 1e-3 \
+                    --embedding word --remove_embedding_layernorm --encoder lstm \
+                    --pooling max --target cls --labels_num 2
 ```
-<br>
