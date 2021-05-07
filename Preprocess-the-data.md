@@ -20,8 +20,8 @@ usage: preprocess.py [-h] --corpus_path CORPUS_PATH [--vocab_path VOCAB_PATH]
 Users have to preprocess the corpus before pre-training. <br> 
 The example of pre-processing on a single machine：
 ```
-python3 preprocess.py --corpus_path corpora/book_review_bert.txt --vocab_path models/google_zh_vocab.txt --dataset_path dataset.pt \
-                      --processes_num 8 --target bert
+python3 preprocess.py --corpus_path corpora/book_review_bert.txt --vocab_path models/google_zh_vocab.txt \
+                      --dataset_path dataset.pt --processes_num 8 --target bert
 ```
 If multiple machines are available, users can run *preprocess.py* on one machine and copy the *dataset.pt* to other machines. <br>
 The output of pre-processing stage is *dataset.pt* (*--dataset_path*), which is the input of *pretrain.py* .
