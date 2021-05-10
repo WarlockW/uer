@@ -264,7 +264,7 @@ MixedCorpus contains baidubaike, Wikizh, WebQA, RenMinRiBao, literature, and rev
 [4_128]:https://share.weiyun.com/0SlDbnSM
 [4_256]:https://share.weiyun.com/0eNSFKw9
 [4_512]:https://share.weiyun.com/SEJ0MStj
-[4_768]:https://share.weiyun.com/jk42uruV  
+[4_768]:https://share.weiyun.com/jk42uruV
 [6_128]:https://share.weiyun.com/tWeXueMJ
 [6_256]:https://share.weiyun.com/1Ku03xFM
 [6_512]:https://share.weiyun.com/WEvmJUOD
