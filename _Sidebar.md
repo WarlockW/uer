@@ -38,5 +38,5 @@
       - [阅读理解](https://github.com/dbiir/UER-py/wiki/CLUE阅读理解)
       - [命名实体识别](https://github.com/dbiir/UER-py/wiki/CLUE命名实体识别)
     + [SMP2020-EWECT](https://github.com/dbiir/UER-py/wiki/SMP2020微博情绪分类技术评测)
-    + [SMP2019-ECISA](https://github.com/dbiir/UER-py/wiki/竞赛解决方案)
+    + [SMP2019-ECISA](https://github.com/dbiir/UER-py/wiki/SMP2019中文隐式情感分析评测)
   - [引用](https://github.com/dbiir/UER-py/wiki/引用)
