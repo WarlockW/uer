@@ -4,6 +4,8 @@ UER-py provides abundant tool scripts for pre-training models. This section firs
 |      average_model.py    |  Take the average of pre-trained models  |
 |      build_vocab.py      |  Build vocabulary given corpus and tokenizer  |
 |      cloze_test.py       |  Randomly mask a word and predict it, top n words are returned  |
+|      convert_albert_from_huggingface_to_uer.py      |  Convert ALBERT of Huggingface format (PyTorch) to UER format  |
+|      convert_albert_from_uer_to_huggingface.py      |  Convert ALBERT of UER format to Huggingface format (PyTorch)  |
 |      convert_bert_extractive_qa_from_huggingface_to_uer.py      |  Convert extractive QA BERT of Huggingface format (PyTorch) to UER format  |
 |      convert_bert_extractive_qa_from_uer_to_huggingface.py      |  Convert extractive QA BERT of UER format to Huggingface format (PyTorch)  |
 |      convert_bert_from_google_to_uer.py                         |  Convert BERT of Google format (TF) to UER format  |
@@ -140,6 +142,11 @@ We provide the usage of UER-to-Huggingface conversion scripts in [Huggingface mo
 
 Converting model from Huggingface format (PyTorch) to UER format ：
 
+ALBERT: Taking the [albert-base-chinese-cluecorpussmall](https://huggingface.co/uer/albert-base-chinese-cluecorpussmall) model in Huggingface as an example：
+```
+python3 scripts/convert_albert_from_huggingface_to_uer.py --input_model_path pytorch_model.bin \
+                                                          --output_model_path uer_model.bin 
+```
 Roberta: Taking the [chinese_roberta_L-2_H-128](https://huggingface.co/uer/chinese_roberta_L-2_H-128) model in Huggingface as an example：
 ```
 python3 scripts/convert_bert_from_huggingface_to_uer.py --input_model_path pytorch_model.bin \
