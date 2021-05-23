@@ -17,7 +17,7 @@
       - [Reading comprehension](https://github.com/dbiir/UER-py/wiki/CLUE-MRC)
       - [Named entity recognition](https://github.com/dbiir/UER-py/wiki/CLUE-NER)
     + [SMP2020-EWECT](https://github.com/dbiir/UER-py/wiki/SMP2020-EWECT)
-    + [SMP2019-ECISA](https://github.com/dbiir/UER-py/wiki/Competition-solutions)
+    + [SMP2019-ECISA](https://github.com/dbiir/UER-py/wiki/SMP2019-ECISA)
   - [Citation](https://github.com/dbiir/UER-py/wiki/Citation)
 + [主页](https://github.com/dbiir/UER-py/wiki/主页)
   - [项目特色](https://github.com/dbiir/UER-py/wiki/项目特色)
