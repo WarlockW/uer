@@ -29,22 +29,22 @@ python3 pretrain.py --dataset_path dataset.pt --pretrained_model_path models/clu
 
 or use it on downstream classification dataset：
 ```
-python3 run_classifier.py --pretrained_model_path models/cluecorpussmall_roberta_tiny_seq512_model.bin \
-                          --vocab_path models/google_zh_vocab.txt --config_path models/bert/tiny_config.json \
-                          --train_path datasets/douban_book_review/train.tsv \
-                          --dev_path datasets/douban_book_review/dev.tsv \
-                          --test_path datasets/douban_book_review/test.tsv \
-                          --learning_rate 3e-4 --batch_size 64 --epochs_num 8 \
-                          --embedding word_pos_seg --encoder transformer --mask fully_visible
+python3 finetune/run_classifier.py --pretrained_model_path models/cluecorpussmall_roberta_tiny_seq512_model.bin \
+                                   --vocab_path models/google_zh_vocab.txt --config_path models/bert/tiny_config.json \
+                                   --train_path datasets/douban_book_review/train.tsv \
+                                   --dev_path datasets/douban_book_review/dev.tsv \
+                                   --test_path datasets/douban_book_review/test.tsv \
+                                   --learning_rate 3e-4 --batch_size 64 --epochs_num 8 \
+                                   --embedding word_pos_seg --encoder transformer --mask fully_visible
 ```
 
 In fine-tuning stage, pre-trained models of different sizes usually require different hyper-parameters. The example of using grid search to find best hyper-parameters:
 ```
-python3 run_classifier_grid.py --pretrained_model_path models/cluecorpussmall_roberta_tiny_seq512_model.bin \
-                               --vocab_path models/google_zh_vocab.txt --config_path models/bert/tiny_config.json \
-                               --train_path datasets/douban_book_review/train.tsv --dev_path datasets/douban_book_review/dev.tsv \
-                               --learning_rate_list 3e-5 1e-4 3e-4 --batch_size_list 32 64 --epochs_num_list 3 5 8 \
-                               --embedding word_pos_seg --encoder transformer --mask fully_visible
+python3 finetune/run_classifier_grid.py --pretrained_model_path models/cluecorpussmall_roberta_tiny_seq512_model.bin \
+                                        --vocab_path models/google_zh_vocab.txt --config_path models/bert/tiny_config.json \
+                                        --train_path datasets/douban_book_review/train.tsv --dev_path datasets/douban_book_review/dev.tsv \
+                                        --learning_rate_list 3e-5 1e-4 3e-4 --batch_size_list 32 64 --epochs_num_list 3 5 8 \
+                                        --embedding word_pos_seg --encoder transformer --mask fully_visible
 ```
 We can reproduce the experimental results reported [here](https://huggingface.co/uer/chinese_roberta_L-2_H-128) through above grid search script.
 
@@ -75,23 +75,23 @@ python3 pretrain.py --dataset_path dataset.pt --pretrained_model_path models/clu
 
 or use it on downstream classification dataset：
 ```
-python3 run_classifier.py --pretrained_model_path models/cluecorpussmall_word_roberta_tiny_seq512_model.bin \
-                          --spm_model_path models/cluecorpussmall_spm.model \
-                          --config_path models/bert/tiny_config.json \
-                          --train_path datasets/douban_book_review/train.tsv \
-                          --dev_path datasets/douban_book_review/dev.tsv \
-                          --test_path datasets/douban_book_review/test.tsv \
-                          --learning_rate 3e-4 --batch_size 64 --epochs_num 8 \
-                          --embedding word_pos_seg --encoder transformer --mask fully_visible
+python3 finetune/run_classifier.py --pretrained_model_path models/cluecorpussmall_word_roberta_tiny_seq512_model.bin \
+                                   --spm_model_path models/cluecorpussmall_spm.model \
+                                   --config_path models/bert/tiny_config.json \
+                                   --train_path datasets/douban_book_review/train.tsv \
+                                   --dev_path datasets/douban_book_review/dev.tsv \
+                                   --test_path datasets/douban_book_review/test.tsv \
+                                   --learning_rate 3e-4 --batch_size 64 --epochs_num 8 \
+                                   --embedding word_pos_seg --encoder transformer --mask fully_visible
 ```
 
 The example of using grid search to find best hyper-parameters for word-based model:
 ```
-python3 run_classifier_grid.py --pretrained_model_path models/cluecorpussmall_word_roberta_tiny_seq512_model.bin \
-                               --spm_model_path models/cluecorpussmall_spm.model --config_path models/bert/tiny_config.json \
-                               --train_path datasets/douban_book_review/train.tsv --dev_path datasets/douban_book_review/dev.tsv \
-                               --learning_rate_list 3e-5 1e-4 3e-4 --batch_size_list 32 64 --epochs_num_list 3 5 8 \
-                               --embedding word_pos_seg --encoder transformer --mask fully_visible
+python3 finetune/run_classifier_grid.py --pretrained_model_path models/cluecorpussmall_word_roberta_tiny_seq512_model.bin \
+                                        --spm_model_path models/cluecorpussmall_spm.model --config_path models/bert/tiny_config.json \
+                                        --train_path datasets/douban_book_review/train.tsv --dev_path datasets/douban_book_review/dev.tsv \
+                                        --learning_rate_list 3e-5 1e-4 3e-4 --batch_size_list 32 64 --epochs_num_list 3 5 8 \
+                                        --embedding word_pos_seg --encoder transformer --mask fully_visible
 ```
 We can reproduce the experimental results reported [here](https://huggingface.co/uer/roberta-tiny-word-chinese-cluecorpussmall) through above grid search script.
 
@@ -132,15 +132,15 @@ python3 pretrain.py --dataset_path dataset.pt \
 ```
 or use it on downstream classification dataset：
 ```
-python3 run_classifier.py --pretrained_model_path models/cluecorpussmall_gpt2_distil_seq1024_model.bin \
-                          --vocab_path models/google_zh_vocab.txt \
-                          --config_path models/gpt2/distil_config.json \
-                          --train_path datasets/douban_book_review/train.tsv \
-                          --dev_path datasets/douban_book_review/dev.tsv \
-                          --test_path datasets/douban_book_review/test.tsv \
-                          --learning_rate 3e-5 --batch_size 64 --epochs_num 8 \
-                          --embedding word_pos_seg --remove_embedding_layernorm \
-                          --encoder transformer --mask causal --layernorm_positioning pre
+python3 finetune/run_classifier.py --pretrained_model_path models/cluecorpussmall_gpt2_distil_seq1024_model.bin \
+                                   --vocab_path models/google_zh_vocab.txt \
+                                   --config_path models/gpt2/distil_config.json \
+                                   --train_path datasets/douban_book_review/train.tsv \
+                                   --dev_path datasets/douban_book_review/dev.tsv \
+                                   --test_path datasets/douban_book_review/test.tsv \
+                                   --learning_rate 3e-5 --batch_size 64 --epochs_num 8 \
+                                   --embedding word_pos_seg --remove_embedding_layernorm \
+                                   --encoder transformer --mask causal --layernorm_positioning pre
 ```
 
 GPT-2 model can be used for text generation. First of all, we create *story_beginning.txt* and enter the beginning of the text. Then we use *scripts/generate_lm.py* to do text generation:
