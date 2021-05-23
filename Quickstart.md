@@ -49,13 +49,13 @@ Notice that the model trained by *pretrain.py* is attacted with the suffix which
 
 Then we fine-tune the pre-trained model on downstream classification dataset. We use [*book_review_model.bin*](https://share.weiyun.com/xOFsYxZA), which is the output of *pretrain.py*:
 ```
-python3 run_classifier.py --pretrained_model_path models/book_review_model.bin \
-                          --vocab_path models/google_zh_vocab.txt \
-                          --train_path datasets/douban_book_review/train.tsv \
-                          --dev_path datasets/douban_book_review/dev.tsv \
-                          --test_path datasets/douban_book_review/test.tsv \
-                          --epochs_num 3 --batch_size 32 \
-                          --embedding word_pos_seg --encoder transformer --mask fully_visible
+python3 finetune/run_classifier.py --pretrained_model_path models/book_review_model.bin \
+                                   --vocab_path models/google_zh_vocab.txt \
+                                   --train_path datasets/douban_book_review/train.tsv \
+                                   --dev_path datasets/douban_book_review/dev.tsv \
+                                   --test_path datasets/douban_book_review/test.tsv \
+                                   --epochs_num 3 --batch_size 32 \
+                                   --embedding word_pos_seg --encoder transformer --mask fully_visible
 ``` 
 The result of *book_review_model.bin* on test set is 88.2. It is also noticeable that we don't need to specify the target in fine-tuning stage. Pre-training target is replaced with task-specific target.
 
@@ -74,13 +74,13 @@ We need to explicitly specify the number of labels by *--labels_num*. Douban boo
 
 We can also use *google_zh_model.bin* and fine-tune it on downstream classification dataset:
 ```
-python3 run_classifier.py --pretrained_model_path models/google_zh_model.bin \
-                          --vocab_path models/google_zh_vocab.txt \
-                          --train_path datasets/douban_book_review/train.tsv \
-                          --dev_path datasets/douban_book_review/dev.tsv \
-                          --test_path datasets/douban_book_review/test.tsv \
-                          --epochs_num 3 --batch_size 32 \
-                          --embedding word_pos_seg --encoder transformer --mask fully_visible
+python3 finetune/run_classifier.py --pretrained_model_path models/google_zh_model.bin \
+                                   --vocab_path models/google_zh_vocab.txt \
+                                   --train_path datasets/douban_book_review/train.tsv \
+                                   --dev_path datasets/douban_book_review/dev.tsv \
+                                   --test_path datasets/douban_book_review/test.tsv \
+                                   --epochs_num 3 --batch_size 32 \
+                                   --embedding word_pos_seg --encoder transformer --mask fully_visible
 ```
 It turns out that the result of Google's model is 87.5.
 
@@ -101,14 +101,14 @@ CUDA_VISIBLE_DEVICES=0,2 python3 pretrain.py --dataset_path dataset.pt --vocab_p
 
 mv models/book_review_model.bin-5000 models/book_review_model.bin
 
-CUDA_VISIBLE_DEVICES=0,2 python3 run_classifier.py --pretrained_model_path models/book_review_model.bin \
-                                                   --vocab_path models/google_zh_vocab.txt \
-                                                   --train_path datasets/douban_book_review/train.tsv \
-                                                   --dev_path datasets/douban_book_review/dev.tsv \
-                                                   --test_path datasets/douban_book_review/test.tsv \
-                                                   --output_model_path models/classifier_model.bin \
-                                                   --epochs_num 3 --batch_size 32 \
-                                                   --embedding word_pos_seg --encoder transformer --mask fully_visible
+CUDA_VISIBLE_DEVICES=0,2 python3 finetune/run_classifier.py --pretrained_model_path models/book_review_model.bin \
+                                                            --vocab_path models/google_zh_vocab.txt \
+                                                            --train_path datasets/douban_book_review/train.tsv \
+                                                            --dev_path datasets/douban_book_review/dev.tsv \
+                                                            --test_path datasets/douban_book_review/test.tsv \
+                                                            --output_model_path models/classifier_model.bin \
+                                                            --epochs_num 3 --batch_size 32 \
+                                                            --embedding word_pos_seg --encoder transformer --mask fully_visible
 
 CUDA_VISIBLE_DEVICES=0,2 python3 inference/run_classifier_infer.py --load_model_path models/classifier_model.bin \
                                                                    --vocab_path models/google_zh_vocab.txt \
@@ -136,13 +136,13 @@ python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_voca
 
 mv models/book_review_mlm_model.bin-5000 models/book_review_mlm_model.bin
 
-CUDA_VISIBLE_DEVICES=0,1 python3 run_classifier.py --pretrained_model_path models/book_review_mlm_model.bin \
-                                                   --vocab_path models/google_zh_vocab.txt \
-                                                   --train_path datasets/douban_book_review/train.tsv \
-                                                   --dev_path datasets/douban_book_review/dev.tsv \
-                                                   --test_path datasets/douban_book_review/test.tsv \
-                                                   --epochs_num 3 --batch_size 32 \
-                                                   --embedding word_pos_seg --encoder transformer --mask fully_visible
+CUDA_VISIBLE_DEVICES=0,1 python3 finetune/run_classifier.py --pretrained_model_path models/book_review_mlm_model.bin \
+                                                            --vocab_path models/google_zh_vocab.txt \
+                                                            --train_path datasets/douban_book_review/train.tsv \
+                                                            --dev_path datasets/douban_book_review/dev.tsv \
+                                                            --test_path datasets/douban_book_review/test.tsv \
+                                                            --epochs_num 3 --batch_size 32 \
+                                                            --embedding word_pos_seg --encoder transformer --mask fully_visible
 ```
 Different targets require different corpus formats. The format of the corpus for MLM target is as follows (one document per line):
 ```
@@ -170,13 +170,13 @@ python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_voca
 ```
 Then we remove the training step suffix of pre-trained model and fine-tune it on downstream classification dataset:
 ```
-python3 run_classifier.py --pretrained_model_path models/cluecorpussmall_lstm_lm_model.bin \
-                          --vocab_path models/google_zh_vocab.txt --config_path models/rnn_config.json \
-                          --train_path datasets/douban_book_review/train.tsv \
-                          --dev_path datasets/douban_book_review/dev.tsv \
-                          --test_path datasets/douban_book_review/test.tsv \
-                          --learning_rate 1e-3 --batch_size 64 --epochs_num 5 \
-                          --embedding word --remove_embedding_layernorm --encoder lstm --pooling mean
+python3 finetune/run_classifier.py --pretrained_model_path models/cluecorpussmall_lstm_lm_model.bin \
+                                   --vocab_path models/google_zh_vocab.txt --config_path models/rnn_config.json \
+                                   --train_path datasets/douban_book_review/train.tsv \
+                                   --dev_path datasets/douban_book_review/dev.tsv \
+                                   --test_path datasets/douban_book_review/test.tsv \
+                                   --learning_rate 1e-3 --batch_size 64 --epochs_num 5 \
+                                   --embedding word --remove_embedding_layernorm --encoder lstm --pooling mean
 
 python3 inference/run_classifier_infer.py --load_model_path models/finetuned_model.bin \
                                           --vocab_path models/google_zh_vocab.txt \
@@ -219,14 +219,14 @@ python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_voca
 
 mv models/chnsenticorp_elmo_model.bin-5000 models/chnsenticorp_elmo_model.bin
 
-python3 run_classifier.py --pretrained_model_path models/chnsenticorp_elmo_model.bin \
-                          --vocab_path models/google_zh_vocab.txt \
-                          --config_path models/birnn_config.json \
-                          --train_path datasets/chnsenticorp/train.tsv \
-                          --dev_path datasets/chnsenticorp/dev.tsv \
-                          --test_path datasets/chnsenticorp/test.tsv \
-                          --epochs_num 5  --batch_size 64 --seq_length 192 --learning_rate 5e-4 \
-                          --embedding word --remove_embedding_layernorm --encoder bilstm --pooling max
+python3 finetune/run_classifier.py --pretrained_model_path models/chnsenticorp_elmo_model.bin \
+                                   --vocab_path models/google_zh_vocab.txt \
+                                   --config_path models/birnn_config.json \
+                                   --train_path datasets/chnsenticorp/train.tsv \
+                                   --dev_path datasets/chnsenticorp/dev.tsv \
+                                   --test_path datasets/chnsenticorp/test.tsv \
+                                   --epochs_num 5  --batch_size 64 --seq_length 192 --learning_rate 5e-4 \
+                                   --embedding word --remove_embedding_layernorm --encoder bilstm --pooling max
 
 python3 inference/run_classifier_infer.py --load_model_path models/finetuned_model.bin \
                                           --vocab_path models/google_zh_vocab.txt \
@@ -240,14 +240,14 @@ python3 inference/run_classifier_infer.py --load_model_path models/finetuned_mod
 
 The example of fine-tuning GatedCNN on Chnsenticorp dataset:
 ```
-python3 run_classifier.py --pretrained_model_path models/cluecorpussmall_gatedcnn_lm_model.bin \
-                          --vocab_path models/google_zh_vocab.txt \
-                          --config_path models/gatedcnn_9_config.json \
-                          --train_path datasets/chnsenticorp/train.tsv \
-                          --dev_path datasets/chnsenticorp/dev.tsv \
-                          --test_path datasets/chnsenticorp/test.tsv \
-                          --epochs_num 5  --batch_size 64 --learning_rate 5e-5 \
-                          --embedding word --remove_embedding_layernorm --encoder gatedcnn --pooling mean
+python3 finetune/run_classifier.py --pretrained_model_path models/cluecorpussmall_gatedcnn_lm_model.bin \
+                                   --vocab_path models/google_zh_vocab.txt \
+                                   --config_path models/gatedcnn_9_config.json \
+                                   --train_path datasets/chnsenticorp/train.tsv \
+                                   --dev_path datasets/chnsenticorp/dev.tsv \
+                                   --test_path datasets/chnsenticorp/test.tsv \
+                                   --epochs_num 5  --batch_size 64 --learning_rate 5e-5 \
+                                   --embedding word --remove_embedding_layernorm --encoder gatedcnn --pooling mean
 
 python3 inference/run_classifier_infer.py --load_model_path models/finetuned_model.bin \
                                           --vocab_path models/google_zh_vocab.txt \
@@ -276,14 +276,14 @@ python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_voca
 ## Cross validation for classification
 UER-py supports cross validation for classification. The example of using cross validation on [SMP2020-EWECT](http://39.97.118.137/), a competition dataset:
 ```
-CUDA_VISIBLE_DEVICES=0 python3 run_classifier_cv.py --pretrained_model_path models/google_zh_model.bin \
-                                                    --vocab_path models/google_zh_vocab.txt \
-                                                    --config_path models/bert/base_config.json \
-                                                    --output_model_path models/classifier_model.bin \
-                                                    --train_features_path datasets/smp2020-ewect/virus/train_features.npy \
-                                                    --train_path datasets/smp2020-ewect/virus/train.tsv \
-                                                    --epochs_num 3 --batch_size 32 --folds_num 5 \
-                                                    --embedding word_pos_seg --encoder transformer --mask fully_visible
+CUDA_VISIBLE_DEVICES=0 python3 finetune/run_classifier_cv.py --pretrained_model_path models/google_zh_model.bin \
+                                                             --vocab_path models/google_zh_vocab.txt \
+                                                             --config_path models/bert/base_config.json \
+                                                             --output_model_path models/classifier_model.bin \
+                                                             --train_features_path datasets/smp2020-ewect/virus/train_features.npy \
+                                                             --train_path datasets/smp2020-ewect/virus/train.tsv \
+                                                             --epochs_num 3 --batch_size 32 --folds_num 5 \
+                                                             --embedding word_pos_seg --encoder transformer --mask fully_visible
 ```
 The results of *google_zh_model.bin* are 79.1/63.8 (Accuracy/Marco F1). <br>
 *--folds_num* specifies the number of rounds of cross-validation. <br>
@@ -296,24 +296,24 @@ python3 scripts/convert_bert_from_huggingface_to_uer.py --input_model_path model
                                                         --output_model_path models/chinese_roberta_wwm_large_ext_pytorch/pytorch_model_uer.bin \
                                                         --layers_num 24
 
-CUDA_VISIBLE_DEVICES=0,1 python3 run_classifier_cv.py --pretrained_model_path models/chinese_roberta_wwm_large_ext_pytorch/pytorch_uer_model.bin \
-                                                      --vocab_path models/google_zh_vocab.txt \
-                                                      --config_path models/bert/large_config.json \
-                                                      --train_path datasets/smp2020-ewect/virus/train.tsv \
-                                                      --train_features_path datasets/smp2020-ewect/virus/train_features.npy \
-                                                      --epochs_num 3 --batch_size 64 --folds_num 5 \
-                                                      --embedding word_pos_seg --encoder transformer --mask fully_visible
+CUDA_VISIBLE_DEVICES=0,1 python3 finetune/run_classifier_cv.py --pretrained_model_path models/chinese_roberta_wwm_large_ext_pytorch/pytorch_uer_model.bin \
+                                                               --vocab_path models/google_zh_vocab.txt \
+                                                               --config_path models/bert/large_config.json \
+                                                               --train_path datasets/smp2020-ewect/virus/train.tsv \
+                                                               --train_features_path datasets/smp2020-ewect/virus/train_features.npy \
+                                                               --epochs_num 3 --batch_size 64 --folds_num 5 \
+                                                               --embedding word_pos_seg --encoder transformer --mask fully_visible
 ```
 The results of *RoBERTa-wwm-ext-large* are 80.3/66.8 (Accuracy/Marco F1). <br>
 The example of using our [review-corpus RoBERTa-large](https://share.weiyun.com/hn7kp9bs) pre-trained model:
 ```
-CUDA_VISIBLE_DEVICES=0,1 python3 run_classifier_cv.py --pretrained_model_path models/review_bert_large_mlm_model.bin \
-                                                      --vocab_path models/google_zh_vocab.txt \
-                                                      --config_path models/bert/large_config.json \
-                                                      --train_path datasets/smp2020-ewect/virus/train.tsv \
-                                                      --train_features_path datasets/smp2020-ewect/virus/train_features.npy \
-                                                      --folds_num 5 --epochs_num 3 --batch_size 64 --seed 17 \
-                                                      --embedding word_pos_seg --encoder transformer --mask fully_visible
+CUDA_VISIBLE_DEVICES=0,1 python3 finetune/run_classifier_cv.py --pretrained_model_path models/review_bert_large_mlm_model.bin \
+                                                               --vocab_path models/google_zh_vocab.txt \
+                                                               --config_path models/bert/large_config.json \
+                                                               --train_path datasets/smp2020-ewect/virus/train.tsv \
+                                                               --train_features_path datasets/smp2020-ewect/virus/train_features.npy \
+                                                               --folds_num 5 --epochs_num 3 --batch_size 64 --seed 17 \
+                                                               --embedding word_pos_seg --encoder transformer --mask fully_visible
 ```
 The results are 81.3/68.4 (Accuracy/Marco F1), which are very competitive compared with other open-source pre-trained models. The corpus used by the above pre-trained model is highly similar with SMP2020-EWECT, a Weibo review dataset. <br>
 Sometimes large model does not converge. We need to try different random seeds by specifying *--seed*. 
@@ -323,13 +323,13 @@ Sometimes large model does not converge. We need to try different random seeds b
 ## Downstream task fine-tuning with BERT
 Besides classification, UER-py also supports other downstream tasks. For example, *run_classifier.py* can be also used for text pair classification. We can download the text pair classification dataset LCQMC in Datasets section and fine-tune the pre-trained model on it: 
 ```
-python3 run_classifier.py --pretrained_model_path models/google_zh_model.bin --vocab_path models/google_zh_vocab.txt \
-                          --train_path datasets/lcqmc/train.tsv \
-                          --dev_path datasets/lcqmc/dev.tsv \
-                          --test_path datasets/lcqmc/test.tsv \
-                          --output_model_path models/classifier_model.bin \
-                          --batch_size 32 --epochs_num 3 --seq_length 128 \
-                          --embedding word_pos_seg --encoder transformer --mask fully_visible
+python3 finetune/run_classifier.py --pretrained_model_path models/google_zh_model.bin --vocab_path models/google_zh_vocab.txt \
+                                   --train_path datasets/lcqmc/train.tsv \
+                                   --dev_path datasets/lcqmc/dev.tsv \
+                                   --test_path datasets/lcqmc/test.tsv \
+                                   --output_model_path models/classifier_model.bin \
+                                   --batch_size 32 --epochs_num 3 --seq_length 128 \
+                                   --embedding word_pos_seg --encoder transformer --mask fully_visible
 ```
 For text pair classification, the dataset should contain text_a, text_b, and label columns.
 
@@ -347,14 +347,14 @@ The file to be predicted (*--test_path*) should contain text_a and text_b column
 
 We could use *run_ner.py* for named entity recognition:
 ```
-python3 run_ner.py --pretrained_model_path models/google_zh_model.bin --vocab_path models/google_zh_vocab.txt \
-                   --train_path datasets/msra_ner/train.tsv \
-                   --dev_path datasets/msra_ner/dev.tsv \
-                   --test_path datasets/msra_ner/test.tsv \
-                   --output_model_path models/ner_model.bin \
-                   --label2id_path datasets/msra_ner/label2id.json \
-                   --epochs_num 5 --batch_size 16 \
-                   --embedding word_pos_seg --encoder transformer --mask fully_visible
+python3 finetune/run_ner.py --pretrained_model_path models/google_zh_model.bin --vocab_path models/google_zh_vocab.txt \
+                            --train_path datasets/msra_ner/train.tsv \
+                            --dev_path datasets/msra_ner/dev.tsv \
+                            --test_path datasets/msra_ner/test.tsv \
+                            --output_model_path models/ner_model.bin \
+                            --label2id_path datasets/msra_ner/label2id.json \
+                            --epochs_num 5 --batch_size 16 \
+                            --embedding word_pos_seg --encoder transformer --mask fully_visible
 ```
 *--label2id_path* specifies the path of label2id file for named entity recognition.
 Then we do inference with the fine-tuned ner model:
@@ -369,11 +369,11 @@ python3 inference/run_ner_infer.py --load_model_path models/ner_model.bin --voca
 
 We could use *run_cmrc.py* for machine reading comprehension:
 ```
-python3 run_cmrc.py --pretrained_model_path models/google_zh_model.bin --vocab_path models/google_zh_vocab.txt \
-                    --train_path datasets/cmrc2018/train.json --dev_path datasets/cmrc2018/dev.json \
-                    --output_model_path models/cmrc_model.bin \
-                    --epochs_num 2 --batch_size 8 --seq_length 512 \
-                    --embedding word_pos_seg --encoder transformer --mask fully_visible
+python3 finetune/run_cmrc.py --pretrained_model_path models/google_zh_model.bin --vocab_path models/google_zh_vocab.txt \
+                             --train_path datasets/cmrc2018/train.json --dev_path datasets/cmrc2018/dev.json \
+                             --output_model_path models/cmrc_model.bin \
+                             --epochs_num 2 --batch_size 8 --seq_length 512 \
+                             --embedding word_pos_seg --encoder transformer --mask fully_visible
 ```
 We don't specify the *--test_path* because CMRC2018 dataset doesn't provide labels for testset. 
 Then we do inference with the fine-tuned cmrc model:
@@ -389,15 +389,15 @@ python3 inference/run_cmrc_infer.py --load_model_path models/cmrc_model.bin --vo
 ## Downstream task fine-tuning and text generation with language model
 The example of fine-tuning GPT-2 on classification dataset:
 ```
-python3 run_classifier.py --pretrained_model_path models/cluecorpussmall_gpt2_seq1024_model.bin \
-                          --vocab_path models/google_zh_vocab.txt \
-                          --config_path models/gpt2/config.json \
-                          --train_path datasets/douban_book_review/train.tsv \
-                          --dev_path datasets/douban_book_review/dev.tsv \
-                          --test_path datasets/douban_book_review/test.tsv \
-                          --epochs_num 3 --batch_size 32 \
-                          --embedding word_pos --remove_embedding_layernorm \
-                          --encoder transformer --mask causal --layernorm_positioning pre --pooling mean
+python3 finetune/run_classifier.py --pretrained_model_path models/cluecorpussmall_gpt2_seq1024_model.bin \
+                                   --vocab_path models/google_zh_vocab.txt \
+                                   --config_path models/gpt2/config.json \
+                                   --train_path datasets/douban_book_review/train.tsv \
+                                   --dev_path datasets/douban_book_review/dev.tsv \
+                                   --test_path datasets/douban_book_review/test.tsv \
+                                   --epochs_num 3 --batch_size 32 \
+                                   --embedding word_pos --remove_embedding_layernorm \
+                                   --encoder transformer --mask causal --layernorm_positioning pre --pooling mean
 ```
 The example of using GPT-2 to generate text:
 ```
@@ -461,13 +461,13 @@ In fine-tuning and inference stages, we also need to explicitly specify *--vocab
 ```
 mv models/book_review_word_model.bin-5000 models/book_review_word_model.bin
 
-python3 run_classifier.py --pretrained_model_path models/book_review_word_model.bin \
-                          --vocab_path models/book_review_word_vocab.txt --tokenizer space \
-                          --train_path datasets/douban_book_review_seg/train.tsv \
-                          --dev_path datasets/douban_book_review_seg/dev.tsv \
-                          --test_path datasets/douban_book_review_seg/test.tsv \
-                          --epochs_num 3 --batch_size 32 \
-                          --embedding word_pos_seg --encoder transformer --mask fully_visible
+python3 finetune/run_classifier.py --pretrained_model_path models/book_review_word_model.bin \
+                                   --vocab_path models/book_review_word_vocab.txt --tokenizer space \
+                                   --train_path datasets/douban_book_review_seg/train.tsv \
+                                   --dev_path datasets/douban_book_review_seg/dev.tsv \
+                                   --test_path datasets/douban_book_review_seg/test.tsv \
+                                   --epochs_num 3 --batch_size 32 \
+                                   --embedding word_pos_seg --encoder transformer --mask fully_visible
 
 python3 inference/run_classifier_infer.py --load_model_path models/finetuned_model.bin \
                                           --vocab_path models/book_review_word_vocab.txt --tokenizer space \
@@ -494,13 +494,13 @@ python3 pretrain.py --dataset_path book_review_word_sp_dataset.pt \
 
 mv models/book_review_word_sp_model.bin-5000 models/book_review_word_sp_model.bin
 
-python3 run_classifier.py --pretrained_model_path models/book_review_word_sp_model.bin \
-                          --spm_model_path models/cluecorpussmall_spm.model \
-                          --train_path datasets/douban_book_review/train.tsv \
-                          --dev_path datasets/douban_book_review/dev.tsv \
-                          --test_path datasets/douban_book_review/test.tsv \
-                          --epochs_num 3 --batch_size 32 \
-                          --embedding word_pos_seg --encoder transformer --mask fully_visible
+python3 finetune/run_classifier.py --pretrained_model_path models/book_review_word_sp_model.bin \
+                                   --spm_model_path models/cluecorpussmall_spm.model \
+                                   --train_path datasets/douban_book_review/train.tsv \
+                                   --dev_path datasets/douban_book_review/dev.tsv \
+                                   --test_path datasets/douban_book_review/test.tsv \
+                                   --epochs_num 3 --batch_size 32 \
+                                   --embedding word_pos_seg --encoder transformer --mask fully_visible
 
 python3 inference/run_classifier_infer.py --load_model_path models/finetuned_model.bin \
                                           --spm_model_path models/cluecorpussmall_spm.model \
