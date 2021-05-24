@@ -122,4 +122,4 @@ python3 scripts/run_lgb.py --train_path datasets/smp2019-ecisa/train.tsv --test_
                            --models_num 6 --labels_num 3
 ```
 
-
+One could find more details on [competition's homepage](https://www.biendata.xyz/competition/smpecisa2019/).
