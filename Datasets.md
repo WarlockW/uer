@@ -3,41 +3,49 @@
 [CLUE](https://www.cluebenchmarks.com/) is a Chinese Language Understanding Evaluation benchmark which contains classification, named entity recognition, and machine reading comprehension tasks. The datasets in CLUE are in JSON format. For classification and named entity recognition datasets, we convert the JSON format to TSV format so that UER can load them directly. For machine reading comprehension, the original format is retained and the dataset pre-processing is included in the project.
 
 __Classification__:
-<table>
-<tr align="center"><td> Dataset <td> Link
-<tr align="center"><td> TNEWS <td> https://share.weiyun.com/maExfIeO
-<tr align="center"><td> CSL <td> https://share.weiyun.com/LftIGlIT
-<tr align="center"><td> CMNLI <td> https://share.weiyun.com/hn3kTeKm
-<tr align="center"><td> OCNLI <td> https://share.weiyun.com/3DlKxB3q
-<tr align="center"><td> AFQMC <td> https://share.weiyun.com/CdlEKMON
-<tr align="center"><td> IFLYTEK <td> https://share.weiyun.com/ldiLjnZJ
-<tr align="center"><td> CLUEWSC2020 <td> https://share.weiyun.com/RLL1ShBi
-</table>
+
+| Dataset | Link |
+| :----: | :----: |
+| TNEWS | https://share.weiyun.com/maExfIeO |
+| CSL | https://share.weiyun.com/LftIGlIT |
+| CMNLI | https://share.weiyun.com/hn3kTeKm |
+| OCNLI | https://share.weiyun.com/3DlKxB3q |
+| AFQMC | https://share.weiyun.com/CdlEKMON |
+| IFLYTEK | https://share.weiyun.com/ldiLjnZJ |
+| CLUEWSC2020 | https://share.weiyun.com/RLL1ShBi |
 
 __Machine reading comprehension__:
-<table>
-<tr align="center"><td> Dataset <td> Link
-<tr align="center"><td> CMRC2018 <td> https://share.weiyun.com/p3Y9INyC
-<tr align="center"><td> C3 <td> in the project
-<tr align="center"><td> ChID <td> https://share.weiyun.com/Mix4q2ns
-</table>
+
+| Dataset | Link |
+| :----: | :----: |
+| CMRC2018 | https://share.weiyun.com/p3Y9INyC |
+| C3 | in the project |
+| ChID | https://share.weiyun.com/Mix4q2ns |
 
 __Named entity recognition__:
-<table>
-<tr align="center"><td> Dataset <td> Link
-<tr align="center"><td> CLUENER2020 <td> https://share.weiyun.com/smSMtLkn
-</table>
+
+| Dataset | Link |
+| :----: | :----: |
+| CLUENER2020 | https://share.weiyun.com/smSMtLkn |
 
 <br/>
 
 ## Baidu ERNIE
 ERNIE provides 5 Chinese datasets in its first version and use them to test ERNIE's performance.
 
-<table>
-<tr align="center"><td> Dataset <td> Link 
-<tr align="center"><td> ChnSentiCorp <td> in the project
-<tr align="center"><td> LCQMC <td> https://share.weiyun.com/5Fmf2SZ
-<tr align="center"><td> XNLI <td> https://share.weiyun.com/mcd8EApl
-<tr align="center"><td> MSRA-NER <td> in the project
-<tr align="center"><td> NLPCC-DBQA <td> https://share.weiyun.com/5HJMbih
-</table>
+| Dataset | Link |
+| :----: | :----: |
+| ChnSentiCorp | in the project |
+| LCQMC | https://share.weiyun.com/5Fmf2SZ |
+| XNLI | https://share.weiyun.com/mcd8EApl |
+| MSRA-NER | in the project |
+| NLPCC-DBQA | https://share.weiyun.com/5HJMbih |
+
+<br/>
+
+## Competition dataset
+
+| Dataset | Link |
+| :----: | :----: |
+| SMP2020-EWECT | in the project |
+| SMP2019-ECISA | https://share.weiyun.com/MgHL8QSI |
