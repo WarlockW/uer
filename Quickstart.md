@@ -57,7 +57,7 @@ python3 finetune/run_classifier.py --pretrained_model_path models/book_review_mo
                                    --epochs_num 3 --batch_size 32 \
                                    --embedding word_pos_seg --encoder transformer --mask fully_visible
 ``` 
-The result of *book_review_model.bin* on test set is 88.2. It is also noticeable that we don't need to specify the target in fine-tuning stage. Pre-training target is replaced with task-specific target.
+It is noticeable that we don't need to specify the target in fine-tuning stage. Pre-training target is replaced with task-specific target.
 
 The default path of the fine-tuned classifier model is *models/finetuned_model.bin* . Then we do inference with the fine-tuned model. 
 ```
@@ -82,7 +82,6 @@ python3 finetune/run_classifier.py --pretrained_model_path models/google_zh_mode
                                    --epochs_num 3 --batch_size 32 \
                                    --embedding word_pos_seg --encoder transformer --mask fully_visible
 ```
-It turns out that the result of Google's model is 87.5.
 
 <br>
 
