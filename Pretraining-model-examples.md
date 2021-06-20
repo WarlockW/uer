@@ -223,6 +223,46 @@ python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_voca
 ```
 The corpus format of T5-v1_1 is identical with T5. *--feed_forward* denotes the type of feed-forward layer. *--tie_weights* is removed and there is no parameter sharing between embedding and classifier layer. T5-v1_1 and T5 have different configuration files.
 
+### PEGASUS
+PEGASUS proposes to use GSG (gap sentence generation) pre-training target. GSG target aims to predict the sentences extracted from the document, which is beneficial to text summarization task. The example of using PEGASUS for pre-training:：
+```
+python3  preprocess.py --corpus_path corpora/CLUECorpusSmall_5000_lines_bert.txt --vocab_path models/google_zh_vocab.txt \
+                       --dataset_path dataset.pt --processes_num 8 --seq_length 512 --tgt_seq_length 256 \
+                       --dup_factor 1 --target gsg --sentence_selection_strategy rouge
+
+python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt \
+                    --config_path models/pegasus/base_config.json \
+                    --output_model_path models/output_model.bin \
+                    --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7 \
+                    --learning_rate 1e-4 --batch_size 8 \
+                    --embedding word_sinusoidalpos --tgt_embedding word_sinusoidalpos --remove_embedding_layernorm \
+                    --encoder transformer --mask fully_visible --layernorm_positioning pre --decoder transformer \
+                    --target gsg --has_lmtarget_bias --tie_weights
+```
+The corpus format of PEGASUS is identical with BERT. In pre-processing stage, *--sentence_selection_strategy* denotes the strategy for sentence selection in PEGASUS. When random sentence selection is used (*--sentence_selection_strategy random*), one can use *--dup_factor* to specify the number of times to duplicate the input data (with different masks on sentence).
+
+### XLM-RoBERTa
+We download multi-lingual pre-trained models [XLM-RoBERTa-base](https://huggingface.co/xlm-roberta-base), [XLM-RoBERTa-large](https://huggingface.co/xlm-roberta-large) and do further pre-training upon them. Take XLM-RoBERTa-base as an example, we firstly convert the pre-trained model into UER format:
+```
+python3 scripts/convert_xlmroberta_from_huggingface_to_uer.py --input_model_path models/xlmroberta_base_model_huggingface.bin \
+                                                              --output_model_path models/xlmroberta_base_model_uer.bin \
+                                                              --layers_num 12
+```
+Since the special tokens used in original pre-trained XLM-RoBERTa model is different from the ones used in BERT, we need to change the path of  special tokens mapping file in *uer/utils/constants.py* from *models/special_tokens_map.json* to *models/xlmroberta_special_tokens_map.json*. Then we do further pre-train upon the XLM-RoBERTa-base model:
+```
+python3 preprocess.py --corpus_path corpora/CLUECorpusSmall_5000_lines.txt --spm_model_path models/xlmroberta_spm.model \
+                      --dataset_path xlmroberta_zh_dataset.pt --seq_length 128 --processes_num 8 \
+                      --dynamic_masking --tokenizer xlmroberta --target mlm
+
+python3 pretrain.py --dataset_path xlmroberta_zh_dataset.pt --spm_model_path models/xlmroberta_spm.model \
+                    --pretrained_model_path models/xlmroberta_base_model_uer.bin
+                    --output_model_path models/output_model.bin --config_path models/xlm-roberta/large_config.json \
+                    --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7 --batch_size 8 --tokenizer xlmroberta \
+                    --total_steps 100000 --save_checkpoint_steps 10000 --report_steps 100 \
+                    --embedding word_pos_seg --encoder transformer --mask fully_visible --target mlm
+```
+Compared with commonly used BERT and RoBERTa models, original XLM-RoBERTa uses different tokenization strategy (*--tokenizer xlmroberta --spm_model_path models/xlmroberta_spm.model*) and special tokens mapping file.
+
 ### Prefix LM
 The example of using prefix LM for pre-training (which is used in UniLM):
 ```
