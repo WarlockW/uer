@@ -4,6 +4,8 @@ UER-py provides abundant tool scripts for pre-training models. This section firs
 |      average_model.py    |  Take the average of pre-trained models  |
 |      build_vocab.py      |  Build vocabulary given corpus and tokenizer  |
 |      cloze_test.py       |  Randomly mask a word and predict it, top n words are returned  |
+|      convert_bart_from_huggingface_to_uer.py      |  Convert BART of Huggingface format (PyTorch) to UER format  |
+|      convert_bart_from_uer_to_huggingface.py      |  Convert BART of UER format to Huggingface format (PyTorch)  |
 |      convert_albert_from_huggingface_to_uer.py      |  Convert ALBERT of Huggingface format (PyTorch) to UER format  |
 |      convert_albert_from_uer_to_huggingface.py      |  Convert ALBERT of UER format to Huggingface format (PyTorch)  |
 |      convert_bert_extractive_qa_from_huggingface_to_uer.py      |  Convert extractive QA BERT of Huggingface format (PyTorch) to UER format  |
@@ -18,8 +20,12 @@ UER-py provides abundant tool scripts for pre-training models. This section firs
 |      convert_bert_token_classification_from_uer_to_huggingface.py|  Convert sequence labeling BERT of UER format to Huggingface format (PyTorch)  |
 |      convert_gpt2_from_huggingface_to_uer.py                    |  Convert GPT-2 of Huggingface format (PyTorch) to UER format  |
 |      convert_gpt2_from_uer_to_huggingface.py                    |  Convert GPT-2 of UER format to Huggingface format (PyTorch)  |
+|      convert_pegasus_from_huggingface_to_uer.py                    |  Convert Pegasus of Huggingface format (PyTorch) to UER format  |
+|      convert_pegasus_from_uer_to_huggingface.py                    |  Convert Pegasus of UER format to Huggingface format (PyTorch)  |
 |      convert_t5_from_huggingface_to_uer.py                      |  Convert T5 of Huggingface format (PyTorch) to UER format  |
 |      convert_t5_from_uer_to_huggingface.py                      |  Convert T5 of UER format to Huggingface format (PyTorch)  |
+|      convert_xlmroberta_from_huggingface_to_uer.py                    |  Convert XLM-RoBERTa of Huggingface format (PyTorch) to UER format  |
+|      convert_xlmroberta_from_uer_to_huggingface.py                    |  Convert XLM-RoBERTa of UER format to Huggingface format (PyTorch)  |
 |      diff_vocab.py           |  Compare two vocabularies  |
 |      dynamic_vocab_adapter.py|  Adapt the pre-trained model according to the vocabulary  |
 |      extract_embeddings.py   |  Extract the embedding of the pre-trained model  |
@@ -142,6 +148,12 @@ We provide the usage of UER-to-Huggingface conversion scripts in [Huggingface mo
 
 Converting model from Huggingface format (PyTorch) to UER format ：
 
+BART: Taking the [bart-base-chinese-cluecorpussmall](https://huggingface.co/uer/bart-base-chinese-cluecorpussmall) model in Huggingface as an example：
+```
+python3 scripts/convert_bart_from_huggingface_to_uer.py --input_model_path pytorch_model.bin \
+                                                        --output_model_path uer_model.bin \
+                                                        --layers_num 6
+```
 ALBERT: Taking the [albert-base-chinese-cluecorpussmall](https://huggingface.co/uer/albert-base-chinese-cluecorpussmall) model in Huggingface as an example：
 ```
 python3 scripts/convert_albert_from_huggingface_to_uer.py --input_model_path pytorch_model.bin \
@@ -190,4 +202,16 @@ python3 scripts/convert_t5_from_huggingface_to_uer.py --input_model_path pytorch
                                                       --output_model_path uer_model.bin \
                                                       --layers_num 8 \
                                                       --type t5-v1_1
+```
+Pegasus: Taking the [pegasus-base-chinese-cluecorpussmall](https://huggingface.co/uer/pegasus-base-chinese-cluecorpussmall) model in Huggingface as an example：
+```
+python3 scripts/convert_pegasus_from_huggingface_to_uer.py --input_model_path pytorch_model.bin \
+                                                           --output_model_path uer_model.bin \
+                                                           --layers_num 12
+```
+XLM-RoBERTa: Taking the [xlm-roberta-base](https://huggingface.co/xlm-roberta-base) model in Huggingface as an example：
+```
+python3 scripts/convert_xlmroberta_from_huggingface_to_uer.py --input_model_path pytorch_model.bin \
+                                                              --output_model_path uer_model.bin \
+                                                              --layers_num 12
 ```
