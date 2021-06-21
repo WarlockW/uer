@@ -99,8 +99,8 @@ python3 scripts/topn_words_dep.py --load_model_path models/bert_wiki_word_model.
                                   --cand_vocab_path models/wiki_word_vocab.txt --test_path target_words_with_sentences.txt --config_path models/bert/base_config.json \
                                   --batch_size 256 --seq_length 32 --tokenizer space
 ```
-We substitute the target word with other words in the vocabulary and feed the sentences into the pre-trained model. Hidden state is used as the context-dependent embedding of a word. <br>
-*--cand_vocab_path* specifies the path of candidate word file. For faster speed one can use a smaller candidate vocabulary. <br> 
+We substitute the target word with other words in the vocabulary and feed the sentences into the pre-trained model. Hidden state is used as the context-dependent embedding of a word.
+*--cand_vocab_path* specifies the path of candidate word file. For faster speed one can use a smaller candidate vocabulary.
 Users should do word segmentation manually and use space tokenizer if word-based model is used. The format of *target_words_with_sentences.txt* is as follows:
 ```
 word1 sent1
