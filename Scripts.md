@@ -38,7 +38,7 @@ UER-py provides abundant tool scripts for pre-training models. This section firs
 |      topn_words_indep.py     |  Find nearest neighbors with context-independent word embedding  |
 
 
-#### Cloze test
+### Cloze test
 *cloze_test.py* uses MLM target to predict masked word. Top n words are returned. Cloze test can be used for operations such as data augmentation. The example of using *cloze_test.py*:
 ```
 python3 scripts/cloze_test.py --load_model_path models/google_zh_model.bin --vocab_path models/google_zh_vocab.txt \
@@ -48,7 +48,7 @@ python3 scripts/cloze_test.py --load_model_path models/google_zh_model.bin --voc
 ```
 Notice that *cloze_test.py* only supports bert，mlm，and albert targets.
 
-#### Feature extractor
+### Feature extractor
 The text is encoded into a fixed-length embedding by *extract_features.py* (through embedding, encoder, and pooling layers). The example of using *extract_features.py*:
 ```
 python3 scripts/extract_features.py --load_model_path models/google_zh_model.bin --vocab_path models/google_zh_vocab.txt \
@@ -65,7 +65,7 @@ python3 scripts/extract_features.py --load_model_path models/google_zh_model.bin
 ```
 *--whitening_size 64* indicates that the whitening operation is used and the dimension of the text embedding is *64*.
 
-#### Embedding extractor
+### Embedding extractor
 *extract_embeddings.py* extracts embedding layer from the pre-trained model. The extracted context-independent embedding can be used to initialize other models' (e.g. CNN) embedding layer. The example of using *extract_embeddings.py*:
 ```
 python3 scripts/extract_embeddings.py --load_model_path models/google_zh_model.bin --vocab_path models/google_zh_vocab.txt \
@@ -73,7 +73,7 @@ python3 scripts/extract_embeddings.py --load_model_path models/google_zh_model.b
 ```
 *--word_embedding_path* specifies the path of the output word embedding file. The format of word embedding file follows [here](https://github.com/Embedding/Chinese-Word-Vectors), which can be loaded directly by mainstream projects.
 
-#### Finding nearest neighbours
+### Finding nearest neighbours
 The pre-trained model contains word embeddings. Traditional word embeddings such as word2vec and GloVe assign each word a fixed vector (context-independent word embedding). However, polysemy is a pervasive phenomenon in human language, and the meanings of a polysemous word depend on the context. To this end, we use the hidden state in pre-trained model to represent a word. It is noticeable that most Chinese pre-trained models are based on character. To obtain real word embedding (not character embedding), users can download [word-based BERT model](https://share.weiyun.com/5s4HVMi) and its [vocabulary](https://share.weiyun.com/5NWYbYn). The example of using *scripts/topn_words_indep.py* to find nearest neighbours for context-independent word embedding (character-based and word-based models):
 ```
 python3 scripts/topn_words_indep.py --load_model_path models/google_zh_model.bin --vocab_path models/google_zh_vocab.txt \
@@ -117,7 +117,7 @@ python3 scripts/average_models.py --model_list_path models/book_review_model.bin
                                   --output_model_path models/book_review_model.bin
 ```
 
-#### Text generator (language model)
+### Text generator (language model)
 We could use *generate_lm.py* to generate text through language model. Given a few words, *generate_lm.py* can continue writing. The example of using *generate_lm.py* to load [GPT-2-distil](https://share.weiyun.com/IAvDbjKR) and continue writing:
 ```
 python3 scripts/generate_lm.py --load_model_path models/gpt_model.bin --vocab_path models/google_zh_vocab.txt \
@@ -129,7 +129,7 @@ python3 scripts/generate_lm.py --load_model_path models/gpt_model.bin --vocab_pa
 ```
 where *beginning.txt* contains the beginning of a text and *generated_text.txt* contains the text that the model writes.
 
-#### Text generator (seq2seq model)
+### Text generator (seq2seq model)
 We could use *generate_seq2seq.py* to generate text through seq2seq model. The example of using *generate_seq2seq.py* to load [Transformer translation model (zh_en)](https://share.weiyun.com/yY1F1xEh) and translate from Chinese to English:
 ```
 python3 scripts/generate_seq2seq.py --load_model_path models/iwslt_zh_en_model.bin-50000 \
@@ -141,7 +141,7 @@ python3 scripts/generate_seq2seq.py --load_model_path models/iwslt_zh_en_model.b
 ```
 where *--test_path* specifies the path of text to be translated and *--prediction_path* specifies the path of translated text.
 
-#### Model conversion
+### Model conversion
 Converting model from UER format to Huggingface format (PyTorch):
 
 We provide the usage of UER-to-Huggingface conversion scripts in [Huggingface model repository (uer)](https://huggingface.co/uer).
