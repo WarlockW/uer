@@ -110,7 +110,7 @@ wordn sentn
 ```
 Sentence and word are split by \t.
 
-#### Model average
+### Model average
 *average_models.py* takes the average of multiple weights for probably more robust performance. The example of using *average_models.py*：
 ```
 python3 scripts/average_models.py --model_list_path models/book_review_model.bin-4000 models/book_review_model.bin-5000 \
