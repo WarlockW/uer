@@ -151,67 +151,67 @@ Converting model from Huggingface format (PyTorch) to UER format ：
 BART: Taking the [bart-base-chinese-cluecorpussmall](https://huggingface.co/uer/bart-base-chinese-cluecorpussmall) model in Huggingface as an example：
 ```
 python3 scripts/convert_bart_from_huggingface_to_uer.py --input_model_path pytorch_model.bin \
-                                                        --output_model_path uer_model.bin \
+                                                        --output_model_path uer_pytorch_model.bin \
                                                         --layers_num 6
 ```
 ALBERT: Taking the [albert-base-chinese-cluecorpussmall](https://huggingface.co/uer/albert-base-chinese-cluecorpussmall) model in Huggingface as an example：
 ```
 python3 scripts/convert_albert_from_huggingface_to_uer.py --input_model_path pytorch_model.bin \
-                                                          --output_model_path uer_model.bin 
+                                                          --output_model_path uer_pytorch_model.bin 
 ```
 Roberta: Taking the [chinese_roberta_L-2_H-128](https://huggingface.co/uer/chinese_roberta_L-2_H-128) model in Huggingface as an example：
 ```
 python3 scripts/convert_bert_from_huggingface_to_uer.py --input_model_path pytorch_model.bin \
-                                                        --output_model_path uer_model.bin \
+                                                        --output_model_path uer_pytorch_model.bin \
                                                         --layers_num 2 --target mlm
 ```
 GPT-2: Taking the [gpt2-chinese-cluecorpussmall](https://huggingface.co/uer/gpt2-chinese-cluecorpussmall) model in Huggingface as an example：
 ```
 python3 scripts/convert_gpt2_from_huggingface_to_uer.py --input_model_path pytorch_model.bin \
-                                                        --output_model_path uer_model.bin \
+                                                        --output_model_path uer_pytorch_model.bin \
                                                         --layers_num 12
 ```
 RoBERTa (BERT) for extractive QA: Taking the [roberta-base-chinese-extractive-qa](https://huggingface.co/uer/roberta-base-chinese-extractive-qa) model in Huggingface as an example：
 ```
 python3 scripts/convert_bert_extractive_qa_from_huggingface_to_uer.py --input_model_path pytorch_model.bin \
-                                                                      --output_model_path uer_model.bin \
+                                                                      --output_model_path uer_pytorch_model.bin \
                                                                       --layers_num 12
 ```
 RoBERTa (BERT) for text classification: Taking the [roberta-base-finetuned-dianping-chinese](https://huggingface.co/uer/roberta-base-finetuned-dianping-chinese) model in Huggingface as an example：
 ```
 python3 scripts/convert_bert_text_classification_from_huggingface_to_uer.py --input_model_path pytorch_model.bin \
-                                                                            --output_model_path uer_model.bin \
+                                                                            --output_model_path uer_pytorch_model.bin \
                                                                             --layers_num 12
 ```
 RoBERTa (BERT) for token classification (sequence labeling): Taking the [roberta-base-finetuned-cluener2020-chinese](https://huggingface.co/uer/roberta-base-finetuned-cluener2020-chinese) model in Huggingface as an example：
 ```
 python3 scripts/convert_bert_token_classification_from_huggingface_to_uer.py --input_model_path pytorch_model.bin \
-                                                                             --output_model_path uer_model.bin \
+                                                                             --output_model_path uer_pytorch_model.bin \
                                                                              --layers_num 12
 ```
 T5: Taking the [t5-base-chinese-cluecorpussmall](https://huggingface.co/uer/t5-base-chinese-cluecorpussmall) model in Huggingface as an example：
 ```
 python3 scripts/convert_t5_from_huggingface_to_uer.py --input_model_path pytorch_model.bin \
-                                                      --output_model_path uer_model.bin \
+                                                      --output_model_path uer_pytorch_model.bin \
                                                       --layers_num 12 \
                                                       --type t5
 ```
 T5-v1_1: Taking the [t5-v1_1-small-chinese-cluecorpussmall](https://huggingface.co/uer/t5-v1_1-small-chinese-cluecorpussmall) model in Huggingface as an example：
 ```
 python3 scripts/convert_t5_from_huggingface_to_uer.py --input_model_path pytorch_model.bin \
-                                                      --output_model_path uer_model.bin \
+                                                      --output_model_path uer_pytorch_model.bin \
                                                       --layers_num 8 \
                                                       --type t5-v1_1
 ```
 Pegasus: Taking the [pegasus-base-chinese-cluecorpussmall](https://huggingface.co/uer/pegasus-base-chinese-cluecorpussmall) model in Huggingface as an example：
 ```
 python3 scripts/convert_pegasus_from_huggingface_to_uer.py --input_model_path pytorch_model.bin \
-                                                           --output_model_path uer_model.bin \
+                                                           --output_model_path uer_pytorch_model.bin \
                                                            --layers_num 12
 ```
 XLM-RoBERTa: Taking the [xlm-roberta-base](https://huggingface.co/xlm-roberta-base) model in Huggingface as an example：
 ```
 python3 scripts/convert_xlmroberta_from_huggingface_to_uer.py --input_model_path pytorch_model.bin \
-                                                              --output_model_path uer_model.bin \
+                                                              --output_model_path uer_pytorch_model.bin \
                                                               --layers_num 12
 ```
