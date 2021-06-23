@@ -224,7 +224,7 @@ python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_voca
 The corpus format of T5-v1_1 is identical with T5. *--feed_forward* denotes the type of feed-forward layer. *--tie_weights* is removed and there is no parameter sharing between embedding and classifier layer. T5-v1_1 and T5 have different configuration files.
 
 ### PEGASUS
-PEGASUS proposes to use GSG (gap sentence generation) pre-training target. GSG target aims to predict the sentences extracted from the document, which is beneficial to text summarization task. The example of using PEGASUS for pre-training:：
+PEGASUS proposes to use GSG (gap sentence generation) pre-training target. GSG target aims to predict the sentences extracted from the document, which is beneficial to text summarization task. The example of using PEGASUS for pre-training:
 ```
 python3  preprocess.py --corpus_path corpora/CLUECorpusSmall_5000_lines_bert.txt --vocab_path models/google_zh_vocab.txt \
                        --dataset_path dataset.pt --processes_num 8 --seq_length 512 --tgt_seq_length 256 \
