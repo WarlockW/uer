@@ -239,7 +239,24 @@ python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_voca
                     --encoder transformer --mask fully_visible --layernorm_positioning pre --decoder transformer \
                     --target gsg --has_lmtarget_bias --tie_weights
 ```
-The corpus format of PEGASUS is identical with BERT. In pre-processing stage, *--sentence_selection_strategy* denotes the strategy for sentence selection in PEGASUS. When random sentence selection is used (*--sentence_selection_strategy random*), one can use *--dup_factor* to specify the number of times to duplicate the input data (with different masks on sentence).
+The corpus format of PEGASUS is identical with BERT. In pre-processing stage, *--sentence_selection_strategy* denotes the strategy for sentence selection in PEGASUS. When random sentence selection is used (*--sentence_selection_strategy random*), one can use *--dup_factor* to specify the number of times to duplicate the input data (with different masks on sentence). When *--sentence_selection_strategy lead* is specified, *--dup_factor* should be set to 1.
+
+### BART
+BART proposes to use seq2seq model reconstruct the corrupted document. The encoder handles the corrupted document and the decoder reconstruct it. BART explores different corruption strategies and recommends to use the combination of sentence permutation and text infilling (using a single MASK token to mask consecutive tokens). The example of using BART for pre-training:
+```
+python3 preprocess.py --corpus_path CLUECorpusSmall_bert_shuf_100w.txt --vocab_path models/google_zh_vocab.txt \
+                      --dataset_path dataset.pt --processes_num 8 --seq_length 512 --target bart
+
+python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt \
+                    --config_path models/bart/base_config.json \
+                    --output_model_path models/bart_model.bin \
+                    --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7 \
+                    --learning_rate 1e-4 --batch_size 8 \
+                    --span_masking --span_max_length 3 \
+                    --embedding word_pos --tgt_embedding word_pos \
+                    --encoder transformer --mask fully_visible --decoder transformer \
+                    --target bart --tie_weights --has_lmtarget_bias
+```
 
 ### XLM-RoBERTa
 We download multi-lingual pre-trained models [XLM-RoBERTa-base](https://huggingface.co/xlm-roberta-base), [XLM-RoBERTa-large](https://huggingface.co/xlm-roberta-large) and do further pre-training upon them. Take XLM-RoBERTa-base as an example, we firstly convert the pre-trained model into UER format:
