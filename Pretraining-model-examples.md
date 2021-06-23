@@ -228,7 +228,7 @@ PEGASUS proposes to use GSG (gap sentence generation) pre-training target. GSG t
 ```
 python3  preprocess.py --corpus_path corpora/CLUECorpusSmall_5000_lines_bert.txt --vocab_path models/google_zh_vocab.txt \
                        --dataset_path dataset.pt --processes_num 8 --seq_length 512 --tgt_seq_length 256 \
-                       --dup_factor 1 --target gsg --sentence_selection_strategy rouge
+                       --dup_factor 1 --target gsg --sentence_selection_strategy lead
 
 python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt \
                     --config_path models/pegasus/base_config.json \
