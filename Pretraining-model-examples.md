@@ -294,6 +294,21 @@ python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_voca
 ```
 [*csl_title_abstract.txt*](https://share.weiyun.com/LwuQwWVl) is a Chinese scientific literature corpus. The title and abstract sequences are separated by \t , which is the corpus format of *--target prefixlm* . We can pre-train prefix LM model through *--mask causal_with_prefix* and *--target prefixlm*. Notice that the model use the segment information to determine which part is prefix. Therefore we have to use *--embedding word_pos_seg*.
 
+### RealFormer
+RealFormer proposes to use residual attention to achieve better performance with less pre-training budget. The example of using RealFormer for pre-training:
+```
+python3 preprocess.py --corpus_path corpora/book_review.txt --vocab_path models/google_zh_vocab.txt \
+                      --dataset_path dataset.pt --processes_num 8 \
+                      --dynamic_masking --target mlm
+
+python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt \
+                    --output_model_path models/output_model.bin \
+                    --world_size 8 --gpu_ranks 0 1 2 3 4 5 6 7 --learning_rate 1e-4 \
+                    --embedding word_pos_seg --encoder transformer --mask fully_visible --has_residual_attention \
+                    --target mlm
+```
+*--has_residual_attention* is used to denote using residual attention in Transformer encoder.
+
 ### More combinations
 The example of using LSTM encoder and LM target for pre-training:
 ```
