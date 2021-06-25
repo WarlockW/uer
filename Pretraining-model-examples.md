@@ -244,7 +244,7 @@ The corpus format of PEGASUS is identical with BERT. In pre-processing stage, *-
 ### BART
 BART proposes to use seq2seq model reconstruct the corrupted document. The encoder handles the corrupted document and the decoder reconstruct it. BART explores different corruption strategies and recommends to use the combination of sentence permutation and text infilling (using a single MASK token to mask consecutive tokens). The example of using BART for pre-training:
 ```
-python3 preprocess.py --corpus_path CLUECorpusSmall_bert_shuf_100w.txt --vocab_path models/google_zh_vocab.txt \
+python3 preprocess.py --corpus_path corpora/CLUECorpusSmall_5000_lines_bert.txt --vocab_path models/google_zh_vocab.txt \
                       --dataset_path dataset.pt --processes_num 8 --seq_length 512 --target bart
 
 python3 pretrain.py --dataset_path dataset.pt --vocab_path models/google_zh_vocab.txt \
